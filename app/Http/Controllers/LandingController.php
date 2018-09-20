@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Evento;
 use App\Galeria;
+use App\Programa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -70,7 +71,14 @@ class LandingController extends Controller
                         ->take($takeEventos)
                         ->get();
 
-        return view('landing.index', compact('galerias', 'eventos'));
+        $programas = Programa::query()
+                    ->withoutGlobalScopes()
+                    ->orderByDesc('updated_at')
+                    ->orderBy('nomb_prog')
+                    ->take(5)
+                    ->get();
+
+        return view('landing.index', compact('galerias', 'eventos','programas'));
     }
 
     /**

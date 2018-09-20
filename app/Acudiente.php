@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Acudiente;
 use App\Events\UsuarioRegistrado;
 use App\Scopes\AcudienteScope;
 use App\Traits\Uuids;
@@ -13,8 +14,7 @@ class Acudiente extends Model
     use Uuids;
 
     /**
-     * The "booting" method of the model.
-     *
+     * Global scope
      * @return void
      */
     protected static function boot()
@@ -103,11 +103,91 @@ class Acudiente extends Model
         return optional(Sexo::find($this->sexo_acud))['texto'];
     }
 
+     /**
+     * Devuelve el nombre del sexo
+     *
+     * @return string
+     */
+    public function getDocumento()
+    {
+        return optional(Documento::find($this->tipo_docu))['texto'];
+    }
+
     /*
     |----------------------------------------------------------------------
     | Scopes
     |----------------------------------------------------------------------
     |
     */
+
+    /**
+     * Scope documento
+     * @param collection $query
+     * @param integer $docu_acud
+     * @return collection
+     */
+    public function scopeDocumento($query, $docu_acud)
+    {
+        if (isset($docu_acud))
+        {
+            return $query->where('docu_acud', 'LIKE', "%{$docu_acud}%");
+        }
+    }
+
+    /**
+     * Scope nombre
+     * @param collection $query
+     * @param string $nomb_acud
+     * @return collection
+     */
+    public function scopeNombre($query, $nomb_acud)
+    {
+        if (isset($nomb_acud))
+        {
+            return $query->where('nomb_acud', 'LIKE', "%{$nomb_acud}%");
+        }
+    }
+
+    /**
+     * Scope primer apellido
+     * @param collection $query
+     * @param string $pape_acud
+     * @return collection
+     */
+    public function scopePrimerApellido($query, $pape_acud)
+    {
+        if (isset($pape_acud))
+        {
+            return $query->where('pape_acud', 'LIKE', "%{$pape_acud}%");
+        }
+    }
+
+    /**
+     * Scope segundo apellido
+     * @param collection $query
+     * @param string $sape_acud
+     * @return collection
+     */
+    public function scopeSegundoApellido($query, $sape_acud)
+    {
+        if (isset($sape_acud))
+        {
+            return $query->where('sape_acud', 'LIKE', "%{$sape_acud}%");
+        }
+    }
+
+    /**
+     * Scope search by ajax
+     * @param collection $query
+     * @param string $sape_acud
+     * @return collection
+     */
+    public function scopeSearch($query, $sear_acud)
+    {
+        return $query
+                ->where('docu_acud', 'LIKE', "%{$sear_acud}%")
+                ->orWhere('nomb_acud', 'LIKE', "%{$sear_acud}%")
+                ->orWhere('pape_acud', 'LIKE', "%{$sear_acud}%");
+    }
 
 }

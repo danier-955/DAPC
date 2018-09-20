@@ -31,82 +31,32 @@
     <div class="row mb-4">
       <div class="col-md-4">
         <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Programas de formación</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          </div>
-          <div class="list-group list-group-flush" id="accordionTwo">
-            <div class="expansion-panel list-group-item">
-              <a aria-controls="collapseFour" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#collapseFour" id="headingFour">
-                Natación
-                <div class="expansion-panel-icon ml-3 text-black-secondary">
-                  <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-                  <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
-                </div>
-              </a>
-              <div aria-labelledby="headingFour" class="collapse" data-parent="#accordionTwo" id="collapseFour">
-                <div class="expansion-panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                </div>
-              </div>
+           <div class="card-body">
+              <h5 class="card-title">Programas de Formación</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
-            <div class="expansion-panel list-group-item">
-              <a aria-controls="collapseFive" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#collapseFive" id="headingFive">
-                Inglés
-                <div class="expansion-panel-icon ml-3 text-black-secondary">
-                  <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-                  <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
+            @foreach($programas as $programa)
+              <div class="list-group list-group-flush" >
+                <div class="expansion-panel list-group-item">
+                    <div class="card" >
+                      <div class="card-body">
+                        <a aria-controls="collapseFour" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#{{'acordeon'. $loop->index}}" id="headingFour">
+                        {{ $programa->nomb_prog }}
+                          <div class="expansion-panel-icon ml-3 text-black-secondary">
+                            <i class="collapsed-show material-icons">keyboard_arrow_down</i>
+                            <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
+                          </div>
+                        </a>
+                        <div aria-labelledby="headingFour" class="collapse"  id="{{'acordeon'. $loop->index}}">
+                          <div class="expansion-panel-body">
+                            {{$programa->desc_prog}}
+                          </div>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </a>
-              <div aria-labelledby="headingFive" class="collapse" data-parent="#accordionTwo" id="collapseFive">
-                <div class="expansion-panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                </div>
-              </div>
-            </div>
-            <div class="expansion-panel list-group-item">
-              <a aria-controls="collapseSix" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#collapseSix" id="headingSix">
-                Arte
-                <div class="expansion-panel-icon ml-3 text-black-secondary">
-                  <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-                  <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
-                </div>
-              </a>
-              <div aria-labelledby="headingSix" class="collapse" data-parent="#accordionTwo" id="collapseSix">
-                <div class="expansion-panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                </div>
-              </div>
-            </div>
-            <div class="expansion-panel list-group-item">
-              <a aria-controls="collapseSix" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#collapseSix" id="headingSix">
-                Baile
-                <div class="expansion-panel-icon ml-3 text-black-secondary">
-                  <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-                  <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
-                </div>
-              </a>
-              <div aria-labelledby="headingSix" class="collapse" data-parent="#accordionTwo" id="collapseSix">
-                <div class="expansion-panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                </div>
-              </div>
-            </div>
-            <div class="expansion-panel list-group-item">
-              <a aria-controls="collapseSix" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#collapseSix" id="headingSix">
-                Música
-                <div class="expansion-panel-icon ml-3 text-black-secondary">
-                  <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-                  <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
-                </div>
-              </a>
-              <div aria-labelledby="headingSix" class="collapse" data-parent="#accordionTwo" id="collapseSix">
-                <div class="expansion-panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
-                </div>
-              </div>
-            </div>
-          </div>
+            @endforeach
         </div>
       </div>
       <div class="col-md-8">

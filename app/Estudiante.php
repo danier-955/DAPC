@@ -341,7 +341,4 @@ class Estudiante extends Model
             return $query->where('sub_grado_id', $sub_grado_id);
         }
     }
-
-   
-
 }
