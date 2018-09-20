@@ -297,4 +297,85 @@ $(document).ready(function()
         theme: "bootstrap4",
     });
 
+    /**
+     * Select2 para acudiente (en registrar estudiante)
+     */
+    $("#acudiente_id").select2({
+        language: "es",
+        theme: "bootstrap4",
+        ajax: {
+            url: `${document.head.querySelector('meta[name="url"]').content}/acudientes/buscar`,
+            dataType: 'json',
+            delay: 250,
+            data: function (params)
+            {
+                return {
+                    sear_acud: params.term,
+                    page: params.page
+                };
+            },
+            processResults: function (data, params)
+            {
+                data.items.push({id: '', text: '---  acudiente ---'});
+                params.page = params.page || 1;
+                return {
+                    results: data.items,
+                    pagination: {
+                      more: (params.page * 30) < data.total_count
+                    }
+                };
+            },
+            cache: false,
+        },
+        escapeMarkup: function (markup) { return markup; },
+        minimumInputLength: 3,
+    });
+    readonlyAcudiente();
+    $("#acudiente_id").change(function(e)
+    {
+        e.preventDefault();
+        readonlyAcudiente();
+    });
+
+    function readonlyAcudiente()
+    {
+        var acudiente_id = $.trim($("#acudiente_id").val());
+        if (acudiente_id == null || acudiente_id == "")
+        {
+            $("#tipo_docu").prop("disabled", false);
+            $("#docu_acud").prop("readonly", false);
+            $("#nomb_acud").prop("readonly", false);
+            $("#pape_acud").prop("readonly", false);
+            $("#dire_acud").prop("readonly", false);
+            $("#tele_acud").prop("readonly", false);
+            $("#emai_acud").prop("readonly", false);
+            $("#pare_acud").prop("disabled", false);
+        }
+        else
+        {
+            $("#tipo_docu").prop("disabled", true);
+            $("#docu_acud").prop("readonly", true);
+            $("#nomb_acud").prop("readonly", true);
+            $("#pape_acud").prop("readonly", true);
+            $("#sape_acud").prop("readonly", true);
+            $("#dire_acud").prop("readonly", true);
+            $("#tele_acud").prop("readonly", true);
+            $("#corr_acud").prop("readonly", true);
+            $("#pare_acud").prop("disabled", true);
+            $("#prof_acud").prop("disabled", true);
+            $("#sexo_acud").prop("disabled", true);
+            $("#barr_acud").prop("disabled", true);
+            $("select#tipo_docu").prop('selectedIndex', 0);
+            $("select#pare_acud").prop('selectedIndex', 0);
+            $("select#sexo_acud").prop('selectedIndex', 0);
+            $("#docu_acud").val("");
+            $("#nomb_acud").val("");
+            $("#pape_acud").val("");
+            $("#dire_acud").val("");
+            $("#tele_acud").val("");
+            $("#corr_acud").val("");
+        }
+        return false;
+    }
+
 });

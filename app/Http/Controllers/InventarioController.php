@@ -33,8 +33,9 @@ class InventarioController extends Controller
      */
     public function index()
     {
-        $inventarios =Inventario::query()
+        $inventarios =Inventario::with('administrativo','implemento')
                             ->paginate();
+     
 
         return view('inventarios.index' , compact ('inventarios'));
     }

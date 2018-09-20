@@ -10,16 +10,16 @@ class Inventario extends Model
 {
     use Uuids;
 
-    /**
-     * Global scope
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
+    // /**
+    //  * Global scope
+    //  * @return void
+    //  */
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::addGlobalScope(new InventarioScope);
-    }
+    //     static::addGlobalScope(new InventarioScope);
+    // }
 
     /**
      * Indicates if the IDs are auto-incrementing.
