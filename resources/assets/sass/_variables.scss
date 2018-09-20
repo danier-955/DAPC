@@ -1,0 +1,25 @@
+///////////////////
+// Theme colors //
+/////////////////
+$primary: (
+  color: #ff9800,
+  dark:  darken(#ff9800, 10%),
+  light: lighten(#ff9800, 10%)
+);
+
+$secondary: (
+  color: #03a9f4,
+  dark:  darken(#03a9f4, 10%),
+  light: lighten(#03a9f4, 10%)
+);
+
+$warning: (
+  color: #ffc107,
+  dark:  darken(#ffc107, 10%),
+  light: lighten(#ffc107, 10%)
+);
+
+////////////////
+// Navdrawer //
+//////////////
+$navdrawer-width: 16.5rem;

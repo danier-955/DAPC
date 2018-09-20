@@ -1,0 +1,258 @@
+////////////////////////
+///// Loader Page /////
+//////////////////////
+.no-js #loader-page {
+  display: none;
+}
+
+.js #loader-page {
+  display: block;
+  position: absolute;
+  left: 100px;
+  top: 0;
+}
+
+.loader-page {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url(../img/loader-page.gif) center no-repeat #ffffff;
+}
+
+////////////////
+// Variables //
+//////////////
+@import "variables";
+
+/////////////////////////
+// Daemonite-material //
+///////////////////////
+@import '~daemonite-material/assets/scss/material';
+
+/////////////////////////
+////// Admin Lte ///////
+///////////////////////
+// @import '~bootstrap/scss/bootstrap';
+// @import '~admin-lte/build/scss/AdminLTE-raw';
+
+/////////////////
+// Datatables //
+////////////////
+@import '~datatables.net-bs4/css/dataTables.bootstrap4.css';
+@import '~datatables.net-responsive-bs4/css/responsive.bootstrap4.css';
+
+/////////////////////////
+// Fullcalendar //
+///////////////////////
+// @import '~fullcalendar/dist/fullcalendar.css';
+
+////////////////////////////////////////
+// Bootstrap Material Datetimepicker //
+//////////////////////////////////////
+@import '../css/bootstrap-material-datetimepicker-bs4daemonite.css';
+
+////////////////////////////////////////
+/////////// Bootstrap Select //////////
+//////////////////////////////////////
+@import '../css/bootstrap-select-daemonite.css';
+
+/////////////////////////
+//////// Select2 ///////
+///////////////////////
+@import '~select2/dist/css/select2.css';
+@import '~select2-bootstrap4-theme/dist/select2-bootstrap4.css';
+// @import '~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css';
+
+////////////////
+// Navdrawer //
+//////////////
+@include media-breakpoint-up(lg) {
+	.content-wrapper {
+    margin-left: $navdrawer-width;
+	}
+	.navbar-full {
+  	.invisible-lg {
+  		display: none;
+  	}
+  	.invisible-lg:first-child + .navbar-brand {
+	    margin-left: 0;
+	  }
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.navdrawer-lg-shadow {
+    -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.14), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.14), 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2) !important;
+	}
+}
+
+////////////////
+// Jumbotron //
+//////////////
+.jumbotron-landing {
+  background-image: url(../img/landing.jpg);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: $white;
+  padding-top: 7rem;
+}
+
+.jumbotron-user {
+  margin: -0.26rem 0rem 0rem 0rem;
+  padding: 5rem 1.2rem 0.6rem 1.2rem;
+  color: $white;
+  background-image: url(../img/dashboard.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+
+@include media-breakpoint-down(md) {
+  .jumbotron-user {
+    margin: -0.45rem 0rem 0rem 0rem;
+  }
+}
+
+//////////////
+// Buttons //
+////////////
+.btn-primary {
+  color: $white;
+
+  @include active-focus-hover {
+      color: $white;
+    }
+}
+
+///////////////////////
+// Background color //
+/////////////////////
+.bg-primary {
+  color: $white;
+}
+
+////////////////
+// Gradients //
+//////////////
+.gradient-auth {
+  height: 100vh;
+  background: $material-color-orange-600;
+  background: -moz-linear-gradient(0deg, $material-color-orange-600 0%, $material-color-lime-200 56.00000000000001%, $material-color-light-blue-300 100%, $material-color-light-blue-200 100%);
+  background: -webkit-linear-gradient(0deg, $material-color-orange-600 0%, $material-color-lime-200 56.00000000000001%, $material-color-light-blue-300 100%, $material-color-light-blue-200 100%);
+  background: linear-gradient(0deg, $material-color-orange-600 0%, $material-color-lime-200 56.00000000000001%, $material-color-light-blue-300 100%, $material-color-light-blue-200 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="$material-color-orange-600",endColorstr="$material-color-light-blue-200",GradientType=1);
+}
+
+////////////
+// Login //
+//////////
+.m-button-logo {
+  margin-top: -27px;
+  margin-bottom: -10px;
+}
+
+////////////////
+// Utilities //
+//////////////
+.subheader-condensed {
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+.img-evento {
+  width: auto;
+  max-width: 400px;
+  height: auto;
+  max-height: 300px;
+}
+
+////////////////
+//// Cards ////
+//////////////
+.card-columns {
+  @include media-breakpoint-down(sm) {
+    column-count: 1;
+    -webkit-column-count: 1;
+  }
+}
+
+////////////////////////
+//// Scroll Go Top ////
+//////////////////////
+.fixed-action-btn {
+  &.active {
+    ul {
+      visibility: visible;
+    }
+  }
+
+  // Directions
+  &.direction-left,
+  &.direction-right {
+    padding: 0 0 0 15px;
+    ul {
+      text-align: right;
+      right: 64px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 100%;
+      left: auto;
+      /*width 100% only goes to width of button container */
+      width: 500px;
+      li {
+        display: inline-block;
+        margin: 7.5px 15px 0 0;
+      }
+    }
+  }
+  &.direction-right {
+    padding: 0 15px 0 0;
+    ul {
+      text-align: left;
+      direction: rtl;
+      left: 64px;
+      right: auto;
+      li {
+        margin: 7.5px 0 0 15px;
+      }
+    }
+  }
+  &.direction-bottom {
+    padding: 0 0 15px 0;
+    ul {
+      top: 64px;
+      bottom: auto;
+      display: flex;
+      flex-direction: column-reverse;
+      li {
+        margin: 15px 0 0 0;
+      }
+    }
+  }
+  position: fixed;
+  right: 23px;
+  bottom: 23px;
+  padding-top: 15px;
+  margin-bottom: 0;
+  z-index: 997;
+  ul {
+    left: 0;
+    right: 0;
+    text-align: center;
+    position: absolute;
+    bottom: 64px;
+    margin: 0;
+    visibility: hidden;
+    li {
+      margin-bottom: 15px;
+    }
+    a.btn-floating {
+      opacity: 0;
+    }
+  }
+}
