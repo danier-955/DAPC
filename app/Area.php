@@ -55,5 +55,18 @@ class Area extends Model
     |----------------------------------------------------------------------
     |
     */
+    /**
+     * Scope nombre area
+     * @param collection $query
+     * @param string $nomb_area
+     * @return collection
+     */
+    public function scopeArea($query, $nomb_area)
+    {
+        if (isset($nomb_area))
+        {
+            return $query->where('nomb_area', 'LIKE', "%{$nomb_area}%");
+        }
+    }
 
 }

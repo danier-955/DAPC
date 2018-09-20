@@ -41,6 +41,8 @@ Route::get('/inicio', 'HomeController@index')->name('inicio');
  * Acudientes Routes...
  */
 Route::resource('acudientes', 'AcudienteController');
+/* get acudientes ajax */
+Route::get('acudientes/buscar', 'AcudienteController@search')->name('acudientes.search');
 
 /*
  * Administrativos Routes...
@@ -51,6 +53,11 @@ Route::resource('administrativos', 'AdministrativoController');
  * Alumnos Routes...
  */
 Route::resource('alumnos', 'AlumnoController');
+
+/*
+ * Alumnos Routes...
+ */
+Route::resource('alumnosprogramas', 'AlumnoProgramaController');
 
 /*
  * Areas Routes...
@@ -101,6 +108,7 @@ Route::resource('empleados', 'EmpleadoController');
  * Estudiantes Routes...
  */
 Route::resource('estudiantes', 'EstudianteController');
+Route::get('estudiantes/{estudiante}/{campo}/download', 'EstudianteController@download')->name('estudiante.download');
 
 /*
  * Eventos Routes...
@@ -125,7 +133,7 @@ Route::resource('grados', 'GradoController');
 /*
  * SubGrados Routes...
  */
-Route::resource('grados.subgrados', 'SubGradoController');
+Route::resource('subgrados', 'SubGradoController');
 
 /*
  * Implementos Routes...
@@ -171,6 +179,11 @@ Route::get('planeamientos/{planeamiento}/download', 'PlaneamientoController@down
  * Practicantes Routes...
  */
 Route::resource('practicantes', 'PracticanteController');
+
+/*
+ * programas Routes...
+ */
+Route::resource('programas', 'ProgramaController');
 
 /*
  * Roles Routes...

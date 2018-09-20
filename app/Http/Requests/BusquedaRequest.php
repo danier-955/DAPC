@@ -91,12 +91,57 @@ class BusquedaRequest extends FormRequest
              */
             'titu_even'     => 'nullable|min:5|max:100|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 
+             /**
+            *Estudiante
+            */
+            'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',     
+            'nomb_estu'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'pape_estu'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'sub_grado_id'  => 'nullable|string|exists:sub_grados,id',
+
+             /**
+            *Acudiente
+            */
+            'docu_acud'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',     
+            'nomb_acud'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'pape_acud'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'sape_acud'  => 'nullable|string|exists:sub_grados,id',
+            /**
+            *Utiles
+            */
+            'nomb_util'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',    
+            'sub_grado_id'  => 'nullable|string|exists:sub_grados,id',
+
+            /**
+            *Estudiante Utiles
+            */
+            'estudiante_id'  => 'nullable|string|exists:estudiante_id,id',
+
+              /**
+            *Programa de formacion
+            */
+            'nomb_prog'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',   
+
+            /**
+            *Areas
+            */
+            'nomb_area'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',   
+
+             /**
+
             /**
              * Asignaturas
              */
             'nomb_asig'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'area_id'       => 'nullable|string|exists:areas,id',
             'grado_id'      => 'nullable|string|exists:grados,id',
+
+                    /**
+            *Alumno
+            */
+            'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',     
+            'nomb_alum'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'pape_alum'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
         ];
     }
 }

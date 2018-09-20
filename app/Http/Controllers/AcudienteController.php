@@ -3,7 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Acudiente;
+use App\User;
+use App\Role;
+use App\Http\Requests\BusquedaRequest;
+use Facades\App\Facades\Sexo;
+use Facades\App\Facades\Documento;
+use Facades\App\Facades\Estado;
+use App\Http\Requests\AcudientesRequest;
+use Facades\App\Facades\SpecialRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AcudienteController extends Controller
 {
@@ -15,39 +24,52 @@ class AcudienteController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('has.permission:acudientes.index')->only(['index']);
+        $this->middleware('has.permission:acudientes.show')->only(['show']);
+        $this->middleware('has.permission:acudientes.create')->only(['create', 'store']);
+        $this->middleware('has.permission:acudientes.edit')->only(['edit', 'update']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(BusquedaRequest $request)
+    { 
+         $acudientes = Acudiente::query()
+                            ->documento($request->docu_acud)
+                            ->nombre($request->nomb_acud)
+                            ->primerApellido($request->pape_acud)
+                            ->segundoApellido($request->sape_acud)
+                            ->orderBy('docu_acud')
+                            ->orderBy('nomb_acud')
+                            ->orderBy('pape_acud')
+                            ->paginate();
+        return view('acudientes.index' ,compact('acudientes'));
+    }
+
+    public function search(BusquedaRequest $request)
     {
-        //
-    }
+        $request->validate();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        if ($request->ajax())
+        {
+            $acudientes = Acudiente::Search($request->sear_acud)
+                                    ->select('id', 'tipo_docu', 'docu_acud', 'nomb_acud', 'pape_acud')
+                                    ->orderBy('nomb_acud', 'asc')
+                                    ->orderBy('pape_acud', 'asc')
+                                    ->orderBy('docu_acud', 'asc')
+                                    ->cursor();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            $acud_json = array();
 
+            foreach ($acudientes as $acudiente)
+            {
+               $acud_json[] = array(
+                    'id' => $acudiente->id,
+                    'text' => "{$acudiente->tipo_docu} {$acudiente->docu_acud} &middot; {$acudiente->nomb_acud} {$acudiente->pape_acud}"
+                );
+            }
+
+            return response()->json(['items' => $acud_json], 200);
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -56,7 +78,7 @@ class AcudienteController extends Controller
      */
     public function show(Acudiente $acudiente)
     {
-        //
+        return view('acudientes.show' , compact('acudiente'));
     }
 
     /**
@@ -67,7 +89,7 @@ class AcudienteController extends Controller
      */
     public function edit(Acudiente $acudiente)
     {
-        //
+        return view('acudientes.edit' , compact('acudiente'));
     }
 
     /**
@@ -77,9 +99,46 @@ class AcudienteController extends Controller
      * @param  \App\Acudiente  $acudiente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Acudiente $acudiente)
+    public function update(AcudientesRequest $request, Acudiente $acudiente)
     {
-        //
+       
+        $request->validate();
+        
+        try {
+            DB::beginTransaction();
+            /**
+             * Actualizar el usuario
+             */
+            $acudiente->user->update([
+                'nombre' => trim("{$request->nomb_acud} {$request->pape_acud} {$request->sape_acud}"),
+                'email' => $request->corr_acud,
+            ]);
+
+             $acudiente->update($request->all());
+
+            DB::commit();
+
+            toast('¡El acudiente ha sido actualizado correctamente!', 'success', 'top-right');
+
+            return redirect()->route('acudientes.show', $acudiente->id);
+
+        } 
+        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
+        {
+            DB::rollback();
+
+            toast('¡Se ha producido un error al actualizar el acudiente!', 'error', 'top-right');
+
+            return redirect()->back()->withInput();
+        }
+        catch (\Exception $e)
+        {
+            DB::rollback();
+
+            toast('¡Se ha producido un error al actualizar el acudiente!', 'error', 'top-right');
+
+            return redirect()->back()->withInput();
+        }
     }
 
     /**

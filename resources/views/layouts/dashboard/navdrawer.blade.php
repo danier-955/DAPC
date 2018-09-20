@@ -249,33 +249,9 @@
           </div>
         @endcanatleast
 
-        @canatleast(['inventarios.index', 'inventarios.create'])
-          <a class="nav-link collapsed" data-toggle="collapse" href="#inventarios">
-            <i class="material-icons mr-3">account_balance</i> Inventarios
-          </a>
-          <div class="collapse {{ Request::is('inventarios', 'inventarios/*') ? 'show' : '' }}" data-parent="#sidebar" id="inventarios">
-
-            @can('inventarios.index')
-              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('inventarios.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('inventarios.index') }}">
-                <span class="font-weight-normal">
-                  <i class="material-icons mr-2">view_list</i> Listar inventarios
-                </span>
-              </a>
-            @endcan
-            @can('inventarios.create')
-              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('inventarios.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('inventarios.create') }}">
-                <span class="font-weight-normal">
-                  <i class="material-icons mr-2">add</i> Registrar inventario
-                </span>
-              </a>
-            @endcan
-
-          </div>
-        @endcanatleast
-
         @canatleast(['areas.index', 'areas.create'])
           <a class="nav-link collapsed" data-toggle="collapse" href="#areas">
-            <i class="material-icons mr-3">help</i> Areas
+            <i class="material-icons mr-3">font_download</i> Areas
           </a>
           <div class="collapse {{ Request::is('areas', 'areas/*') ? 'show' : '' }}" data-parent="#sidebar" id="areas">
 
@@ -297,26 +273,59 @@
           </div>
         @endcanatleast
 
-        @canatleast(['grados.index', 'grados.create'])
-          <a class="nav-link collapsed" data-toggle="collapse" href="#grados">
-            <i class="material-icons mr-3">help</i> Grados
+         @canatleast(['grados.index', 'grados.create', 'subgrados.index', 'subgrados.create'])
+          <a class="nav-link collapsed" data-toggle="collapse" href="#crear_grados">
+            <i class="material-icons mr-3">school</i> Grados
           </a>
-          <div class="collapse {{ Request::is('grados', 'grados/*') ? 'show' : '' }}" data-parent="#sidebar" id="grados">
+          <div class="collapse {{ Request::is('grados', 'grados/*', 'subgrados', 'subgrados/*') ? 'show' : '' }}" data-parent="#crear_grados" id="crear_grados">
 
-            @can('grados.index')
-              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('grados.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('grados.index') }}">
-                <span class="font-weight-normal">
-                  <i class="material-icons mr-2">view_list</i> Listar grados
-                </span>
+            @canatleast(['grados.index', 'grados.create'])
+              <a class="nav-link collapsed pl-4" data-toggle="collapse" href="#subgrados">
+                <i class="material-icons mr-3">school</i> grados
               </a>
-            @endcan
-            @can('grados.create')
-              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('grados.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('grados.create') }}">
-                <span class="font-weight-normal">
-                  <i class="material-icons mr-2">add</i> Registrar grado
-                </span>
+              <div class="collapse {{ Request::is('grados', 'grados/*') ? 'show' : '' }}" data-parent="#docentes" id="subgrados">
+
+                @can('grados.index')
+                  <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('grados.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('grados.index') }}">
+                    <span class="font-weight-normal">
+                      <i class="material-icons mr-2">view_list</i> Listar grados
+                    </span>
+                  </a>
+                @endcan
+                @can('grados.create')
+                  <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('grados.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('grados.create') }}">
+                    <span class="font-weight-normal">
+                      <i class="material-icons mr-2">add</i> Registrar grados
+                    </span>
+                  </a>
+                @endcan
+
+              </div>
+            @endcanatleast
+
+            @canatleast(['subgrados.index', 'subgrados.create'])
+              <a class="nav-link collapsed pl-4" data-toggle="collapse" href="#subsubgrados">
+                <i class="material-icons mr-3">school</i> subgrados
               </a>
-            @endcan
+              <div class="collapse {{ Request::is('subgrados', 'subgrados/*') ? 'show' : '' }}" data-parent="#pasantias" id="subsubgrados">
+
+                @can('subgrados.index')
+                  <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('subgrados.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('subgrados.index') }}">
+                    <span class="font-weight-normal">
+                      <i class="material-icons mr-2">view_list</i> Listar subgrados
+                    </span>
+                  </a>
+                @endcan
+                @can('subgrados.create')
+                  <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('subgrados.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('subgrados.create') }}">
+                    <span class="font-weight-normal">
+                      <i class="material-icons mr-2">add</i> Registrar subgrados
+                    </span>
+                  </a>
+                @endcan
+
+              </div>
+            @endcanatleast
 
           </div>
         @endcanatleast
@@ -344,6 +353,109 @@
 
           </div>
         @endcanatleast
+
+         @canatleast(['alumnos.index', 'alumnos.create'])
+          <a class="nav-link collapsed" data-toggle="collapse" href="#alumnos">
+            <i class="material-icons mr-3">assignment_ind</i> Matriculas Alumnos
+          </a>
+          <div class="collapse  {{ Request::is('alumnos', 'alumnos/*', 'alumnosprogramas', 'alumnosprogramas/*') ? 'show' : '' }}" data-parent="#sidebar" id="alumnos">
+           
+            @can('alumnos.index')
+              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('alumnos.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('alumnos.index') }}">
+                <span class="font-weight-normal">
+                  <i class="material-icons mr-2">view_list</i> Listar alumnos
+                </span>
+              </a>
+            @endcan
+            @can('alumnos.create')
+              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('alumnos.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('alumnos.create') }}">
+                <span class="font-weight-normal">
+                  <i class="material-icons mr-2">add</i> Registrar alumnos
+                </span>
+              </a>
+            @endcan
+
+          </div>
+        @endcanatleast
+
+        @can('inventarios.index')
+          <a class="nav-link {{ Request::routeIs('inventarios.index') ? 'active' : '' }}" href="{{ route('inventarios.index') }}">
+            <i class="material-icons mr-3">account_balance</i> Inventarios
+          </a>
+        @endcan 
+
+        @canatleast(['implementos.index', 'implementos.create'])
+          <a class="nav-link collapsed" data-toggle="collapse" href="#implementos">
+            <i class="material-icons mr-3">library_books</i> Utiles Escolares
+          </a>
+          <div class="collapse {{ Request::is('implementos', 'implementos/*') ? 'show' : '' }}" data-parent="#sidebar" id="implementos">
+
+            @can('implementos.index')
+              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('implementos.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('implementos.index') }}">
+                <span class="font-weight-normal">
+                  <i class="material-icons mr-2">view_list</i> Listar implementos
+                </span>
+              </a>
+            @endcan
+            @can('implementos.create')
+              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('implementos.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('implementos.create') }}">
+                <span class="font-weight-normal">
+                  <i class="material-icons mr-2">add</i> Registrar implementos
+                </span>
+              </a>
+            @endcan
+          </div>
+        @endcanatleast
+
+        @canatleast(['programas.index', 'programas.create'])
+          <a class="nav-link collapsed" data-toggle="collapse" href="#programas">
+            <i class="material-icons mr-3">rate_review</i> Programas Formación
+          </a>
+          <div class="collapse {{ Request::is('programas', 'programas/*') ? 'show' : '' }}" data-parent="#sidebar" id="programas">
+
+            @can('programas.index')
+              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('programas.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('programas.index') }}">
+                <span class="font-weight-normal">
+                  <i class="material-icons mr-2">view_list</i> Listar programas
+                </span>
+              </a>
+            @endcan
+            @can('programas.create')
+              <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('programas.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('programas.create') }}">
+                <span class="font-weight-normal">
+                  <i class="material-icons mr-2">add</i> Registrar programa
+                </span>
+              </a>
+            @endcan
+            
+          </div>
+        @endcanatleast
+        
+        @canatleast(['estudiantes.index', 'estudiantes.create', 'inventarios.index', 'inventarios.create'])
+          <a class="nav-link collapsed" data-toggle="collapse" href="#incripciones">
+          <i class="material-icons mr-3">wc</i> Incripciones
+          </a>
+          <div class="collapse  {{ Request::is('estudiantes', 'estudiantes/*', 'inventarios', 'inventarios/*') ? 'show' : '' }}"  data-parent="#sidebar" id="incripciones">
+            
+            <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('estudiantes.create') ? 'active' : 'text-black-secondary' }}" href="{{ route('estudiantes.create') }}">
+              <span class="font-weight-normal">
+                <i class="material-icons mr-2">add</i> Registrar Estudiante
+              </span>
+            </a>
+            <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('acudientes.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('acudientes.index') }}">
+              <span class="font-weight-normal">
+                <i class="material-icons mr-2">view_list</i> Listar Acudientes
+              </span>
+            </a>
+            <a class="nav-item nav-link pl-5 py-3 {{ Request::routeIs('estudiantes.index') ? 'active' : 'text-black-secondary' }}" href="{{ route('estudiantes.index') }}">
+              <span class="font-weight-normal">
+                <i class="material-icons mr-2">view_list</i> Listar Estudiante
+              </span>
+            </a>
+          </div>
+        @endcanatleast
+        
+        
 
       </li>
     </ul>

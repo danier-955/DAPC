@@ -119,6 +119,26 @@ class User extends Authenticatable
         return $this->hasOne(Docente::class);
     }
 
+     /**
+     * User tiene un Areass.
+     *
+     * @return Model
+     */
+    public function areas()
+    {
+        return $this->hasOne(Area::class);
+    }
+
+     /**
+     * User tiene un Alumno.
+     *
+     * @return Model
+     */
+    public function alumno()
+    {
+        return $this->hasOne(Alumno::class);
+    }
+
     /**
      * Users tienen muchos permisos
      *

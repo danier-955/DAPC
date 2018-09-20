@@ -7,6 +7,7 @@ use App\Scopes\EstudianteScope;
 use App\Traits\Uuids;
 use Carbon\Carbon;
 use Facades\App\Facades\Sexo;
+use Facades\App\Facades\Parentesco;
 use Facades\App\Facades\Estado;
 use Facades\App\Facades\SpecialRole;
 use Facades\App\Facades\TipoEstudiante;
@@ -18,8 +19,7 @@ class Estudiante extends Model
     use Uuids;
 
     /**
-     * The "booting" method of the model.
-     *
+     * Global scope
      * @return void
      */
     protected static function boot()
@@ -200,6 +200,16 @@ class Estudiante extends Model
     }
 
     /**
+     * Devuelve el tipo de estudiante
+     *
+     * @return string
+     */
+    public function getParentesco()
+    {
+        return optional(Parentesco::find($this->pare_acud))['texto'];
+    }
+
+    /**
      * Devuelve el nombre del acudiente
      *
      * @return string
@@ -259,7 +269,7 @@ class Estudiante extends Model
         {
             $usuario = auth()->user()->load('estudiante');
 
-            if (! is_null($usuario->estudiante))
+            if (optional($usuario->estudiante)->exists())
             {
                 $estudiantes->where('id', $usuario->estudiante->id);
             }
@@ -331,5 +341,7 @@ class Estudiante extends Model
             return $query->where('sub_grado_id', $sub_grado_id);
         }
     }
+
+   
 
 }

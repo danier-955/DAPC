@@ -85,5 +85,19 @@ class Grado extends Model
     |----------------------------------------------------------------------
     |
     */
+   
+    /**
+     * Scope nombre del grado
+     * @param collection $query
+     * @param string $nomb_grad
+     * @return collection
+     */
+    public function scopeNombreGrado($query, $nomb_grad)
+    {
+        if (isset($nomb_grad))
+        {
+            return $query->where('nomb_grad', 'LIKE', "%{$nomb_grad}%");
+        }
+    }
 
 }

@@ -34,6 +34,14 @@ mix.js('resources/assets/js/app.js', 'public/js')
 		'resources/assets/js/landing.js',
 	], 'public/js/landing.js')
 	.babel([
+		'resources/assets/js/alumnoprograma.js',
+	], 'public/js/alumnoprograma.js')
+	.babel([
+		'resources/assets/js/inventario.js',
+	], 'public/js/inventario.js')
+
+	
+	.babel([
 		'resources/assets/js/dashboard.js',
 	], 'public/js/dashboard.js');
 	/*.babel([

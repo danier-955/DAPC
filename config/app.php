@@ -256,6 +256,7 @@ return [
         'Documento' => Facades\App\Facades\Documento::class,
         'Estado' => Facades\App\Facades\Estado::class,
         'Jornada' => Facades\App\Facades\Jornada::class,
+        'Parentesco' => Facades\App\Facades\Parentesco::class,
         'Operacion' => Facades\App\Facades\Operacion::class,
         'Periodo' => Facades\App\Facades\Periodo::class,
         'Peticion' => Facades\App\Facades\Peticion::class,

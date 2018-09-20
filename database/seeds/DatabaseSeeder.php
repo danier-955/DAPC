@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             'acudientes',
             'administrativos',
             'areas',
+            'alumnos',
+            'alumno_programas',
             'asignaturas',
             'bitacoras',
             'calendarios',
@@ -33,12 +35,14 @@ class DatabaseSeeder extends Seeder
             'galerias',
             'grados',
             'implementos',
+            // 'inventarios',
             'permissions',
             'permission_role',
             'permission_user',
             'planeamientos',
             'practicantes',
             'practicante_sub_grado',
+            'programas',
             'roles',
             'role_user',
             'sub_grados',
@@ -74,8 +78,12 @@ class DatabaseSeeder extends Seeder
         $this->call(EstudiantesTableSeeder::class);
         $this->call(EventosTableSeeder::class);
         $this->call(CalendariosTableSeeder::class);
+        $this->call(AlumnoTableSeeder::class);
         $this->call(AreasTableSeeder::class);
         $this->call(AsignaturasTableSeeder::class);
+        $this->call(ProgramasSeeder::class);
+        $this->call(AlumnoProgramaTableSeeder::class);
+        $this->call(InventariosTableSeeder::class);
     }
 
     /**

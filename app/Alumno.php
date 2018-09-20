@@ -5,6 +5,7 @@ namespace App;
 use App\Traits\Uuids;
 use Carbon\Carbon;
 use Facades\App\Facades\Sexo;
+use Facades\App\Facades\Parentesco;
 use Illuminate\Database\Eloquent\Model;
 
 class Alumno extends Model
@@ -82,6 +83,16 @@ class Alumno extends Model
         return $this->belongsToMany(Evento::class);
     }
 
+     /**
+     * Alumnos tienen muchos eventos.
+     *
+     * @return Model
+     */
+    public function programas()
+    {
+        return $this->belongsToMany(Programas::class);
+    }
+
     /*
     |----------------------------------------------------------------------
     | Métodos
@@ -99,11 +110,65 @@ class Alumno extends Model
         return optional(Sexo::find($this->sexo_alum))['texto'];
     }
 
+    /**
+     * Devuelve el nombre del sexo
+     *
+     * @return string
+     */
+    public function getParentesco()
+    {
+        return optional(Parentesco::find($this->sexo_alum))['texto'];
+    }
+
+ 
+    
+
     /*
     |----------------------------------------------------------------------
     | Scopes
     |----------------------------------------------------------------------
     |
     */
+    /**
+     * Scope documento
+     * @param collection $query
+     * @param integer $docu_alum
+     * @return collection
+     */
+    public function scopeDocumento($query, $docu_alum)
+    {
+        if (isset($docu_alum))
+        {
+            return $query->where('docu_alum', 'LIKE', "%{$docu_alum}%");
+        }
+    }
+
+    /**
+     * Scope nombre
+     * @param collection $query
+     * @param string $nomb_alum
+     * @return collection
+     */
+    public function scopeNombre($query, $nomb_alum)
+    {
+        if (isset($nomb_alum))
+        {
+            return $query->where('nomb_alum', 'LIKE', "%{$nomb_alum}%");
+        }
+    }
+
+    /**
+     * Scope primer apellido
+     * @param collection $query
+     * @param string $pape_alum
+     * @return collection
+     */
+    public function scopePrimerApellido($query, $pape_alum)
+    {
+        if (isset($pape_alum))
+        {
+            return $query->where('pape_alum', 'LIKE', "%{$pape_alum}%");
+        }
+    }
 
 }

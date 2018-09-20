@@ -11,8 +11,7 @@ class Inventario extends Model
     use Uuids;
 
     /**
-     * The "booting" method of the model.
-     *
+     * Global scope
      * @return void
      */
     protected static function boot()
@@ -82,11 +81,54 @@ class Inventario extends Model
     |
     */
 
+
+    /**
+     * Devuelve el nombre del implemento
+     *
+     * @return string
+     */
+    public function getImplemento()
+    {
+        if (!is_null($this->implemento))
+        {
+            return $this->implemento->nomb_util;
+        }
+    }
+    /**
+     * Devuelve el nombre del implemento
+     *
+  /**
+     * Devuelve el nombre del acudiente
+     *
+     * @return string
+     */
+    public function getAdministrativo()
+    {
+        if (!is_null($this->Administrativo))
+        {
+            return "{$this->Administrativo->nomb_admi} {$this->Administrativo->pape_admi} {$this->Administrativo->sape_admi}";
+        }
+    }
+
     /*
     |----------------------------------------------------------------------
     | Scopes
     |----------------------------------------------------------------------
     |
     */
+    
+    /**
+     * Scope sub grado
+     * @param collection $query
+     * @param string $estudiante_id
+     * @return collection
+     */
+    public function scopeEstudiante($query, $estudiante_id)
+    {
+        if (isset($estudiante_id))
+        {
+            return $query->where('estudiante_id', $estudiante_id);
+        }
+    }
 
 }

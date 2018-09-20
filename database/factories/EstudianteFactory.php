@@ -7,6 +7,7 @@ use App\User;
 use Webpatser\Uuid\Uuid;
 use Facades\App\Facades\Estado;
 use Facades\App\Facades\Sexo;
+use Facades\App\Facades\Parentesco;
 use Facades\App\Facades\Documento;
 use Facades\App\Facades\TipoEstudiante;
 use Faker\Generator as Faker;
@@ -48,7 +49,7 @@ $factory->define(App\Estudiante::class, function (Faker $faker)
         'padr_estu' => "{$faker->firstNameMale} {$faker->lastName}",
         'madr_estu' => "{$faker->firstNameFemale} {$faker->lastName}",
         'tele_estu' => $faker->randomNumber(7),
-        'pare_acud' => $faker->lastName,
+        'pare_acud' => $faker->randomElement(Parentesco::indexados()),
         'cole_prov' => $faker->streetName,
         'eps_estu' => $faker->streetName,
         'copi_docu' => str_random(30) . '.pdf',
