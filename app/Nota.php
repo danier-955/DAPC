@@ -2,25 +2,12 @@
 
 namespace App;
 
-use App\Scopes\NotaScope;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Nota extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new NotaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.

@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Events\UsuarioRegistrado;
-use App\Scopes\DocenteScope;
 use App\Traits\Uuids;
 use Caffeinated\Shinobi\Facades\Shinobi;
 use Facades\App\Facades\Estado;
@@ -14,18 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class Docente extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new DocenteScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -127,7 +114,7 @@ class Docente extends Model
      */
     public function subGrados()
     {
-        return $this->belongsToMany(SubGrado::class);
+        return $this->belongsToMany(SubGrado::class)->withTimestamps();
     }
 
     /**
@@ -140,7 +127,8 @@ class Docente extends Model
         return $this->belongsToMany(Practicante::class)
                     ->withPivot('id', 'fech_segu', 'hora_lleg', 'hora_sali', 'acti_real', 'hora_cump', 'obse_segu')
                     ->orderBy('fech_segu')
-                    ->orderByDesc('created_at');
+                    ->orderByDesc('created_at')
+                    ->withTimestamps();
     }
 
     /*
@@ -157,22 +145,17 @@ class Docente extends Model
     public static function queryDocentes()
     {
         $docentes = Docente::query()
-                            ->withoutGlobalScopes()
                             ->select('id', 'nomb_doce', 'pape_doce', 'sape_doce')
-                            ->whereHas('user', function ($query) {
+                            ->whereHas('user', function ($query)
+                            {
                                 return $query->where('estado', Estado::activo());
                             })
                             ->orderBy('nomb_doce')
                             ->orderBy('pape_doce');
 
-        if (! Shinobi::isRole(SpecialRole::administrador()))
+        if (Shinobi::isRole(SpecialRole::docente()))
         {
-            $usuario = auth()->user()->load('docente');
-
-            if (! is_null($usuario->docente))
-            {
-                $docentes->where('id', $usuario->docente->id);
-            }
+            $docentes->where('id', docente('id'));
         }
 
         return $docentes->get();
@@ -260,12 +243,7 @@ class Docente extends Model
     {
         if (Shinobi::isRole(SpecialRole::docente()))
         {
-            $usuario = auth()->user()->load('docente');
-
-            if (! is_null($usuario->docente))
-            {
-                return $query->where('id', $usuario->docente->id);
-            }
+            return $query->where('id', docente('id'));
         }
     }
 

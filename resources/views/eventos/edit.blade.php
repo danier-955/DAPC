@@ -7,12 +7,12 @@
 	    <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('eventos.index') }}">Eventos</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('eventos.edit', $evento->id) }}">Editar</a></li>
-    	<li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    	<li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   	</ol>
 </nav>
 
 <div class="card">
-	<div class="card-header">
+	<div class="card-header bg-light-2">
   		<h1 class="typography-headline">
   			<i class="material-icons mr-1">event_note</i> Editar evento
   		</h1>
@@ -113,10 +113,13 @@
 								src="{{ Storage::disk('evento')->url($evento->foto_even) }}"
 								alt="{{ $evento->titu_even }}">
 						@else
-							<div class="card-body d-flex align-items-center justify-content-center py-5">
-								<p class="typography-display-3 text-black-secondary">
+							<div class="card-body text-center">
+								<p class="typography-display-3 text-black-secondary py-5">
 									<i class="material-icons">broken_image</i>
 								</p>
+								<p class="card-text text-muted">
+						      		Sin fotografia para mostrar.
+						      	</p>
 							</div>
 						@endif
 					</div>

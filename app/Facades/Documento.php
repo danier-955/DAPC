@@ -28,16 +28,4 @@ class Documento
     	];
     }
 
-      /**
-     * Devuelve los tipos de documentos para alumno.
-     *
-     * @return array
-     */
-    public function alumno()
-    {
-        return [
-            'T.I.', 'R.C.',
-        ];
-    }
-
 }

@@ -2,7 +2,7 @@
 	<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" id="createCalendario">
 		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header bg-light-2">
 					<h5 class="modal-title">
 						<i class="material-icons mr-1">event</i> Registrar calendario
 					</h5>
@@ -13,58 +13,53 @@
 						<div class="form-row">
 							<div class="form-group col-md-9">
 								<label>Titulo</label>
-								<input type="text" v-model="nuevo.titu_cale" class="form-control" required autofocus :class="{'is-invalid': messagesTitulo}">
-			                    <div class="invalid-feedback" v-if="messagesTitulo"
-			                    	v-text="errors.titu_cale[0]"></div>
+								<input type="text" v-model="nuevo.titu_cale" class="form-control" required autofocus
+									:class="{'is-invalid': errors.exists('titu_cale')}">
+			                    <div class="invalid-feedback" v-text="errors.get('titu_cale')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Jornada</label>
-								<select v-model="nuevo.jorn_cale" class="selectpicker dropdown-dense show-tick selectbox form-control" required autofocus :class="{'is-invalid': messagesJornada}">
+								<select v-model="nuevo.jorn_cale" required autofocus
+									class="selectpicker dropdown-dense show-tick selectbox form-control"
+									:class="{'is-invalid': errors.exists('jorn_cale')}">
 									<option v-for="(jornada, i) in jornadas.registrar" :key="i"
 										:value="jornada.id" v-text="jornada.texto"></option>
 								</select>
-			                    <div class="invalid-feedback" v-if="messagesJornada"
-			                    	v-text="errors.jorn_cale[0]"></div>
+			                    <div class="invalid-feedback" v-text="errors.get('jorn_cale')"></div>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-3">
 								<label>Fecha inicial</label>
-								<input type="text" id="fech_inic" class="today-datepicker form-control" required autofocus :class="{'is-invalid': messagesFechaInicial}">
-			                    <div class="invalid-feedback" v-if="messagesFechaInicial"
-			                    	v-text="errors.fech_inic[0]"></div>
+								<input type="text" id="fech_inic" class="today-datepicker form-control" required
+									autofocus :class="{'is-invalid': errors.exists('fech_inic')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_inic')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Hora inicial</label>
-								<input type="text" id="hora_inic" class="timepicker form-control" required autofocus :class="{'is-invalid': messagesFechaInicial}">
-			                    <div class="invalid-feedback" v-if="messagesFechaInicial"
-			                    	v-text="errors.fech_inic[0]"></div>
+								<input type="text" id="hora_inic" class="timepicker form-control" required
+									autofocus :class="{'is-invalid': errors.exists('fech_inic')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_inic')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Fecha final</label>
-								<input type="text" id="fech_fina" class="end-datepicker form-control" required autofocus :class="{'is-invalid': messagesFechaFinal}">
-			                    <div class="invalid-feedback" v-if="messagesFechaFinal"
-			                    	v-text="errors.fech_fina[0]"></div>
+								<input type="text" id="fech_fina" class="end-datepicker form-control" required
+									autofocus :class="{'is-invalid': errors.exists('fech_fina')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_fina')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Hora final</label>
-								<input type="text" id="hora_fina" class="timepicker form-control" required autofocus :class="{'is-invalid': messagesFechaFinal}">
-			                    <div class="invalid-feedback" v-if="messagesFechaFinal"
-			                    	v-text="errors.fech_fina[0]"></div>
+								<input type="text" id="hora_fina" class="timepicker form-control" required
+									autofocus :class="{'is-invalid': errors.exists('fech_fina')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_fina')"></div>
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label>Descripción</label>
-								<textarea v-model="nuevo.desc_cale" class="form-control" rows="6" required autofocus :class="{'is-invalid': messagesDescripcion}"></textarea>
-			                    <div class="invalid-feedback" v-if="messagesDescripcion"
-			                    	v-text="errors.desc_cale[0]"></div>
-							</div>
-							<div class="form-group col-md-6">
-								<label>Finalidad</label>
-								<textarea v-model="nuevo.fina_cale" class="form-control" rows="6" required autofocus :class="{'is-invalid': messagesFinalidad}"></textarea>
-			                    <div class="invalid-feedback" v-if="messagesFinalidad"
-			                    	v-text="errors.fina_cale[0]"></div>
+								<textarea v-model="nuevo.desc_cale" class="form-control" rows="4" required
+									autofocus :class="{'is-invalid': errors.exists('desc_cale')}"></textarea>
+			                    <div class="invalid-feedback" v-text="errors.get('desc_cale')"></div>
 							</div>
 						</div>
 						<hr class="w-100 mt-2 mb-0">
@@ -97,7 +92,6 @@
 					fech_fina: '',
 					jorn_cale: '',
 					desc_cale: '',
-					fina_cale: '',
 			    },
 		    }
 		},
@@ -124,7 +118,6 @@
 					fech_fina: '',
 					jorn_cale: '',
 					desc_cale: '',
-					fina_cale: '',
 			    };
 			    document.querySelector('#fech_inic').value = '';
 			    document.querySelector('#hora_inic').value = '';

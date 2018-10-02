@@ -1,3 +1,3 @@
 <div class="alert alert-info" role="alert">
-	<i class="material-icons mr-1">info</i> {{ $slot }}</span>
+	<i class="material-icons mr-1">info</i> {{ $slot }}
 </div>

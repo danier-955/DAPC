@@ -37,6 +37,7 @@ class PlaneamientoController extends Controller
         $request->validate();
 
         $planeamientos = Planeamiento::query()
+                                    ->with('docente')
                                     ->titulo($request->titu_plan)
                                     ->fecha($request->fech_inic, $request->fech_fina)
                                     ->autenticado()
@@ -99,6 +100,8 @@ class PlaneamientoController extends Controller
      */
     public function show(Planeamiento $planeamiento)
     {
+        $planeamiento->loadMissing('docente');
+
         return view('planeamientos.show', compact('planeamiento'));
     }
 
@@ -110,6 +113,8 @@ class PlaneamientoController extends Controller
      */
     public function edit(Planeamiento $planeamiento)
     {
+        $planeamiento->loadMissing('docente');
+
         $docentes = Docente::queryDocentes();
 
         return view('planeamientos.edit', compact('planeamiento','docentes'));

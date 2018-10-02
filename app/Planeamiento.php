@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\PlaneamientoScope;
 use App\Traits\DatesTranslator;
 use App\Traits\Uuids;
 use Carbon\Carbon;
@@ -13,18 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 class Planeamiento extends Model
 {
     use Uuids, DatesTranslator;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new PlaneamientoScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.

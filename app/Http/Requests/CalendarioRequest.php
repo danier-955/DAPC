@@ -26,12 +26,10 @@ class CalendarioRequest extends FormRequest
     {
         return [
             'titu_cale' => 'required|min:3|max:100|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i|unique:calendarios,titu_cale,' . optional($this->route('calendario'))->id,
-            'fech_inic' => 'required|date_format:Y-m-d h:i a',
-            'fech_fina' => 'required|date_format:Y-m-d h:i a|after_or_equal:fech_inic',
+            'fech_inic' => 'required|date_format:"Y-m-d h:i a"',
+            'fech_fina' => 'required|date_format:"Y-m-d h:i a"|after_or_equal:fech_inic',
             'jorn_cale' => 'required|in:' . implode(',', jornada('indexados')),
             'desc_cale' => 'required|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-            'fina_cale' => 'required|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-            // 'administrativo_id' => 'required|string|exists:administrativos,id',
         ];
     }
 }

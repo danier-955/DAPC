@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Notifications\MyResetPassword;
-use App\Scopes\UserScope;
 use App\Traits\Uuids;
 use Caffeinated\Shinobi\Facades\Shinobi;
 use Caffeinated\Shinobi\Traits\ShinobiTrait;
@@ -15,18 +14,6 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable, Uuids, ShinobiTrait;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    /*protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }*/
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -119,26 +106,6 @@ class User extends Authenticatable
         return $this->hasOne(Docente::class);
     }
 
-     /**
-     * User tiene un Areass.
-     *
-     * @return Model
-     */
-    public function areas()
-    {
-        return $this->hasOne(Area::class);
-    }
-
-     /**
-     * User tiene un Alumno.
-     *
-     * @return Model
-     */
-    public function alumno()
-    {
-        return $this->hasOne(Alumno::class);
-    }
-
     /**
      * Users tienen muchos permisos
      *
@@ -204,6 +171,8 @@ class User extends Authenticatable
      */
     public function getRolNombre()
     {
+        $this->loadMissing('roles');
+
         if (! is_null($this->roles))
         {
             return $this->roles->first()->name;

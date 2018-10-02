@@ -98,7 +98,7 @@ class Empleado extends Model
      */
     public function nominas()
     {
-        return $this->belongsToMany(Nomina::class);
+        return $this->belongsToMany(Nomina::class)->withTimestamps();
     }
 
     /*

@@ -20,10 +20,9 @@ class ProgramaController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('has.permission:programas.index')->only(['index']);
-        $this->middleware('has.permission:programas.show')->only(['show']);
         $this->middleware('has.permission:programas.create')->only(['create', 'store']);
         $this->middleware('has.permission:programas.edit')->only(['edit', 'update']);
-        $this->middleware('has.permission:programas.show')->only(['destroy']);
+        $this->middleware('has.permission:programas.destroy')->only(['destroy']);
     }
 
     /**
@@ -34,10 +33,10 @@ class ProgramaController extends Controller
     public function index(BusquedaRequest $request)
     {
         $programas = Programa::query()
-                            ->withoutGlobalScopes()
-                            ->Programa($request->nomb_prog)
+                            ->nombre($request->nomb_prog)
                             ->orderBy('nomb_prog')
-                            ->paginate();;
+                            ->paginate();
+
         return view('programas.index', compact('programas'));
     }
 
@@ -61,42 +60,19 @@ class ProgramaController extends Controller
     {
         $request->validate();
 
-        DB::beginTransaction();
-
         try
         {
-            /**
-             * Registrar el programas
-             */
+            $request->merge(['administrativo_id' => administrativo('id')]);
 
-            $administrativo = $this->getAdministrativo();
+            Programa::create($request->all());
 
-            $programa = new Programa;
-            $programa->nomb_prog = $request->nomb_prog;
-            $programa->desc_prog = $request->desc_prog;
-            $programa->administrativo_id = $administrativo->id;
-            $programa->save();
+            toast('¡El programa de formación ha sido registrado correctamente!', 'success', 'top-right');
 
-            DB::commit();
-
-            toast('¡El  Programa Formación ha sido registrado correctamente!', 'success', 'top-right');
-
-            return redirect()->route('programas.index', $programa->id);
-        }
-        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
-        {
-            DB::rollback();
-
-            toast('¡Se ha producido un error al registrar el  Programa Formación!', 'success', 'top-right');
-
-            return redirect()->back()->withInput();
+            return redirect()->route('programas.index');
         }
         catch (\Exception $e)
         {
-            // dd($e->getMessage());
-            DB::rollback();
-
-            toast('¡Se ha producido un error al registrar el  Programa Formación!', 'success', 'top-right');
+            toast('¡Se ha producido un error al registrar el programa de formación!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -111,7 +87,7 @@ class ProgramaController extends Controller
     public function edit(Programa $programa)
     {
         return view('programas.edit', compact('programa'));
-    
+
     }
 
     /**
@@ -124,31 +100,18 @@ class ProgramaController extends Controller
     public function update(ProgramaRequest $request, Programa $programa)
     {
         $request->validate();
-        
-        try {
-            
-             $programa->update($request->all());
 
-            DB::commit();
-
-            toast('¡El Programa de Formación ha sido actualizado correctamente!', 'success', 'top-right');
-
-            return redirect()->route('programas.index', $programa->id);
-
-        } 
-        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
+        try
         {
-            DB::rollback();
+            $programa->update($request->all());
 
-            toast('¡Se ha producido un error al actualizar el Programa Formación!', 'error', 'top-right');
+            toast('¡El programa de formación ha sido actualizado correctamente!', 'success', 'top-right');
 
-            return redirect()->back()->withInput();
+            return redirect()->route('programas.index');
         }
         catch (\Exception $e)
         {
-            DB::rollback();
-
-            toast('¡Se ha producido un error al actualizar el Programa Formación!', 'error', 'top-right');
+            toast('¡Se ha producido un error al actualizar el programa de formación!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -166,34 +129,16 @@ class ProgramaController extends Controller
         {
             $programa->delete();
 
-            toast('¡el Programa Formación ha sido eliminada correctamente!', 'success', 'top-right');
+            toast('¡El programa de formación ha sido eliminado correctamente!', 'success', 'top-right');
 
             return redirect()->route('programas.index');
         }
         catch (\Exception $e)
-        {  
-            toast('¡Se ha producido un error al eliminar el Programa Formación!', 'error', 'top-right');
-
-            return redirect()->back()->withInput();
-        }
-    }
-
-     /**
-     * Devuelve el modelo admiistrativo asociado al usuario autenticado.
-     *
-     * @return \App\Administrativo  $administrativo
-     */
-    protected function getAdministrativo()
-    {
-        $usuario = auth()->user()->load('administrativo');
-
-        if (is_null($usuario->administrativo))
         {
-            toast('¡El administrativo no es válido para registrar la galeria!', 'error', 'top-right');
+            toast('¡Se ha producido un error al eliminar el programa de formación!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
-
-        return $usuario->administrativo;
     }
+
 }

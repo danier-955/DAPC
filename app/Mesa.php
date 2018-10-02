@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\MesaScope;
 use App\Traits\Uuids;
 use Carbon\Carbon;
 use Facades\App\Facades\Peticion;
@@ -11,18 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class Mesa extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new MesaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -111,7 +98,9 @@ class Mesa extends Model
      */
     public function inventarios()
     {
-        return $this->belongsToMany(Inventario::class)->withPivot('cant_desc', 'esta_desc');
+        return $this->belongsToMany(Inventario::class)
+                    ->withPivot('cant_desc', 'esta_desc')
+                    ->withTimestamps();
     }
 
     /**

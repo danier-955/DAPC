@@ -8,8 +8,8 @@ $factory->define(App\EstudianteImplemento::class, function (Faker $faker)
 {
     return [
     	'cant_util' 	=> $faker->randomNumber(2),
+    	'ano_util'		=> $faker->year,
     	'estudiante_id' => Estudiante::all()->random()->id,
     	'implemento_id' => Implemento::all()->random()->id,
-
     ];
 });

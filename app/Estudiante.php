@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Events\UsuarioRegistrado;
-use App\Scopes\EstudianteScope;
 use App\Traits\Uuids;
 use Carbon\Carbon;
 use Facades\App\Facades\Sexo;
@@ -17,17 +16,6 @@ use Caffeinated\Shinobi\Facades\Shinobi;
 class Estudiante extends Model
 {
     use Uuids;
-
-    /**
-     * Global scope
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new EstudianteScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -139,7 +127,11 @@ class Estudiante extends Model
      */
     public function implementos()
     {
-        return $this->belongsToMany(Implemento::class)->withPivot('cant_util');
+        return $this->belongsToMany(Implemento::class)
+                    ->using(EstudianteImplemento::class)
+                    ->withPivot('id', 'cant_util', 'ano_util')
+                    ->orderBy('nomb_util')
+                    ->withTimestamps();
     }
 
     /**
@@ -149,7 +141,7 @@ class Estudiante extends Model
      */
     public function nominas()
     {
-        return $this->belongsToMany(Nomina::class);
+        return $this->belongsToMany(Nomina::class)->withTimestamps();
     }
 
     /**

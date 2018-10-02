@@ -6,12 +6,12 @@
   <ol class="breadcrumb bg-white shadow-1">
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('galerias.index') }}">Galerias</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header d-flex align-items-center justify-content-between">
+	<div class="card-header d-flex align-items-center justify-content-between bg-light-2">
 		<h1 class="typography-headline">
 			<i class="material-icons mr-1">photo_library</i> Galerias
 		</h1>
@@ -66,7 +66,7 @@
 								src="{{ Storage::disk('galeria.thumbnail')->url($galeria->foto_gale) }}"
 								alt="{{ $galeria->titu_gale }}">
 						@else
-							<div class="card-body d-flex align-items-center justify-content-center pt-4">
+							<div class="card-body bg-light-2 text-center py-5">
 								<p class="typography-display-3 text-black-secondary">
 									<i class="material-icons">broken_image</i>
 								</p>

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\NominaScope;
 use App\Traits\Uuids;
 use Facades\App\Facades\TipoNomina;
 use Illuminate\Database\Eloquent\Model;
@@ -10,18 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Nomina extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new NominaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -74,7 +61,7 @@ class Nomina extends Model
      */
     public function empleados()
     {
-        return $this->belongsToMany(Empleado::class);
+        return $this->belongsToMany(Empleado::class)->withTimestamps();
     }
 
     /**
@@ -84,7 +71,7 @@ class Nomina extends Model
      */
     public function estudiantes()
     {
-        return $this->belongsToMany(Estudiante::class);
+        return $this->belongsToMany(Estudiante::class)->withTimestamps();
     }
 
     /*

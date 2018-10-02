@@ -17,6 +17,7 @@ class CreateDocenteSubGradoTable extends Migration
         {
             $table->char('docente_id', 36)->index();
             $table->char('sub_grado_id', 36)->index();
+            $table->timestamps();
 
             $table->foreign('docente_id')->references('id')->on('docentes')
                 ->onUpdate('cascade')->onDelete('cascade');

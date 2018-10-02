@@ -150,7 +150,7 @@ class DocenteController extends Controller
      */
     public function show(Docente $docente)
     {
-        $docente->loadMissing('empleado.tipoEmpleado');
+        $docente->loadMissing('user', 'empleado.tipoEmpleado');
 
         return view('docentes.show', compact('docente'));
     }

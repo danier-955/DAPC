@@ -91,7 +91,7 @@ class Practicante extends Model
      */
     public function subGrados()
     {
-        return $this->belongsToMany(SubGrado::class);
+        return $this->belongsToMany(SubGrado::class)->withTimestamps();
     }
 
     /**
@@ -104,7 +104,8 @@ class Practicante extends Model
         return $this->belongsToMany(Docente::class)
                     ->withPivot('id', 'fech_segu', 'hora_lleg', 'hora_sali', 'acti_real', 'hora_cump', 'obse_segu')
                     ->orderBy('fech_segu')
-                    ->orderByDesc('created_at');
+                    ->orderByDesc('created_at')
+                    ->withTimestamps();
     }
 
     /*

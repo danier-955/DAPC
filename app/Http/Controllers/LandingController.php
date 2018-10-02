@@ -34,7 +34,6 @@ class LandingController extends Controller
         $galerias = array();
 
         $galleries = Galeria::query()
-                            ->withoutGlobalScopes()
                             ->mostrada(true)
                             ->orderByDesc('updated_at')
                             ->orderBy('titu_gale')
@@ -62,7 +61,6 @@ class LandingController extends Controller
         $now = now();
 
         $eventos = Evento::query()
-                        ->withoutGlobalScopes()
                         ->mostrada(true)
                         ->where('inic_even', '<=', $now)
                         ->where('fina_even', '>=', $now)
@@ -71,14 +69,18 @@ class LandingController extends Controller
                         ->take($takeEventos)
                         ->get();
 
-        $programas = Programa::query()
-                    ->withoutGlobalScopes()
-                    ->orderByDesc('updated_at')
-                    ->orderBy('nomb_prog')
-                    ->take(5)
-                    ->get();
+        /**
+         * Programas
+         */
+        $takeProgramas = config('app.landing.programa');
 
-        return view('landing.index', compact('galerias', 'eventos','programas'));
+        $programas = Programa::query()
+                            ->orderByDesc('updated_at')
+                            ->orderBy('nomb_prog')
+                            ->take($takeProgramas)
+                            ->get();
+
+        return view('landing.index', compact('galerias', 'eventos', 'programas'));
     }
 
     /**
@@ -91,11 +93,11 @@ class LandingController extends Controller
         $now = now();
 
         $eventos = Evento::query()
-                        ->withoutGlobalScopes()
                         ->mostrada(true)
                         ->where('inic_even', '<=', $now)
                         ->where('fina_even', '>=', $now)
-                        ->orderByDesc('updated_at')
+                        ->orderByDesc('inic_even')
+                        ->orderByDesc('fina_even')
                         ->orderBy('titu_even')
                         ->paginate();
 

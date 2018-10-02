@@ -6,15 +6,15 @@
   	<ol class="breadcrumb bg-white shadow-1">
 	    <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     	<li class="breadcrumb-item"><a href="{{ route('asignaturas.index') }}">Asignaturas</a></li>
-    	<li class="breadcrumb-item"><a href="{{ route('asignaturas.show', $asignatura->id) }}">Ver asignatura</a></li>
+    	<li class="breadcrumb-item"><a href="{{ route('asignaturas.show', $asignatura->id) }}">Ver</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('asignaturas.fechas.index', $asignatura->id) }}">Fechas extracurriculares</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('asignaturas.fechas.create', $asignatura->id) }}">Registrar</a></li>
-    	<li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    	<li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   	</ol>
 </nav>
 
 <div class="card">
-	<div class="card-header">
+	<div class="card-header bg-light-2">
   		<h1 class="typography-headline">
   			<i class="material-icons mr-1">date_range</i> Registrar fecha extracurricular
   		</h1>

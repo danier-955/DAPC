@@ -27,9 +27,6 @@ class AdministrativoRequest extends FormRequest
     public function rules()
     {
         return [
-            /**
-             * Administrativo
-             */
             'docu_admi'     => 'required|min:7|max:10|regex:/^[0-9]+$/i|unique:administrativos,docu_admi,' . optional($this->route('administrativo'))->id,
             'nomb_admi'     => 'required|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_admi'     => 'required|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
@@ -45,10 +42,6 @@ class AdministrativoRequest extends FormRequest
             'espe_admi'     => 'nullable|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'expe_admi'     => 'nullable|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'obse_admi'     => 'nullable|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-
-            /**
-             * Empleado
-             */
             'fech_ingr'     => 'required|date',
             'obse_empl'     => 'nullable|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'tipo_empleado_id' => 'required|string|exists:tipo_empleados,id',

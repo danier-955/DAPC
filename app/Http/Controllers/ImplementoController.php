@@ -6,7 +6,7 @@ use App\Implemento;
 use App\SubGrado;
 use App\Grado;
 use App\Http\Requests\BusquedaRequest;
-use App\Http\Requests\ImplementosRequest;
+use App\Http\Requests\ImplementoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -33,17 +33,15 @@ class ImplementoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(BusquedaRequest $request)
-    {   
+    {
         $request->validate();
-        
-        $grados = Grado::with('subGrados')
-            ->orderBy('abre_grad')
-            ->get();
+
         $implementos = Implemento::query()
-                            ->util($request->nomb_util)
+                            ->nombre($request->nomb_util)
                             ->orderBy('nomb_util')
                             ->paginate();
-        return view('implementos.index' , compact('implementos','grados'));
+
+        return view('implementos.index' , compact('implementos'));
     }
 
     /**
@@ -53,11 +51,12 @@ class ImplementoController extends Controller
      */
     public function create()
     {
-        $grados = Grado::with('subGrados')
-                ->orderBy('abre_grad')
-                ->get();
+        $grados = Grado::query()
+                        ->with('subGrados')
+                        ->orderBy('abre_grad')
+                        ->get();
 
-        return view('implementos.create',compact('grados'));
+        return view('implementos.create', compact('grados'));
     }
 
     /**
@@ -66,28 +65,40 @@ class ImplementoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ImplementosRequest $request)
+    public function store(ImplementoRequest $request)
     {
-         $request->validate();
+        $request->validate();
+
+        DB::beginTransaction();
+
         try
         {
-            /**
-             * Registrar el implementos
-             */
             $implemento = Implemento::create($request->all());
 
-            if ($request->has('subgrados'))
+            if ($request->filled('subgrados'))
             {
                 $implemento->subGrados()->sync($request->get('subgrados'));
             }
 
-            toast('¡El Util ha sido registrado correctamente!', 'success', 'top-right');
+            DB::commit();
+
+            toast('¡El útil escolar ha sido registrado correctamente!', 'success', 'top-right');
 
             return redirect()->route('implementos.show', $implemento->id);
         }
+        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
+        {
+            DB::rollback();
+
+            toast('¡Se ha producido un error al registrar el útil escolar!', 'error', 'top-right');
+
+            return redirect()->back()->withInput();
+        }
         catch (\Exception $e)
         {
-            toast('¡Se ha producido un error al registrar el Util!', 'success', 'top-right');
+            DB::rollback();
+
+            toast('¡Se ha producido un error al registrar el útil escolar!', 'success', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -101,7 +112,9 @@ class ImplementoController extends Controller
      */
     public function show(Implemento $implemento)
     {
-         return view('implementos.show' , compact ('implemento'));
+        $implemento->loadMissing('subGrados.grado');
+
+        return view('implementos.show', compact('implemento'));
     }
 
     /**
@@ -112,13 +125,15 @@ class ImplementoController extends Controller
      */
     public function edit(Implemento $implemento)
     {
-         $grados = Grado::query()
+        $grados = Grado::query()
                         ->with('subGrados')
                         ->orderBy('abre_grad')
                         ->orderBy('jorn_grad')
                         ->get();
 
-        return view('implementos.edit',compact('implemento','grados'));
+        $implemento->loadMissing('subGrados');
+
+        return view('implementos.edit', compact('implemento', 'grados'));
     }
 
     /**
@@ -128,24 +143,45 @@ class ImplementoController extends Controller
      * @param  \App\Implemento  $implemento
      * @return \Illuminate\Http\Response
      */
-    public function update(ImplementosRequest $request, Implemento $implemento)
+    public function update(ImplementoRequest $request, Implemento $implemento)
     {
         $request->validate();
-        
-        try {
-        
+
+        DB::beginTransaction();
+
+        try
+        {
             $implemento->update($request->all());
 
-            toast('¡El Util ha sido actualizado correctamente!', 'success', 'top-right');
+            if ($request->filled('subgrados'))
+            {
+                $implemento->subGrados()->sync($request->get('subgrados'));
+            }
+            else
+            {
+                $implemento->subGrados()->detach();
+            }
+
+            DB::commit();
+
+            toast('¡El útil escolar ha sido actualizado correctamente!', 'success', 'top-right');
 
             return redirect()->route('implementos.show', $implemento->id);
 
-        } 
+        }
+        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
+        {
+            DB::rollback();
+
+            toast('¡Se ha producido un error al actualizar el útil escolar!', 'error', 'top-right');
+
+            return redirect()->back()->withInput();
+        }
         catch (\Exception $e)
         {
             DB::rollback();
 
-            toast('¡Se ha producido un error al actualizar el Util!', 'error', 'top-right');
+            toast('¡Se ha producido un error al actualizar el útil escolar!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -163,13 +199,13 @@ class ImplementoController extends Controller
         {
             $implemento->delete();
 
-            toast('¡el Util ha sido eliminada correctamente!', 'success', 'top-right');
+            toast('¡El útil escolar ha sido eliminado correctamente!', 'success', 'top-right');
 
             return redirect()->route('implementos.index');
         }
         catch (\Exception $e)
-        {  
-            toast('¡Se ha producido un error al eliminar el Util!', 'error', 'top-right');
+        {
+            toast('¡Se ha producido un error al eliminar el útil escolar!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }

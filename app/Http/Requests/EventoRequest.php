@@ -37,8 +37,8 @@ class EventoRequest extends FormRequest
         return [
             'titu_even' => 'required|min:5|max:100|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i|unique:eventos,titu_even,' . optional($this->route('evento'))->id,
             'foto_even' => $foto_even,
-            'inic_even' => 'required|date_format:Y-m-d h:i a',
-            'fina_even' => 'required|date_format:Y-m-d h:i a|after_or_equal:inic_even',
+            'inic_even' => 'required|date_format:"Y-m-d h:i a"',
+            'fina_even' => 'required|date_format:"Y-m-d h:i a"|after_or_equal:inic_even',
             'jorn_even' => $jorn_even,
             'desc_even' => 'required|min:3|max:1000|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'cupo_even' => ['required', 'max:3', 'regex:/^[0-9]+$/i', new MayorCero()],

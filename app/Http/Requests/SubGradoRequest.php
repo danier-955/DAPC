@@ -24,9 +24,9 @@ class SubGradoRequest extends FormRequest
     public function rules()
     {
         return [
-            'abre_subg'     => 'nullable|min:1|max:1|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
-            'cant_estu'         => 'required|numeric|max:100',
-            'grado_id' => 'required|string|exists:grados,id',
+            'abre_subg' => 'required|max:1|regex:/^[a-zA-ZñÑ0-9]+$/i',
+            'cant_estu' => 'required|integer|between:1,100',
+            'docente_id' => 'nullable|string|exists:docentes,id',
         ];
     }
 }

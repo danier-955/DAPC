@@ -40,13 +40,13 @@
                   <p class="typography-subheading card-start">
                     <span class="chip" data-toggle="tooltip" title="Fecha de inicio">
                       <i class="chip-icon bg-primary">C</i>
-                      {{ optional($evento->inic_even)->format('l d, F Y \— h:i a') }}
+                      {{ optional($evento->inic_even)->format('l d, F Y \· h:i a') }}
                     </span>
                   </p>
                   <p class="typography-subheading card-end">
                     <span class="chip" data-toggle="tooltip" title="Fecha de clausura">
                       <i class="chip-icon bg-danger">T</i>
-                      {{ optional($evento->fina_even)->format('l d, F Y \— h:i a') }}
+                      {{ optional($evento->fina_even)->format('l d, F Y \· h:i a') }}
                     </span>
                   </p>
                 </div>

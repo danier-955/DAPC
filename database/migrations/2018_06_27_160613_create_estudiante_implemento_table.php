@@ -18,6 +18,7 @@ class CreateEstudianteImplementoTable extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->integer('cant_util')->unsigned()->length(3);
+            $table->year('ano_util');
             $table->char('estudiante_id', 36)->index();
             $table->char('implemento_id', 36)->index();
             $table->timestamps();

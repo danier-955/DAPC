@@ -38,6 +38,8 @@ class AsignaturaFechaController extends Controller
     {
         $request->validate();
 
+        $asignatura->loadMissing('area', 'docente', 'grado');
+
         $fechaExiste = $this->existeFechaAnualYNoFechaAsignatura($asignatura);
 
         $fechas = $asignatura->fechas()
@@ -57,6 +59,8 @@ class AsignaturaFechaController extends Controller
      */
     public function create(Asignatura $asignatura)
     {
+        $asignatura->loadMissing('area', 'docente', 'grado');
+
         $fechaExiste = $this->existeFechaAnualYNoFechaAsignatura($asignatura);
 
         return view('asignaturas.fechas.create', compact('asignatura', 'fechaExiste'));
@@ -79,9 +83,8 @@ class AsignaturaFechaController extends Controller
              * Obtener las fechas del año actual
              */
             $fecha = Fecha::query()
-                            ->withoutGlobalScopes()
-                            ->where('ano_fech', now()->format('Y'))
-                            ->firstOrFail();
+                        ->where('ano_fech', now()->format('Y'))
+                        ->firstOrFail();
 
             /**
              * Guardar la fecha extracurricular
@@ -118,6 +121,8 @@ class AsignaturaFechaController extends Controller
      */
     public function show(Asignatura $asignatura, AsignaturaFecha $fecha)
     {
+        $asignatura->loadMissing('area', 'docente', 'grado');
+
         $fechaExiste = $this->existeFechaAnualYNoFechaAsignatura($asignatura);
 
         return view('asignaturas.fechas.show', compact('asignatura', 'fecha', 'fechaExiste'));
@@ -131,6 +136,8 @@ class AsignaturaFechaController extends Controller
      */
     public function edit(Asignatura $asignatura, AsignaturaFecha $fecha)
     {
+        $asignatura->loadMissing('area', 'docente', 'grado');
+
         $fechaExiste = $this->existeFechaAnualYNoFechaAsignatura($asignatura, $fecha);
 
         return view('asignaturas.fechas.edit', compact('asignatura', 'fecha', 'fechaExiste'));
@@ -198,16 +205,15 @@ class AsignaturaFechaController extends Controller
          * Opcion 1
          */
         $fecha = Fecha::query()
-                    ->withoutGlobalScopes()
                     ->where('ano_fech', $today->year)
                     ->first();
 
         $asignaturaFecha = AsignaturaFecha::query()
-                                ->where('asignatura_id', $asignatura->id)
-                                ->where('fecha_id', optional($fecha)->id)
-                                ->where('fech_nota->fech_inic', '<=', $today)
-                                ->where('fech_nota->fech_fina', '>=', $today)
-                                ->get();
+                                        ->where('asignatura_id', $asignatura->id)
+                                        ->where('fecha_id', optional($fecha)->id)
+                                        ->where('fech_nota->fech_inic', '<=', $today)
+                                        ->where('fech_nota->fech_fina', '>=', $today)
+                                        ->get();
 
         $resultado = (! is_null($fecha) && ($asignaturaFecha->count() === 0)) ? true : false;
 

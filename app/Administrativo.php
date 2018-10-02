@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Events\UsuarioRegistrado;
-use App\Scopes\AdministrativoScope;
 use App\Traits\Uuids;
 use Caffeinated\Shinobi\Facades\Shinobi;
 use Facades\App\Facades\Cargo;
@@ -15,18 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class Administrativo extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new AdministrativoScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -260,7 +247,7 @@ class Administrativo extends Model
      */
     public function scopeAutenticado($query)
     {
-        if (! Shinobi::isRole(SpecialRole::administrador()))
+        if (auth()->user()->esAdministrativo() && !Shinobi::isRole(SpecialRole::administrador()))
         {
             return $query->where('id', administrativo('id'));
         }

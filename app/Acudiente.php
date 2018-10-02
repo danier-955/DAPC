@@ -4,7 +4,6 @@ namespace App;
 
 use App\Acudiente;
 use App\Events\UsuarioRegistrado;
-use App\Scopes\AcudienteScope;
 use App\Traits\Uuids;
 use Facades\App\Facades\Sexo;
 use Illuminate\Database\Eloquent\Model;
@@ -12,17 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 class Acudiente extends Model
 {
     use Uuids;
-
-    /**
-     * Global scope
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new AcudienteScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -184,10 +172,10 @@ class Acudiente extends Model
      */
     public function scopeSearch($query, $sear_acud)
     {
-        return $query
-                ->where('docu_acud', 'LIKE', "%{$sear_acud}%")
-                ->orWhere('nomb_acud', 'LIKE', "%{$sear_acud}%")
-                ->orWhere('pape_acud', 'LIKE', "%{$sear_acud}%");
+        return $query->where('docu_acud', 'LIKE', "%{$sear_acud}%")
+                    ->orWhere('nomb_acud', 'LIKE', "%{$sear_acud}%")
+                    ->orWhere('pape_acud', 'LIKE', "%{$sear_acud}%")
+                    ->orWhere('sape_acud', 'LIKE', "%{$sear_acud}%");
     }
 
 }

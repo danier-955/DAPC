@@ -9,7 +9,7 @@ use App\Http\Requests\BusquedaRequest;
 use Facades\App\Facades\Sexo;
 use Facades\App\Facades\Documento;
 use Facades\App\Facades\Estado;
-use App\Http\Requests\AcudientesRequest;
+use App\Http\Requests\AcudienteRequest;
 use Facades\App\Facades\SpecialRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,22 +28,34 @@ class AcudienteController extends Controller
         $this->middleware('has.permission:acudientes.show')->only(['show']);
         $this->middleware('has.permission:acudientes.create')->only(['create', 'store']);
         $this->middleware('has.permission:acudientes.edit')->only(['edit', 'update']);
+        $this->middleware('has.permission:estudiantes.create')->only(['search']);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(BusquedaRequest $request)
-    { 
+    {
          $acudientes = Acudiente::query()
-                            ->documento($request->docu_acud)
-                            ->nombre($request->nomb_acud)
-                            ->primerApellido($request->pape_acud)
-                            ->segundoApellido($request->sape_acud)
-                            ->orderBy('docu_acud')
-                            ->orderBy('nomb_acud')
-                            ->orderBy('pape_acud')
-                            ->paginate();
-        return view('acudientes.index' ,compact('acudientes'));
+                                ->documento($request->docu_acud)
+                                ->nombre($request->nomb_acud)
+                                ->primerApellido($request->pape_acud)
+                                ->segundoApellido($request->sape_acud)
+                                ->orderBy('docu_acud')
+                                ->orderBy('nomb_acud')
+                                ->orderBy('pape_acud')
+                                ->paginate();
+
+        return view('acudientes.index', compact('acudientes'));
     }
 
+    /**
+     * Devuelve el listado de usuarios filtradom por documento o nombres.
+     *
+     * @return \Illuminate\Http\Response json
+     */
     public function search(BusquedaRequest $request)
     {
         $request->validate();
@@ -70,6 +82,7 @@ class AcudienteController extends Controller
             return response()->json(['items' => $acud_json], 200);
         }
     }
+
     /**
      * Display the specified resource.
      *
@@ -99,13 +112,14 @@ class AcudienteController extends Controller
      * @param  \App\Acudiente  $acudiente
      * @return \Illuminate\Http\Response
      */
-    public function update(AcudientesRequest $request, Acudiente $acudiente)
+    public function update(AcudienteRequest $request, Acudiente $acudiente)
     {
-       
         $request->validate();
-        
-        try {
+
+        try
+        {
             DB::beginTransaction();
+
             /**
              * Actualizar el usuario
              */
@@ -114,7 +128,10 @@ class AcudienteController extends Controller
                 'email' => $request->corr_acud,
             ]);
 
-             $acudiente->update($request->all());
+            /**
+             * Actualizar el acudiente
+             */
+            $acudiente->update($request->all());
 
             DB::commit();
 
@@ -122,7 +139,7 @@ class AcudienteController extends Controller
 
             return redirect()->route('acudientes.show', $acudiente->id);
 
-        } 
+        }
         catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
         {
             DB::rollback();

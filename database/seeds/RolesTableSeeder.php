@@ -67,6 +67,51 @@ class RolesTableSeeder extends Seeder
     	$eventoPermissions = Permission::where('slug', 'LIKE', 'eventos.%')->pluck('id', 'slug');
 
         /**
+    	 * Areas
+    	 */
+    	$areaPermissions = Permission::where('slug', 'LIKE', 'areas.%')->pluck('id', 'slug');
+
+        /**
+    	 * Asignaturas
+    	 */
+    	$asignaturaPermissions = Permission::where('slug', 'LIKE', 'asignaturas.%')->pluck('id', 'slug');
+
+        /**
+    	 * Grados
+    	 */
+    	$gradoPermissions = Permission::where('slug', 'LIKE', 'grados.%')->pluck('id', 'slug');
+
+        /**
+    	 * Inventarios
+    	 */
+    	$inventarioPermissions = Permission::where('slug', 'LIKE', 'inventarios.%')->pluck('id', 'slug');
+
+        /**
+    	 * Implementos
+    	 */
+    	$implementoPermissions = Permission::where('slug', 'LIKE', 'implementos.%')->pluck('id', 'slug');
+
+        /**
+    	 * Estudiantes
+    	 */
+    	$estudiantePermissions = Permission::where('slug', 'LIKE', 'estudiantes.%')->pluck('id', 'slug');
+
+        /**
+    	 * Acudientes
+    	 */
+    	$acudientePermissions = Permission::where('slug', 'LIKE', 'acudientes.%')->pluck('id', 'slug');
+
+        /**
+    	 * Programas
+    	 */
+    	$programaPermissions = Permission::where('slug', 'LIKE', 'programas.%')->pluck('id', 'slug');
+
+        /**
+    	 * Alumnos
+    	 */
+    	$alumnoPermissions = Permission::where('slug', 'LIKE', 'alumnos.%')->pluck('id', 'slug');
+
+        /**
     	 * Fechas
     	 */
     	$fechaPermissions = Permission::where('slug', 'LIKE', 'fechas.%')->pluck('id', 'slug');
@@ -121,6 +166,15 @@ class RolesTableSeeder extends Seeder
 	    		->merge($calendarioPermissions->values())
 	    		->merge($eventoPermissions->values())
 	    		->merge($fechaPermissions->only('fechas.index', 'fechas.show')->values())
+	    		->merge($areaPermissions->except('areas.create', 'areas.edit')->values())
+	    		->merge($asignaturaPermissions->except('asignaturas.create', 'asignaturas.edit')->values())
+	    		->merge($gradoPermissions->except('grados.create', 'grados.edit', 'grados.subgrados.create', 'grados.subgrados.edit')->values())
+	    		->merge($inventarioPermissions->values())
+	    		->merge($implementoPermissions->except('implementos.create', 'implementos.edit', 'implementos.destroy')->values())
+	    		->merge($estudiantePermissions->values())
+	    		->merge($acudientePermissions->values())
+	    		->merge($programaPermissions->values())
+	    		->merge($alumnoPermissions->values())
 	    		->toArray()
 	    );
 
@@ -147,6 +201,15 @@ class RolesTableSeeder extends Seeder
 	    		->merge($calendarioPermissions->only('calendarios.index')->values())
 	    		->merge($eventoPermissions->only('eventos.index', 'eventos.show')->values())
 	    		->merge($fechaPermissions->only('fechas.index', 'fechas.show')->values())
+	    		->merge($areaPermissions->except('areas.create', 'areas.edit')->values())
+	    		->merge($asignaturaPermissions->except('asignaturas.create', 'asignaturas.edit')->values())
+	    		->merge($gradoPermissions->except('grados.create', 'grados.edit', 'grados.subgrados.create', 'grados.subgrados.edit')->values())
+	    		->merge($inventarioPermissions->values())
+	    		->merge($implementoPermissions->except('implementos.create', 'implementos.edit', 'implementos.destroy')->values())
+	    		->merge($estudiantePermissions->values())
+	    		->merge($acudientePermissions->values())
+	    		->merge($programaPermissions->except('programas.create', 'programas.edit', 'programas.destroy')->values())
+	    		->merge($alumnoPermissions->except('alumnos.destroy')->values())
 	    		->toArray()
 	    );
 
@@ -170,6 +233,13 @@ class RolesTableSeeder extends Seeder
 	    		->merge($seguimientoPermissions->values())
 	    		->merge($calendarioPermissions->only('calendarios.index')->values())
 	    		->merge($fechaPermissions->only('fechas.index', 'fechas.show')->values())
+	    		->merge($areaPermissions->except('areas.create', 'areas.edit')->values())
+	    		->merge($asignaturaPermissions->except('asignaturas.create', 'asignaturas.edit')->values())
+	    		->merge($gradoPermissions->except('grados.create', 'grados.edit', 'grados.subgrados.create', 'grados.subgrados.edit')->values())
+	    		->merge($implementoPermissions->except('implementos.create', 'implementos.edit', 'implementos.destroy')->values())
+	    		->merge($estudiantePermissions->except('estudiantes.create', 'estudiantes.edit', 'estudiantes.download', 'estudiantes.implementos.create', 'estudiantes.implementos.edit', 'estudiantes.implementos.destroy')->values())
+	    		->merge($programaPermissions->except('programas.create', 'programas.edit', 'programas.destroy')->values())
+	    		->merge($alumnoPermissions->except('alumnos.create', 'alumnos.edit', 'alumnos.destroy')->values())
 	    		->toArray()
 	    );
 
@@ -188,6 +258,8 @@ class RolesTableSeeder extends Seeder
 	     */
 	    $estudiante->syncPermissions(
 	    	$usuarioPermissions->values()
+	    		->merge($estudiantePermissions->except('estudiantes.create', 'estudiantes.edit', 'estudiantes.download', 'estudiantes.implementos.create', 'estudiantes.implementos.edit', 'estudiantes.implementos.destroy')->values())
+	    		->merge($programaPermissions->except('programas.create', 'programas.edit', 'programas.destroy')->values())
 	    		->toArray()
 	    );
 
@@ -207,6 +279,9 @@ class RolesTableSeeder extends Seeder
 	    $acudiente->syncPermissions(
 	    	$usuarioPermissions->values()
 	    		->merge($calendarioPermissions->only('calendarios.index')->values())
+	    		->merge($estudiantePermissions->except('estudiantes.create', 'estudiantes.implementos.create', 'estudiantes.implementos.edit', 'estudiantes.implementos.destroy')->values())
+	    		->merge($acudientePermissions->except('acudientes.edit')->values())
+	    		->merge($programaPermissions->except('programas.create', 'programas.edit', 'programas.destroy')->values())
 	    		->toArray()
 	    );
     }

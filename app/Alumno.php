@@ -80,17 +80,21 @@ class Alumno extends Model
      */
     public function eventos()
     {
-        return $this->belongsToMany(Evento::class);
+        return $this->belongsToMany(Evento::class)
+                    ->orderBy('titu_even')
+                    ->withTimestamps();
     }
 
-     /**
-     * Alumnos tienen muchos eventos.
+    /**
+     * Alumnos tienen muchos programas.
      *
      * @return Model
      */
     public function programas()
     {
-        return $this->belongsToMany(Programas::class);
+        return $this->belongsToMany(Programa::class)
+                    ->orderBy('nomb_prog')
+                    ->withTimestamps();
     }
 
     /*
@@ -120,8 +124,15 @@ class Alumno extends Model
         return optional(Parentesco::find($this->sexo_alum))['texto'];
     }
 
- 
-    
+    /**
+     * Devuelve el id del programa intersectado
+     * @param string $programaId
+     * @return string
+     */
+    public function getProgramaId($programaId)
+    {
+        return head(optional($this->programas)->pluck('id')->intersect($programaId)->values()->toArray());
+    }
 
     /*
     |----------------------------------------------------------------------
@@ -168,6 +179,20 @@ class Alumno extends Model
         if (isset($pape_alum))
         {
             return $query->where('pape_alum', 'LIKE', "%{$pape_alum}%");
+        }
+    }
+
+    /**
+     * Scope acudiente
+     * @param collection $query
+     * @param string $nomb_acud
+     * @return collection
+     */
+    public function scopeAcudiente($query, $nomb_acud)
+    {
+        if (isset($nomb_acud))
+        {
+            return $query->where('nomb_acud', 'LIKE', "%{$nomb_acud}%");
         }
     }
 

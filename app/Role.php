@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Permission;
-use App\Scopes\RoleScope;
 use App\Traits\Uuids;
 use App\User;
 use Caffeinated\Shinobi\Models\Role as ShinobiRole;
@@ -14,18 +13,6 @@ use Illuminate\Support\Str;
 class Role extends ShinobiRole
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    /*protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new RoleScope);
-    }*/
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -213,7 +200,7 @@ class Role extends ShinobiRole
      *
      * @return bool
      */
-    public function esAdministrativo()
+    public function noEsAdministrativo()
     {
         return $this->slug === SpecialRole::docente() OR $this->slug === SpecialRole::acudiente() OR $this->slug === SpecialRole::estudiante();
     }

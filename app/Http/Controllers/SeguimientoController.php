@@ -35,6 +35,7 @@ class SeguimientoController extends Controller
         $request->validate();
 
         $seguimientos = Seguimiento::query()
+                                    ->with('docente', 'practicante')
                                     ->fecha($request->fech_inic, $request->fech_fina)
                                     ->autenticado()
                                     ->orderByDesc('fech_segu')
@@ -96,6 +97,8 @@ class SeguimientoController extends Controller
      */
     public function show(Seguimiento $seguimiento)
     {
+        $seguimiento->loadMissing('docente', 'practicante');
+
         return view('seguimientos.show', compact('seguimiento'));
     }
 
@@ -107,6 +110,8 @@ class SeguimientoController extends Controller
      */
     public function edit(Seguimiento $seguimiento)
     {
+        $seguimiento->loadMissing('docente', 'practicante');
+
         $docentes = Docente::queryDocentes();
 
         $practicantes = Practicante::query()

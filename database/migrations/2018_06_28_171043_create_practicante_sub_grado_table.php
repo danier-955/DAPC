@@ -17,6 +17,7 @@ class CreatePracticanteSubGradoTable extends Migration
         {
             $table->char('practicante_id', 36)->index();
             $table->char('sub_grado_id', 36)->index();
+            $table->timestamps();
 
             $table->foreign('practicante_id')->references('id')->on('practicantes')
                 ->onUpdate('cascade')->onDelete('cascade');

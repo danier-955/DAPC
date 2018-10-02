@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Acudiente;
 use App\Estudiante;
-use App\EstudianteImplemento;
 use App\Implemento;
 use App\User;
 use App\Role;
@@ -17,13 +16,12 @@ use Facades\App\Facades\Sexo;
 use Facades\App\Facades\TipoEstudiante;
 use Facades\App\Facades\Documento;
 use Facades\App\Facades\Estado;
-use App\Http\Requests\AcudienteEstudianteRequest;
-use App\Http\Requests\EstudianteRequest;
+use App\Http\Requests\EstudianteCreateRequest;
+use App\Http\Requests\EstudianteEditRequest;
 use App\Http\Requests\BusquedaRequest;
 use Facades\App\Facades\SpecialRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class EstudianteController extends Controller
@@ -42,14 +40,15 @@ class EstudianteController extends Controller
         $this->middleware('has.permission:estudiantes.edit')->only(['edit', 'update']);
     }
 
-
     public function index(BusquedaRequest $request)
-    { 
-        $grados = Grado::with('subGrados')
-            ->orderBy('abre_grad')
-            ->get();
+    {
+        $grados = Grado::query()
+                        ->with('subGrados')
+                        ->orderBy('abre_grad')
+                        ->get();
 
         $estudiantes = Estudiante::query()
+                            ->with('acudiente', 'subGrado.grado')
                             ->documento($request->docu_estu)
                             ->nombre($request->nomb_estu)
                             ->primerApellido($request->pape_estu)
@@ -59,7 +58,7 @@ class EstudianteController extends Controller
                             ->orderBy('sub_grado_id')
                             ->paginate();
 
-        return view('estudiantes.index', compact('estudiantes','grados'));
+        return view('estudiantes.index', compact('estudiantes', 'grados'));
     }
 
     /**
@@ -68,11 +67,12 @@ class EstudianteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {                      
-       $grados = Grado::with('subGrados')
-            ->orderBy('abre_grad')
-            ->get();
-         return view('estudiantes.create',compact('grados')); 
+    {
+        $grados = Grado::with('subGrados')
+                        ->orderBy('abre_grad')
+                        ->get();
+
+         return view('estudiantes.create', compact('grados'));
     }
 
     /**
@@ -81,24 +81,23 @@ class EstudianteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AcudienteEstudianteRequest $request)
+    public function store(EstudianteCreateRequest $request)
     {
         $request->validate();
-        try 
+
+        try
         {
             DB::beginTransaction();
 
             /**
              * Registrar el acudiente
              */
-
-             if ($request->has('acudiente_id'))
+            if ($request->has('acudiente_id'))
             {
                 $acudiente_id = $request->acudiente_id;
             }
             else
-            {   
-
+            {
                 /**
                  * Registrar el usuario acudiente
                  */
@@ -108,45 +107,46 @@ class EstudianteController extends Controller
                     'password' => $request->docu_acud,
                     'estado' => Estado::activo(),
                 ]);
+
                 /**
                  * Obtener el rol acudiente
                  */
-                $roleAcudiente = Role::where('slug', SpecialRole::acudiente())->first();
+                $roleAcudiente = Role::where('slug', SpecialRole::acudiente())->value('id');
+
                 /**
                  * Asignar rol al usuario acudiente
                  */
-                $usuarioAcudiente->syncRoles([$roleAcudiente->id]);
+                $usuarioAcudiente->syncRoles([$roleAcudiente]);
 
                 $request->merge([
                     'user_id' => $usuarioAcudiente->id,
-                ]); 
+                ]);
 
                 $acudiente = Acudiente::create($request->only('tipo_docu', 'docu_acud', 'nomb_acud', 'pape_acud', 'sape_acud', 'sexo_acud', 'dire_acud', 'barr_acud', 'corr_acud', 'tele_acud', 'prof_acud', 'user_id'));
-                
+
                 $acudiente_id = $acudiente->id;
             }
-
 
             /**
              * Registrar el usuario estudiante
              */
-
             $usuarioEstudiante = User::create([
                 'nombre' => trim("{$request->nomb_estu} {$request->pape_estu} {$request->sape_estu}"),
                 'email' => $request->corr_estu,
                 'password' => $request->docu_estu,
                 'estado' => Estado::activo(),
             ]);
+
             /**
              * Obtener el rol estudiante
              */
-            $roleEstudiante = Role::where('slug', SpecialRole::estudiante())->first();
+            $roleEstudiante = Role::where('slug', SpecialRole::estudiante())->value('id');
 
             /**
              * Asignar rol al usuario estudiante
              */
-            $usuarioEstudiante->syncRoles([$roleEstudiante->id]);
-            
+            $usuarioEstudiante->syncRoles([$roleEstudiante]);
+
             /**
              * Registrar el estudiante
              */
@@ -168,38 +168,47 @@ class EstudianteController extends Controller
             $estudiante->cole_prov = $request->cole_prov;
             $estudiante->eps_estu  = $request->eps_estu;
             $estudiante->copi_docu = $request->file('copi_docu')->store('', 'estudiante');
-            $estudiante->copi_grad = $request->file('copi_grad')->store('', 'estudiante');
+
+            if ($request->hasFile('copi_grad'))
+            {
+                $estudiante->copi_grad = $request->file('copi_grad')->store('', 'estudiante');
+            }
+
             $estudiante->tipo_estu = $request->tipo_estu;
-            $estudiante->carn_vacu = $request->file('carn_vacu')->store('', 'estudiante');
+
+            if ($request->hasFile('carn_vacu'))
+            {
+                $estudiante->carn_vacu = $request->file('carn_vacu')->store('', 'estudiante');
+            }
+
             $estudiante->foto_estu = $request->file('foto_estu')->store('', 'estudiante.foto');
             $estudiante->obse_estu = $request->obse_estu;
             $estudiante->acudiente_id = $acudiente_id;
-            $estudiante->sub_grado_id = $request->sub_grado_id; 
+            $estudiante->sub_grado_id = $request->sub_grado_id;
             $estudiante->user_id = $usuarioEstudiante->id;
             $estudiante->save();
-            
+
             DB::commit();
 
-            toast('¡El Alumno y Acudiente ha sido registrado correctamente!', 'success', 'top-right');
+            toast('¡El estudiante ha sido registrado correctamente!', 'success', 'top-right');
 
-            return redirect()->route('estudiantes.show', $estudiante->id);
+            return redirect()->route('estudiantes.edit', $estudiante->id);
 
-        } 
+        }
         catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
         {
             DB::rollback();
-            dd($e->getMessage());
 
-            toast('¡Se ha producido un error al registrar el Alumno y Acudiente!', 'error', 'top-right');
+            toast('¡Se ha producido un error al registrar el estudiante!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
 
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
             DB::rollback();
 
-            toast('¡Se ha producido un error al registrar el Alumno y Acudiente!', 'error', 'top-right');
+            toast('¡Se ha producido un error al registrar el estudiante!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -213,15 +222,12 @@ class EstudianteController extends Controller
      */
     public function show(Estudiante $estudiante)
     {
-        // Opcion 2 para traer relacion en una sola consulta
-        $estudiante->load('subGrado.grado');
+        $estudiante->loadMissing('acudiente', 'subGrado.grado');
 
-        $utiles = EstudianteImplemento::query()
-                                    ->where('estudiante_id', $estudiante->id)
-                                    ->orderByDesc('created_at')
-                                    ->paginate();
-        return view('estudiantes.show', compact('estudiante','utiles'));
-   }
+        $implementos = $estudiante->implementos()->paginate();
+
+        return view('estudiantes.show', compact('estudiante', 'implementos'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -231,24 +237,16 @@ class EstudianteController extends Controller
      */
     public function edit(Estudiante $estudiante)
     {
-        $estudiante->load('subGrado.grado');
+        $estudiante->loadMissing('subGrado.grado');
 
         $implementos = Implemento::query()
-                        ->subGrado($estudiante->sub_grado_id)
-                        ->orderby('nomb_util')
-                        ->get();
+                                ->select('id', 'nomb_util')
+                                ->subGrado($estudiante->sub_grado_id)
+                                ->orderby('nomb_util')
+                                ->get()
+                                ->toArray();
 
-        $utiles = EstudianteImplemento::query()
-                                ->where('estudiante_id', $estudiante->id)
-                                ->orderByDesc('created_at')
-                                ->cursor();
-
-         $grados = Grado::query()
-                        ->with('subGrados')
-                        ->orderBy('abre_grad')
-                        ->orderBy('jorn_grad')
-                        ->get();
-        return view('estudiantes.edit', compact('estudiante','grados','implementos','utiles'));
+        return view('estudiantes.edit', compact('estudiante', 'implementos'));
     }
 
     /**
@@ -258,7 +256,7 @@ class EstudianteController extends Controller
      * @param  \App\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function update(EstudianteRequest $request, Estudiante $estudiante)
+    public function update(EstudianteEditRequest $request, Estudiante $estudiante)
     {
         $request->validate();
 
@@ -284,40 +282,44 @@ class EstudianteController extends Controller
 
             if ($request->hasFile('foto_estu'))
             {
-                $this->deleteFile('estudiante.foto', $estudiante->foto_estu);  // No ves que aqui se le manda el nombre del disco y el campo
+                $this->deleteFile('estudiante.foto', $estudiante->foto_estu);
+
                 $estudiante->foto_estu = $request->file('foto_estu')->store('', 'estudiante.foto');
             }
 
             if ($request->hasFile('copi_docu'))
             {
-                $this->deleteFile('estudiante', $estudiante->copi_docu); // No ves que aqui se le manda el nombre del disco y el campo
+                $this->deleteFile('estudiante', $estudiante->copi_docu);
+
                 $estudiante->copi_docu = $request->file('copi_docu')->store('', 'estudiante');
-            
+
             }
 
-             if ($request->hasFile('copi_grad'))
+            if ($request->hasFile('copi_grad'))
             {
-                $this->deleteFile('estudiante', $estudiante->copi_grad); // No ves que aqui se le manda el nombre del disco y el campo
+                $this->deleteFile('estudiante', $estudiante->copi_grad);
+
                 $estudiante->copi_grad = $request->file('copi_grad')->store('', 'estudiante');
             }
 
-             if ($request->hasFile('carn_vacu'))
+            if ($request->hasFile('carn_vacu'))
             {
-                $this->deleteFile('estudiante', $estudiante->carn_vacu); // No ves que aqui se le manda el nombre del disco y el campo   
+                $this->deleteFile('estudiante', $estudiante->carn_vacu);
+
                 $estudiante->carn_vacu = $request->file('carn_vacu')->store('', 'estudiante');
             }
 
             $estudiante->obse_estu = $request->obse_estu;
-            $estudiante->sub_grado_id = $request->sub_grado_id; 
+            $estudiante->sub_grado_id = $request->sub_grado_id;
             $estudiante->save();
 
-            toast('¡El Estudiante ha sido actualizada correctamente!', 'success', 'top-right');
+            toast('¡El estudiante ha sido actualizado correctamente!', 'success', 'top-right');
 
             return redirect()->route('estudiantes.show', $estudiante->id);
         }
         catch (\Exception $e)
         {
-            toast('¡Se ha producido un error al actualizar la Estudiante!', 'error', 'top-right');
+            toast('¡Se ha producido un error al actualizar la estudiante!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -333,8 +335,8 @@ class EstudianteController extends Controller
     {
         //
     }
-    
-     /**
+
+    /**
      * Download the specified resource.
      *
      * @param  \App\Documentos  $Documentos
@@ -343,11 +345,11 @@ class EstudianteController extends Controller
     public function download(Estudiante $estudiante, $campo)
     {
         try
-        {  
+        {
             $campo = decrypt($campo);
             $disco = 'estudiante';
 
-            switch ($campo) 
+            switch ($campo)
             {
                 case 'foto_estu':
                     $nombre = 'Fotografia';
@@ -391,7 +393,7 @@ class EstudianteController extends Controller
 
             return redirect()->back()->withInput();
         }
-        catch (DecryptException $e) 
+        catch (DecryptException $e)
         {
             toast('¡La ruta del archivo a descargar no es correcta!', 'error', 'top-right');
 
@@ -399,13 +401,13 @@ class EstudianteController extends Controller
         }
     }
 
-       /**
+    /**
      * Elimina el documento del disco estudiante
      *
      * @param  string $campo
      * @return void
      */
-    protected function deleteFile($disco, $campo) // recibe el nombre del disco y el campo a eliminar (foto_estu, copi_grad, etc..) funciona para todo
+    protected function deleteFile($disco, $campo)
     {
         if (! is_null($campo) && Storage::disk($disco)->exists($campo))
         {

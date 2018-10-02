@@ -17,6 +17,7 @@ class CreateImplementoSubGradoTable extends Migration
         {
             $table->char('implemento_id', 36)->index();
             $table->char('sub_grado_id', 36)->index();
+            $table->timestamps();
 
             $table->foreign('implemento_id')->references('id')->on('implementos')
                 ->onUpdate('cascade')->onDelete('cascade');

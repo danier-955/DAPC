@@ -6,12 +6,12 @@
   <ol class="breadcrumb bg-white shadow-1">
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('planeamientos.index') }}">Planeaciones</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header d-flex align-items-center justify-content-between">
+	<div class="card-header d-flex align-items-center justify-content-between bg-light-2">
 		<h1 class="typography-headline">
 			<i class="material-icons mr-1">local_library</i> Planeaciones
 		</h1>
@@ -94,6 +94,8 @@
 								<td>
 									@can('planeamientos.download')
 										@include('partials.button_download', ['btnSm' => 'btn-sm', 'route' => route('planeamientos.download', $planeamiento->id)])
+									@else
+										··· Sin permisos ···
 									@endcan
 								</td>
 								<td class="text-nowrap text-center">

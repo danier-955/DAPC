@@ -2,25 +2,12 @@
 
 namespace App;
 
-use App\Scopes\ImplementoScope;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Implemento extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    /*protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new ImplementoScope);
-    }*/
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -52,7 +39,7 @@ class Implemento extends Model
      */
     public function subGrados()
     {
-        return $this->belongsToMany(SubGrado::class);
+        return $this->belongsToMany(SubGrado::class)->withTimestamps();
     }
 
     /**
@@ -62,8 +49,24 @@ class Implemento extends Model
      */
     public function estudiantes()
     {
-        return $this->belongsToMany(Estudiante::class)->withPivot('cant_util');
+        return $this->belongsToMany(Estudiante::class)
+                    ->using(EstudianteImplemento::class)
+                    ->withPivot('id', 'cant_util', 'ano_util')
+                    ->orderBy('nomb_estu')
+                    ->orderBy('pape_estu')
+                    ->withTimestamps();
     }
+
+    /**
+     * Implementos tienen muchos inventarios.
+     *
+     * @return Model
+     */
+    public function inventarios()
+    {
+        return $this->hasMany(Inventario::class);
+    }
+
 
     /*
     |----------------------------------------------------------------------
@@ -71,6 +74,39 @@ class Implemento extends Model
     |----------------------------------------------------------------------
     |
     */
+
+    /**
+     * Devuelve el nombre de los administrativos
+     *
+     * @return string
+     */
+    public function getAdministrativos()
+    {
+        if ($this->inventarios->isNotEmpty())
+        {
+            $administrativos = collect();
+
+            foreach ($this->inventarios as $inventario)
+            {
+                if (! is_null($inventario->administrativo))
+                {
+                    $administrativos->push("{$inventario->administrativo->nomb_admi} {$inventario->administrativo->pape_admi} {$inventario->administrativo->sape_admi}");
+                }
+            }
+
+            return $administrativos->unique()->values()->implode(', ');
+        }
+    }
+
+    /**
+     * Devuelve el id del subgrado intersectado
+     * @param string $subgradoId
+     * @return string
+     */
+    public function getSubGradoId($subgradoId)
+    {
+        return head(optional($this->subGrados)->pluck('id')->intersect($subgradoId)->values()->toArray());
+    }
 
     /*
     |----------------------------------------------------------------------
@@ -85,7 +121,7 @@ class Implemento extends Model
      * @param string $nomb_util
      * @return collection
      */
-    public function scopeUtil($query, $nomb_util)
+    public function scopeNombre($query, $nomb_util)
     {
         if (isset($nomb_util))
         {

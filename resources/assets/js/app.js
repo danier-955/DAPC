@@ -19,6 +19,7 @@ window.Vue = require('vue');
  * Vue global components
  */
 Vue.component('ipca-calendar', require('./components/calendarios/Index.vue'));
+Vue.component('ipca-implement', require('./components/implementos/Index.vue'));
 
 /**
  * Vue instance

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Grado;
+use App\Http\Requests\BusquedaRequest;
+use App\Http\Requests\GradoRequest;
+use Facades\App\Facades\Jornada;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\GradoRequest;
-use App\Http\Requests\BusquedaRequest;
 
 class GradoController extends Controller
 {
@@ -21,7 +22,6 @@ class GradoController extends Controller
         $this->middleware('has.permission:grados.index')->only(['index']);
         $this->middleware('has.permission:grados.create')->only(['create', 'store']);
         $this->middleware('has.permission:grados.edit')->only(['edit', 'update']);
-        $this->middleware('has.permission:grados.destroy')->only(['destroy']);
     }
 
     /**
@@ -31,12 +31,18 @@ class GradoController extends Controller
      */
     public function index(BusquedaRequest $request)
     {
-        $grados = Grado::query()
-                            ->nombreGrado($request->nomb_grad)
-                            ->orderBy('abre_grad')
-                            ->paginate(10);
+        $request->validate();
 
-        return view('grados.index', compact('grados','grados'));
+        $grados = Grado::query()
+                        ->nombre($request->nomb_grad)
+                        ->jornada($request->jorn_grad)
+                        ->orderBy('abre_grad')
+                        ->orderBy('nomb_grad')
+                        ->paginate();
+
+        $jornadas = Jornada::asociativos();
+
+        return view('grados.index', compact('grados', 'jornadas'));
     }
 
     /**
@@ -58,37 +64,34 @@ class GradoController extends Controller
     public function store(GradoRequest $request)
     {
         $request->validate();
-        try 
-        {   
-            Grado::create($request->all());
-            
-            DB::commit();
 
-            toast('¡El Grado ha sido registrado correctamente!', 'success', 'top-right');
+        try
+        {
+            Grado::create($request->all());
+
+            toast('¡El grado ha sido registrado correctamente!', 'success', 'top-right');
 
             return redirect()->route('grados.index');
-        } 
-        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
-        {
-            dd($e->getMessage());
-            DB::rollback();
-
-
-            toast('¡Se ha producido un error al registrar el Grado!', 'error', 'top-right');
-
-            return redirect()->back()->withInput();
-
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
-            dd($e->getMessage());
-            DB::rollback();
-            
-
-            toast('¡Se ha producido un error al registrar el Grado!', 'error', 'top-right');
+            toast('¡Se ha producido un error al registrar el grado!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Grado  $grado
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Grado $grado)
+    {
+        $grado->loadMissing('subGrados.docentes');
+
+        return view('grados.show' , compact('grado'));
     }
 
     /**
@@ -99,7 +102,11 @@ class GradoController extends Controller
      */
     public function edit(Grado $grado)
     {
-        return view('grados.edit',compact('grado'));
+        $jornadas = Jornada::asociativos();
+
+        $grado->loadMissing('subGrados.docentes');
+
+        return view('grados.edit', compact('grado', 'jornadas'));
     }
 
     /**
@@ -112,34 +119,18 @@ class GradoController extends Controller
     public function update(GradoRequest $request, Grado $grado)
     {
         $request->validate();
-        try 
-        {   
-            $grado->update($request->all());
-            
-            DB::commit();
 
-            toast('¡El Grado ha sido actualizado correctamente!', 'success', 'top-right');
+        try
+        {
+            $grado->update($request->all());
+
+            toast('¡El grado ha sido actualizado correctamente!', 'success', 'top-right');
 
             return redirect()->route('grados.index');
-        } 
-        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
-        {
-            // dd($e->getMessage());
-            DB::rollback();
-
-
-            toast('¡Se ha producido un error al actualizar el Grado!', 'error', 'top-right');
-
-            return redirect()->back()->withInput();
-
         }
-        catch (\Exception $e) 
+        catch (\Exception $e)
         {
-            // dd($e->getMessage());
-            DB::rollback();
-            
-
-            toast('¡Se ha producido un error al actualizar el Grado!', 'error', 'top-right');
+           toast('¡Se ha producido un error al actualizar el grado!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
@@ -153,19 +144,6 @@ class GradoController extends Controller
      */
     public function destroy(Grado $grado)
     {
-        try
-        {
-            $grado->delete();
-
-            toast('¡El grado ha sido eliminado correctamente!', 'success', 'top-right');
-
-            return redirect()->route('grados.index');
-        }
-        catch (\Exception $e)
-        {
-            toast('¡Se ha producido un error al eliminar el grado!', 'error', 'top-right');
-
-            return redirect()->back()->withInput();
-        }
+        //
     }
 }

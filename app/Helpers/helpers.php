@@ -1,5 +1,6 @@
 <?php
 
+use App\Acudiente;
 use Facades\App\Facades\Jornada;
 use Jenssegers\Date\Date;
 
@@ -15,6 +16,7 @@ function administrativo($campo = null)
 
     return is_null($campo) ? optional($usuario->administrativo) : optional($usuario->administrativo)->{$campo};
 }
+
 /**
  * Devuelve el modelo docente asociado al usuario autenticado.
  *
@@ -26,6 +28,19 @@ function docente($campo = null)
     $usuario = auth()->user()->loadMissing('docente');
 
     return is_null($campo) ? optional($usuario->docente) : optional($usuario->docente)->{$campo};
+}
+
+/**
+ * Devuelve el nombre del acudiente.
+ *
+ * @param string  $id
+ * @return \App\Docente  $docente
+ */
+function acudienteSelect2($id)
+{
+    $acudiente = Acudiente::find($id);
+
+    return optional($acudiente)->tipo_docu . ' ' . optional($acudiente)->docu_acud . ' &middot; ' . optional($acudiente)->nomb_acud . ' ' . optional($acudiente)->pape_acud . ' ' . optional($acudiente)->sape_acud;
 }
 
 /**

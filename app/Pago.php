@@ -49,7 +49,7 @@ class Pago extends Model
      */
     public function tipoEmpleados()
     {
-        return $this->belongsToMany(TipoEmpleado::class);
+        return $this->belongsToMany(TipoEmpleado::class)->withTimestamps();
     }
 
     /**
@@ -69,7 +69,7 @@ class Pago extends Model
      */
     public function salidas()
     {
-        return $this->belongsToMany(Salida::class);
+        return $this->belongsToMany(Salida::class)->withTimestamps();
     }
 
     /**
@@ -79,7 +79,7 @@ class Pago extends Model
      */
     public function eventos()
     {
-        return $this->belongsToMany(Evento::class);
+        return $this->belongsToMany(Evento::class)->withTimestamps();
     }
 
     /*

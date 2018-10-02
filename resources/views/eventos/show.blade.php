@@ -7,12 +7,12 @@
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('eventos.index') }}">Eventos</a></li>
     <li class="breadcrumb-item"><a href="{{ route('eventos.show', $evento->id) }}">Ver</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header d-flex align-items-center justify-content-between">
+	<div class="card-header d-flex align-items-center justify-content-between bg-light-2">
 		<h1 class="typography-headline">
 			<i class="material-icons mr-1">event_note</i> Ver evento
 		</h1>
@@ -47,7 +47,7 @@
 							<span class="font-weight-bold">Fecha inicio</span>
 						</th>
 						<td class="text-nowrap">
-							{{ optional($evento->inic_even)->format('l d, F Y \— h:i a') }}
+							{{ optional($evento->inic_even)->format('l d, F Y \· h:i a') }}
 						</td>
 						<td class="text-center align-middle border-left p-1" rowspan="5">
 							@if (Storage::disk('evento')->exists($evento->foto_even))
@@ -55,10 +55,13 @@
 									src="{{ Storage::disk('evento')->url($evento->foto_even) }}"
 									alt="{{ $evento->titu_even }}">
 							@else
-								<div class="card-body d-flex align-items-center justify-content-center py-5">
-									<p class="typography-display-3 text-black-secondary">
+								<div class="card-body text-center">
+									<p class="typography-display-3 text-black-secondary py-4">
 										<i class="material-icons">broken_image</i>
 									</p>
+									<p class="card-text text-muted">
+							      		Sin fotografia para mostrar.
+							      	</p>
 								</div>
 							@endif
 						</td>
@@ -68,7 +71,7 @@
 							<span class="font-weight-bold">Fecha clausura</span>
 						</th>
 						<td class="text-nowrap">
-							{{ optional($evento->fina_even)->format('l d, F Y \— h:i a') }}
+							{{ optional($evento->fina_even)->format('l d, F Y \· h:i a') }}
 						</td>
 					</tr>
 					<tr>

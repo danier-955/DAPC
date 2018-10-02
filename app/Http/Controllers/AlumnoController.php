@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Alumno;
-use App\AlumnoPrograma;
-use Facades\App\Facades\Documento;
-use Facades\App\Facades\Sexo;
-use Facades\App\Facades\Parentesco;
-use App\Http\Requests\BusquedaRequest;
 use App\Http\Requests\AlumnoRequest;
+use App\Http\Requests\BusquedaRequest;
+use App\Programa;
+use Facades\App\Facades\Documento;
+use Facades\App\Facades\Parentesco;
+use Facades\App\Facades\Sexo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,14 +37,16 @@ class AlumnoController extends Controller
     public function index(BusquedaRequest $request)
     {
         $alumnos = Alumno::query()
-                            ->documento($request->docu_alum)
-                            ->nombre($request->nomb_alum)
-                            ->primerApellido($request->pape_alum)  
-                            ->orderBy('nomb_alum')
-                            ->orderBy('pape_alum')  
-                            ->paginate();
+                        ->documento($request->docu_alum)
+                        ->nombre($request->nomb_alum)
+                        ->primerApellido($request->pape_alum)
+                        ->acudiente($request->nomb_acud)
+                        ->orderBy('nomb_alum')
+                        ->orderBy('pape_alum')
+                        ->orderBy('sape_alum')
+                        ->paginate();
 
-        return  view ('alumnos.index' , compact('alumnos'));
+        return view('alumnos.index', compact('alumnos'));
     }
 
     /**
@@ -54,7 +56,11 @@ class AlumnoController extends Controller
      */
     public function create()
     {
-        return  view ('alumnos.create');
+        $programas = Programa::query()
+                            ->orderBy('nomb_prog')
+                            ->get();
+
+        return view('alumnos.create', compact('programas'));
     }
 
     /**
@@ -65,19 +71,38 @@ class AlumnoController extends Controller
      */
     public function store(AlumnoRequest $request)
     {
-         $request->validate();
+        $request->validate();
+
+        DB::beginTransaction();
+
         try
         {
-            /**
-             * Registrar el alumnos
-             */
-            $alumnos = Alumno::create($request->all());
+            $alumno = Alumno::create($request->all());
+
+            if ($request->filled('programas'))
+            {
+                $alumno->programas()->sync($request->get('programas'));
+            }
+
+            DB::commit();
+
             toast('¡El alumno ha sido registrado correctamente!', 'success', 'top-right');
 
-            return redirect()->route('alumnos.show', $alumnos->id);
+            return redirect()->route('alumnos.show', $alumno->id);
+        }
+        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
+        {
+            DB::rollback();
+
+            toast('¡Se ha producido un error al registrar el alumno!', 'success', 'top-right');
+
+            return redirect()->back()->withInput();
+
         }
         catch (\Exception $e)
         {
+            DB::rollback();
+
             toast('¡Se ha producido un error al registrar el alumno!', 'success', 'top-right');
 
             return redirect()->back()->withInput();
@@ -92,12 +117,9 @@ class AlumnoController extends Controller
      */
     public function show(Alumno $alumno)
     {
-        $alumnoprogramas = AlumnoPrograma::query()
-                                    ->where('alumno_id', $alumno->id)
-                                    ->orderByDesc('created_at')
-                                    ->paginate();
+        $alumno->loadMissing('programas');
 
-        return  view ('alumnos.show' , compact('alumno', 'alumnoprogramas'));
+        return  view ('alumnos.show', compact('alumno'));
     }
 
     /**
@@ -108,7 +130,13 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        return  view ('alumnos.edit', compact('alumno'));
+        $alumno->loadMissing('programas');
+
+        $programas = Programa::query()
+                            ->orderBy('nomb_prog')
+                            ->get();
+
+        return  view ('alumnos.edit', compact('alumno', 'programas'));
     }
 
     /**
@@ -120,20 +148,41 @@ class AlumnoController extends Controller
      */
     public function update(AlumnoRequest $request, Alumno $alumno)
     {
-       $request->validate();
-        
-        try {
-        
-             $alumno->update($request->all());
+        $request->validate();
+
+        DB::beginTransaction();
+
+        try
+        {
+            $alumno->update($request->all());
+
+            if ($request->filled('programas'))
+            {
+                $alumno->programas()->sync($request->get('programas'));
+            }
+            else
+            {
+                $alumno->programas()->detach();
+            }
+
+            DB::commit();
 
             toast('¡El alumno ha sido actualizado correctamente!', 'success', 'top-right');
 
             return redirect()->route('alumnos.show', $alumno->id);
+        }
+        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
+        {
+            DB::rollback();
 
-        } 
-        
+            toast('¡Se ha producido un error al actualizar el alumno!', 'error', 'top-right');
+
+            return redirect()->back()->withInput();
+        }
         catch (\Exception $e)
         {
+            DB::rollback();
+
             toast('¡Se ha producido un error al actualizar el alumno!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
@@ -152,13 +201,13 @@ class AlumnoController extends Controller
         {
             $alumno->delete();
 
-            toast('¡el Alumno ha sido eliminada correctamente!', 'success', 'top-right');
+            toast('¡El alumno ha sido eliminado correctamente!', 'success', 'top-right');
 
             return redirect()->route('alumnos.index');
         }
         catch (\Exception $e)
-        {  
-            toast('¡Se ha producido un error al eliminar el Alumno!', 'error', 'top-right');
+        {
+            toast('¡Se ha producido un error al eliminar el alumno!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }

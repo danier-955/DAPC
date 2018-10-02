@@ -1,12 +1,11 @@
 <?php
 
-use Webpatser\Uuid\Uuid;
 use Faker\Generator as Faker;
 
-$factory->define(App\Area::class, function (Faker $faker) {
+$factory->define(App\Area::class, function (Faker $faker)
+{
     return [
-    	'id'        => Uuid::generate()->string,
-        'nomb_area' => $faker->streetName,
+        'nomb_area' => $faker->unique()->text(30),
         'desc_area' => $faker->text,
     ];
 });

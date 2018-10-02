@@ -5,12 +5,16 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb bg-white shadow-1">
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="alert alert-danger typography-subheading">
-	Revisar que todas las consultas que tengan edger-loading o lazy-loading donde sea necesario para reducir el numero de consultas, si es necesario quitar los scopes globales para traer solo las consultas necesarias se hace.
+  * Validar al registrar y editar que el nombre de la materia no se repita en el mismo grado, y que la suma del peso de las materias con la misma area no supere el 100%.<br>
+  * Validar al registrar y editar que la abreviación del grado no se repita de acuerdo a la jornada.<br>
+  * Validar al registrar y editar que la abreviación del subgrado no se repita de acuerdo al grado.<br>
+  * En estudiantes filtrar y mostrar estudiante por estado para saber cuales estan activos, inactivos, y la fecha de retirados y graduados (tambien colocarlo en el editar y show).<br>
+  * Validar que al registrar un almuno un evento no se cruzen con otros eventos que tenga registrado o vaya a registrar.<br>
 </div>
 
 <div class="jumbotron text-center">

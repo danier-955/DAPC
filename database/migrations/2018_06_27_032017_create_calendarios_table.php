@@ -22,7 +22,6 @@ class CreateCalendariosTable extends Migration
             $table->datetime('fech_inic');
             $table->datetime('fech_fina');
             $table->text('desc_cale', 500);
-            $table->text('fina_cale', 500)->nullable();
             $table->boolean('jorn_cale')->unsigned()->default(Jornada::todas());
             $table->char('administrativo_id', 36)->index();
             $table->timestamps();

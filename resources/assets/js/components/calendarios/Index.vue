@@ -26,6 +26,7 @@
 	import { FullCalendar } from 'vue-full-calendar'
 	import ModalCreate from './Create.vue'
 	import ModalEdit from './Edit.vue'
+    import Errors from './../clases/errors'
 
 	export default {
 		name: 'Calendar',
@@ -105,13 +106,12 @@
 					hora_fina: '',
 					jorn_cale: '',
 					desc_cale: '',
-					fina_cale: '',
 					administrativo: {}
 			    },
 			    showing: false,
 			    editing: false,
 			    loading: false,
-				errors: {},
+		    	errors: new Errors(),
 		    }
 		},
   		methods: {
@@ -140,7 +140,6 @@
 					hora_fina: hora_fina,
 					jorn_cale: event.jorn_cale,
 					desc_cale: event.desc_cale,
-					fina_cale: event.fina_cale,
 					administrativo: event.administrativo,
 				};
 
@@ -159,7 +158,7 @@
 		    	}
 		    },
 		    storeCalendario (nuevo) {
-		        this.errors = {};
+		        this.errors.clear();
 		        this.loading = true;
 
 		        axios.post('/calendarios', nuevo).then(response => {
@@ -172,7 +171,7 @@
 		        .catch(error => {
 		          	this.loading = false;
 		          	if (error.response.data.errors) {
-		            	this.errors = error.response.data.errors;
+		            	this.errors.record(error.response.data);
 		          	} else  {
 		          		this.showSweetAlert(error.response.data.message, 'error');
 		          	}
@@ -203,7 +202,7 @@
 		    	}
 			},
 		    updateCalendario (evento) {
-		    	this.errors = {};
+		    	this.errors.clear();
 		        this.loading = true;
 
 		        axios.put(`/calendarios/${evento.id}`, evento).then(response => {
@@ -218,7 +217,7 @@
 		        .catch(error => {
 		          	this.loading = false;
 		          	if (error.response.data.errors) {
-		            	this.errors = error.response.data.errors;
+		            	this.errors.record(error.response.data);
 		          	} else  {
 		          		this.showSweetAlert(error.response.data.message, 'error');
 		          	}
@@ -268,10 +267,9 @@
 					hora_fina: '',
 					jorn_cale: '',
 					desc_cale: '',
-					fina_cale: '',
 					administrativo: {}
 			    };
-			    this.errors = {};
+			    this.errors.clear();
 			    this.showing = false;
 			    this.editing = false;
 			    this.loading = false;

@@ -25,9 +25,6 @@ class DocenteRequest extends FormRequest
     public function rules()
     {
         return [
-            /**
-             * Docente
-             */
             'docu_doce'     => 'required|min:7|max:10|regex:/^[0-9]+$/i|unique:docentes,docu_doce,' . optional($this->route('docente'))->id,
             'nomb_doce'     => 'required|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_doce'     => 'required|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
@@ -41,10 +38,6 @@ class DocenteRequest extends FormRequest
             'espe_doce'     => 'nullable|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'expe_doce'     => 'nullable|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'obse_doce'     => 'nullable|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-
-            /**
-             * Empleado
-             */
             'fech_ingr'     => 'required|date',
             'obse_empl'     => 'nullable|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'tipo_empleado_id' => 'required|string|exists:tipo_empleados,id',

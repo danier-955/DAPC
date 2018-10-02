@@ -7,12 +7,12 @@
 	    <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('planeamientos.index') }}">Planeaciones</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('planeamientos.edit', $planeamiento->id) }}">Editar</a></li>
-    	<li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    	<li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   	</ol>
 </nav>
 
 <div class="card">
-	<div class="card-header">
+	<div class="card-header bg-light-2">
   		<h1 class="typography-headline">
   			<i class="material-icons mr-1">local_library</i> Editar planeación
   		</h1>

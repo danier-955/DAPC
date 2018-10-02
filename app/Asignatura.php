@@ -2,25 +2,12 @@
 
 namespace App;
 
-use App\Scopes\AsignaturaScope;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Asignatura extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new AsignaturaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -156,7 +143,7 @@ class Asignatura extends Model
     {
         if (!is_null($this->area))
         {
-            return "{$this->area->nomb_area}";
+            return $this->area->nomb_area;
         }
 
     }

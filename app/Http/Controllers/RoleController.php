@@ -123,10 +123,11 @@ class RoleController extends Controller
     {
         /**
          * Verificar que no se puedan agregar permisos a roles no válidos (que no se pueden relacionar), por ejemplo galerias, eventos, calendarios necesitan de un administrativo_id por tanto es solo para administrativos.
+         * --- Tener lo mismo en cuenta para los modulos que tengan "docente_id" y este no se seleccione, revisar cuando todos los modulos esten hechos. ---
          */
-        if ($role->esAdministrativo())
+        if ($role->noEsAdministrativo())
         {
-            $slugs = ['calendarios', 'eventos', 'galerias', 'inventarios'];
+            $slugs = ['calendarios', 'eventos', 'galerias', 'inventarios', 'programas'];
             $operations = ['create', 'edit', 'destroy'];
 
             $permissions = Permission::query()

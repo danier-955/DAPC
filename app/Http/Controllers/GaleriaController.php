@@ -37,6 +37,7 @@ class GaleriaController extends Controller
         $request->validate();
 
         $galerias = Galeria::query()
+                            ->with('administrativo')
                             ->titulo($request->titu_gale)
                             ->mostrada($request->filled('most_gale'))
                             ->autenticado()

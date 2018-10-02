@@ -2,24 +2,12 @@
 
 namespace App;
 
-use App\Scopes\InventarioScope;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Inventario extends Model
 {
     use Uuids;
-
-    // /**
-    //  * Global scope
-    //  * @return void
-    //  */
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::addGlobalScope(new InventarioScope);
-    // }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -71,7 +59,10 @@ class Inventario extends Model
      */
     public function mesas()
     {
-        return $this->belongsToMany(Mesa::class)->withPivot('cant_desc', 'esta_desc');
+        return $this->belongsToMany(Mesa::class)
+                    ->withPivot('cant_desc', 'esta_desc')
+                    ->orderBy('esta_desc')
+                    ->withTimestamps();
     }
 
     /*
@@ -81,7 +72,6 @@ class Inventario extends Model
     |
     */
 
-
     /**
      * Devuelve el nombre del implemento
      *
@@ -89,24 +79,22 @@ class Inventario extends Model
      */
     public function getImplemento()
     {
-        if (!is_null($this->implemento))
+        if (! is_null($this->implemento))
         {
             return $this->implemento->nomb_util;
         }
     }
+
     /**
-     * Devuelve el nombre del implemento
-     *
-  /**
-     * Devuelve el nombre del acudiente
+     * Devuelve el nombre del administrativo
      *
      * @return string
      */
     public function getAdministrativo()
     {
-        if (!is_null($this->Administrativo))
+        if (! is_null($this->administrativo))
         {
-            return "{$this->Administrativo->nomb_admi} {$this->Administrativo->pape_admi} {$this->Administrativo->sape_admi}";
+            return "{$this->administrativo->nomb_admi} {$this->administrativo->pape_admi} {$this->administrativo->sape_admi}";
         }
     }
 
@@ -116,19 +104,5 @@ class Inventario extends Model
     |----------------------------------------------------------------------
     |
     */
-    
-    /**
-     * Scope sub grado
-     * @param collection $query
-     * @param string $estudiante_id
-     * @return collection
-     */
-    public function scopeEstudiante($query, $estudiante_id)
-    {
-        if (isset($estudiante_id))
-        {
-            return $query->where('estudiante_id', $estudiante_id);
-        }
-    }
 
 }

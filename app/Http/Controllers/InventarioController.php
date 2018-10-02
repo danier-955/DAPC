@@ -22,8 +22,6 @@ class InventarioController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('has.permission:inventarios.index')->only(['index']);
-        $this->middleware('has.permission:inventarios.create')->only(['create', 'store']);
-        $this->middleware('has.permission:inventarios.edit')->only(['edit', 'update']);
     }
 
     /**
@@ -31,13 +29,23 @@ class InventarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(BusquedaRequest $request)
     {
-        $inventarios =Inventario::with('administrativo','implemento')
-                            ->paginate();
-     
+        $request->validate();
 
-        return view('inventarios.index' , compact ('inventarios'));
+        /*$inventarios = Inventario::query()
+                                ->with('administrativo', 'implemento')
+                                ->orderBy('implemento_id')
+                                ->paginate();*/
+
+        $implementos = Implemento::query()
+                                ->has('inventarios')
+                                ->with('inventarios.administrativo')
+                                ->nombre($request->nomb_util)
+                                ->orderBy('nomb_util')
+                                ->paginate();
+
+        return view('inventarios.index', compact ('implementos'));
     }
 
     /**
@@ -47,16 +55,7 @@ class InventarioController extends Controller
      */
     public function create(BusquedaRequest $request)
     {
-       $request->validate();
-
-        $estudiantes = Estudiante::queryEstudiantes();
-
-        $implementos = Implemento::query()
-                            ->select('id', 'nomb_util')
-                            ->orderBy('nomb_util')
-                            ->get();
-
-        return view('inventarios.create' , compact('estudiantes', 'implementos'));
+        //
     }
 
     /**
@@ -67,67 +66,8 @@ class InventarioController extends Controller
      */
     public function store(EstudianteInventarioRequest $request)
     {
-        if ($request->ajax())
-        {
-            $request->validate();
-
-            DB::beginTransaction();
-
-            try
-            {
-                /**
-                 * Buscamos el registro estudiante-implemento, si no existe lo creamos
-                 */
-                $estudianteImplemento = EstudianteImplemento::firstOrNew([
-                    'estudiante_id' => $request->estudiante_id,
-                    'implemento_id' => $request->implemento_id
-                ]);
-                $estudianteImplemento->cant_util = $request->cant_util;
-                $estudianteImplemento->save();
-
-                /**
-                 * Consultamos el total de cant_util en estudiante-implemento
-                 */
-                $stoc_inve = EstudianteImplemento::query()
-                                                ->where('implemento_id', $request->implemento_id)
-                                                ->sum('cant_util');
-
-                /**
-                 * Buscamos el registro inventario, si no existe lo creamos
-                 */
-                $inventario = Inventario::firstOrNew([
-                    'implemento_id' => $request->implemento_id
-                ]);
-                $inventario->stoc_inve = $stoc_inve;
-                $inventario->administrativo_id = $this->getAdministrativoId();
-                $inventario->save();
-
-                DB::commit();
-
-                return response()->json([
-                    'message' => '¡El útil han sido registrados correctamente!'
-                ], 200);
-            }
-            catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
-            {
-                DB::rollback();
-
-                return response()->json([
-                    'message' => '¡Se ha producido un error al guardar el útil!'
-                ], $e->getStatusCode());
-            }
-            catch (\Exception $e)
-            {
-                DB::rollback();
-
-                return response()->json([
-                    'message' => '¡Se ha producido un error al guardar el útil!'
-                ], 400);
-            }
-        }
+        //
     }
-
- 
 
     /**
      * Show the form for editing the specified resource.
@@ -137,13 +77,7 @@ class InventarioController extends Controller
      */
     public function edit(Inventario $inventario)
     {
-         $estudiante = Estudiante::query()
-                                    ->select('id', 'nomb_estu', 'pape_estu', 'sape_estu')
-                                    ->orderBy('nomb_estu')
-                                    ->orderBy('pape_estu')
-                                    ->get();
-
-        return view('inventarios.edit' , compact('inventarios','estudiante'));
+        //
     }
 
     /**
@@ -164,65 +98,9 @@ class InventarioController extends Controller
      * @param  \App\Inventario  $inventario
      * @return \Illuminate\Http\Response
      */
-   public function destroy(EstudianteImplemento $inventario)
+    public function destroy(EstudianteImplemento $inventario)
     {
-
-        DB::beginTransaction();
-
-        try
-        {   
-            $implementoId = $inventario->implemento_id;
-
-            $inventario->delete();
-
-            /**
-             * Consultamos el total de cant_util en estudiante-implemento
-             */
-            $stoc_inve = EstudianteImplemento::query()
-                                            ->where('implemento_id', $implementoId)
-                                            ->sum('cant_util');
-
-            /**
-             * Buscamos el registro inventario, si no existe lo creamos
-             */
-            $inventarios = Inventario::where('implemento_id', $implementoId)->firstOrFail();
-            $inventarios->stoc_inve = $stoc_inve;
-            $inventarios->save();
-
-            DB::commit();
-
-            return response()->json([
-                'message' => '¡El útil han sido eliminado correctamente!'
-            ], 200);
-        }
-        catch (\Symfony\Component\HttpKernel\Exception\HttpException $e)
-        {
-            DB::rollback();
-
-            return response()->json([
-                'message' => '¡Se ha producido un error al eliminar el útil!'
-            ], $e->getStatusCode());
-        }
-        catch (\Exception $e)
-        {
-            DB::rollback();
-
-            return response()->json([
-                'message' => '¡Se ha producido un error al eliminar el útil!'
-            ], 400);
-        }
-    }
-
-      /**
-     * Devuelve el modelo admiistrativo asociado al usuario autenticado.
-     *
-     * @return \App\Administrativo  $administrativo
-     */
-    protected function getAdministrativoId()
-    {
-        $usuario = auth()->user()->load('administrativo');
-
-        return optional($usuario->administrativo)->id;
+        //
     }
 
 }

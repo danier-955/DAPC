@@ -41,13 +41,16 @@ Route::get('/inicio', 'HomeController@index')->name('inicio');
  * Acudientes Routes...
  */
 Route::resource('acudientes', 'AcudienteController');
-/* get acudientes ajax */
+
+/*
+ * Acudientes Routes Ajax...
+ */
 Route::get('acudientes/buscar', 'AcudienteController@search')->name('acudientes.search');
 
 /*
  * Administrativos Routes...
  */
-Route::resource('administrativos', 'AdministrativoController');
+Route::resource('administrativos', 'AdministrativoController')->except(['destroy']);
 
 /*
  * Alumnos Routes...
@@ -55,14 +58,9 @@ Route::resource('administrativos', 'AdministrativoController');
 Route::resource('alumnos', 'AlumnoController');
 
 /*
- * Alumnos Routes...
- */
-Route::resource('alumnosprogramas', 'AlumnoProgramaController');
-
-/*
  * Areas Routes...
  */
-Route::resource('areas', 'AreaController');
+Route::resource('areas', 'AreaController')->except(['show', 'destroy']);
 
 /*
  * Asignaturas Routes...
@@ -72,7 +70,7 @@ Route::resource('asignaturas', 'AsignaturaController')->except(['destroy']);
 /*
  * Asignaturas fechas Routes...
  */
-Route::resource('asignaturas.fechas', 'AsignaturaFechaController');
+Route::resource('asignaturas.fechas', 'AsignaturaFechaController')->except(['destroy']);
 
 /*
  * Asistencias Routes...
@@ -90,25 +88,34 @@ Route::resource('bitacoras', 'BitacoraController')->only(['index']);
 Route::resource('calendarios', 'CalendarioController')->except(['show', 'create', 'edit']);
 
 /*
- * Calendarios Ajax...
+ * Calendarios Routes Ajax...
  */
 Route::get('calendarios/eventos', 'CalendarioController@event')->name('calendarios.event');
 
 /*
  * Docentes Routes...
  */
-Route::resource('docentes', 'DocenteController');
+Route::resource('docentes', 'DocenteController')->except(['destroy']);
 
 /*
  * Empleados Routes...
  */
-Route::resource('empleados', 'EmpleadoController');
+Route::resource('empleados', 'EmpleadoController')->except(['destroy']);
 
 /*
  * Estudiantes Routes...
  */
 Route::resource('estudiantes', 'EstudianteController');
-Route::get('estudiantes/{estudiante}/{campo}/download', 'EstudianteController@download')->name('estudiante.download');
+
+/*
+ * Estudiantes Routes Descargar...
+ */
+Route::get('estudiantes/{estudiante}/{campo}/download', 'EstudianteController@download')->name('estudiantes.download');
+
+/*
+ * Estudiantes Implementos Routes...
+ */
+Route::apiResource('estudiantes.implementos', 'EstudianteImplementoController')->except(['show', 'update']);
 
 /*
  * Eventos Routes...
@@ -118,7 +125,7 @@ Route::resource('eventos', 'EventoController');
 /*
  * Fechas Routes...
  */
-Route::resource('fechas', 'FechaController');
+Route::resource('fechas', 'FechaController')->except(['destroy']);
 
 /*
  * Galerias Routes...
@@ -128,12 +135,12 @@ Route::resource('galerias', 'GaleriaController')->except(['show']);
 /*
  * Grados Routes...
  */
-Route::resource('grados', 'GradoController');
+Route::resource('grados', 'GradoController')->except(['destroy']);
 
 /*
  * SubGrados Routes...
  */
-Route::resource('subgrados', 'SubGradoController');
+Route::resource('grados.subgrados', 'SubGradoController')->except(['index', 'show', 'destroy']);
 
 /*
  * Implementos Routes...
@@ -143,7 +150,7 @@ Route::resource('implementos', 'ImplementoController');
 /*
  * Inventarios Routes...
  */
-Route::resource('inventarios', 'InventarioController');
+Route::resource('inventarios', 'InventarioController')->only(['index']);
 
 /*
  * Mesas Routes...
@@ -178,12 +185,12 @@ Route::get('planeamientos/{planeamiento}/download', 'PlaneamientoController@down
 /*
  * Practicantes Routes...
  */
-Route::resource('practicantes', 'PracticanteController');
+Route::resource('practicantes', 'PracticanteController')->except(['destroy']);
 
 /*
  * programas Routes...
  */
-Route::resource('programas', 'ProgramaController');
+Route::resource('programas', 'ProgramaController')->except(['show']);
 
 /*
  * Roles Routes...
@@ -198,7 +205,7 @@ Route::resource('salidas', 'SalidaController');
 /*
  * Seguimientos Routes...
  */
-Route::resource('seguimientos', 'SeguimientoController');
+Route::resource('seguimientos', 'SeguimientoController')->except(['destroy']);
 
 /*
  * Tipo Empleados Routes...

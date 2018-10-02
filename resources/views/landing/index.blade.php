@@ -31,32 +31,41 @@
     <div class="row mb-4">
       <div class="col-md-4">
         <div class="card">
-           <div class="card-body">
-              <h5 class="card-title">Programas de Formación</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            @foreach($programas as $programa)
-              <div class="list-group list-group-flush" >
-                <div class="expansion-panel list-group-item">
-                    <div class="card" >
-                      <div class="card-body">
-                        <a aria-controls="collapseFour" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#{{'acordeon'. $loop->index}}" id="headingFour">
-                        {{ $programa->nomb_prog }}
-                          <div class="expansion-panel-icon ml-3 text-black-secondary">
-                            <i class="collapsed-show material-icons">keyboard_arrow_down</i>
-                            <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
-                          </div>
-                        </a>
-                        <div aria-labelledby="headingFour" class="collapse"  id="{{'acordeon'. $loop->index}}">
-                          <div class="expansion-panel-body">
-                            {{$programa->desc_prog}}
-                          </div>
-                        </div> 
-                      </div>
-                    </div>
+         <div class="card-header bg-light-3">
+            <h5 class="card-title">Programas de formación</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          </div>
+          <div class="list-group list-group-flush" id="accordionTwo">
+
+            @forelse ($programas as $programa)
+              <div class="expansion-panel list-group-item">
+                <a aria-controls="{{ 'collapse' . $loop->index }}" aria-expanded="false" class="expansion-panel-toggler collapsed" data-toggle="collapse" href="#{{ 'collapse' . $loop->index }}" id="{{ 'heading' . $loop->index }}">
+                  {{ $programa->nomb_prog }}
+                  <div class="expansion-panel-icon ml-3 text-black-secondary">
+                    <i class="collapsed-show material-icons">keyboard_arrow_down</i>
+                    <i class="collapsed-hide material-icons">keyboard_arrow_up</i>
+                  </div>
+                </a>
+                <div aria-labelledby="{{ 'heading' . $loop->index }}" class="collapse" data-parent="#accordionTwo" id="{{ 'collapse' . $loop->index }}">
+                  <div class="expansion-panel-body text-justify">
+                    {!! nl2br($programa->desc_prog) !!}
                   </div>
                 </div>
-            @endforeach
+              </div>
+            @empty
+              <div class="list-group-item">
+                <blockquote class="blockquote">
+                  <p class="typography-title">
+                    ¡No hay programas disponibles!
+                  </p>
+                  <p class="lead text-muted">
+                    Pronto llegarán nuevos programas.
+                  </p>
+                </blockquote>
+              </div>
+            @endforelse
+
+          </div>
         </div>
       </div>
       <div class="col-md-8">
@@ -141,13 +150,13 @@
               <p class="typography-subheading card-start">
                 <span class="chip" data-toggle="tooltip" title="Fecha de inicio">
                   <i class="chip-icon bg-primary">C</i>
-                  {{ optional($evento->inic_even)->format('l d, F Y \— h:i a') }}
+                  {{ optional($evento->inic_even)->format('l d, F Y \· h:i a') }}
                 </span>
               </p>
               <p class="typography-subheading card-end">
                 <span class="chip" data-toggle="tooltip" title="Fecha de clausura">
                   <i class="chip-icon bg-danger">T</i>
-                  {{ optional($evento->fina_even)->format('l d, F Y \— h:i a') }}
+                  {{ optional($evento->fina_even)->format('l d, F Y \· h:i a') }}
                 </span>
               </p>
             </div>
@@ -213,7 +222,7 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
-          <h5 class="card-header">Completa la información</h5>
+          <h5 class="card-header bg-light-2">Completa la información</h5>
           <div class="card-body">
             <form>
               <div class="form-group row">

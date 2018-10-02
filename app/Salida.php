@@ -2,25 +2,12 @@
 
 namespace App;
 
-use App\Scopes\SalidaScope;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Salida extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new SalidaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -71,7 +58,7 @@ class Salida extends Model
      */
     public function pagos()
     {
-        return $this->belongsToMany(Pago::class);
+        return $this->belongsToMany(Pago::class)->withTimestamps();
     }
 
     /*

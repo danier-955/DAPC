@@ -40,11 +40,12 @@ class AsignaturaController extends Controller
                     ->get();
 
         $grados = Grado::query()
-                        ->orderBy('abre_grad')
                         ->orderBy('nomb_grad')
+                        ->orderBy('abre_grad')
                         ->get();
 
         $asignaturas = Asignatura::query()
+                                ->with('docente', 'grado')
                                 ->nombre($request->nomb_asig)
                                 ->area($request->area_id)
                                 ->grado($request->grado_id)
@@ -62,13 +63,19 @@ class AsignaturaController extends Controller
      */
     public function create()
     {
+        $grados = Grado::query()
+                        ->orderBy('abre_grad')
+                        ->orderBy('nomb_grad')
+                        ->get();
+
+        $areas = Area::query()
+                    ->select('id', 'nomb_area')
+                    ->orderBy('nomb_area')
+                    ->get();
+
         $docentes = Docente::queryDocentes();
 
-        $grados = Grado::all();
-
-        $areas = Area::all();
-
-        return view('asignaturas.create',compact('areas','docentes','grados'));
+        return view('asignaturas.create',compact('areas', 'docentes', 'grados'));
     }
 
     /**
@@ -79,25 +86,22 @@ class AsignaturaController extends Controller
      */
     public function store(AsignaturaRequest $request)
     {
-
-         $request->validate();
+        $request->validate();
 
         try
         {
             $asignatura = Asignatura::create($request->all());
 
-            toast('¡La Asignatura ha sido registrado correctamente!', 'success', 'top-right');
+            toast('¡La asignatura ha sido registrada correctamente!', 'success', 'top-right');
 
             return redirect()->route('asignaturas.show', $asignatura->id);
         }
         catch (\Exception $e)
         {
-
-            toast('¡Se ha producido un error al registrar la Asignatura!', 'error', 'top-right');
+            toast('¡Se ha producido un error al registrar la asignatura!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }
-
     }
 
     /**
@@ -108,7 +112,9 @@ class AsignaturaController extends Controller
      */
     public function show(Asignatura $asignatura)
     {
-         return view('asignaturas.show',compact('asignatura'));
+        $asignatura->loadMissing('area', 'docente', 'grado');
+
+        return view('asignaturas.show', compact('asignatura'));
     }
 
     /**
@@ -119,13 +125,21 @@ class AsignaturaController extends Controller
      */
     public function edit(Asignatura $asignatura)
     {
-         $docentes = Docente::queryDocentes();
+        $asignatura->loadMissing('area', 'docente', 'grado');
 
-        $grados = Grado::all();
+        $grados = Grado::query()
+                        ->orderBy('abre_grad')
+                        ->orderBy('nomb_grad')
+                        ->get();
 
-        $areas = Area::all();
+        $areas = Area::query()
+                    ->select('id', 'nomb_area')
+                    ->orderBy('nomb_area')
+                    ->get();
 
-        return view('asignaturas.edit',compact('asignatura','areas','docentes','grados'));
+        $docentes = Docente::queryDocentes();
+
+        return view('asignaturas.edit',compact('asignatura', 'areas', 'docentes', 'grados'));
     }
 
     /**
@@ -138,20 +152,18 @@ class AsignaturaController extends Controller
     public function update(AsignaturaRequest $request, Asignatura $asignatura)
     {
         $request->validate();
+
         try
         {
             $asignatura->update($request->all());
 
-            toast('¡La asignatura ha sido registrado correctamente!', 'success', 'top-right');
+            toast('¡La asignatura ha sido actualizada correctamente!', 'success', 'top-right');
 
             return redirect()->route('asignaturas.show', $asignatura->id);
         }
-
         catch (\Exception $e)
         {
-            DB::rollback();
-
-            toast('¡Se ha producido un error al registrar la asignatura!', 'error', 'top-right');
+            toast('¡Se ha producido un error al actualizar la asignatura!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
         }

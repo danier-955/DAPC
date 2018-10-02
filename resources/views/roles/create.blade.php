@@ -7,12 +7,12 @@
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Roles y permisos</a></li>
     <li class="breadcrumb-item"><a href="{{ route('roles.create') }}">Registrar</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header bg-light-2">
         <h1 class="typography-headline">
             <i class="material-icons mr-1">security</i> Registrar roles y permisos
         </h1>
@@ -21,6 +21,12 @@
 
         <form method="post" action="{{ route('roles.store') }}" autocomplete="off">
             {{ csrf_field() }}
+
+            <blockquote class="blockquote my-3">
+              <p class="mb-0 typography-subheading">Información del rol</p>
+              <hr class="w-100">
+            </blockquote>
+
 
             <div class="form-row">
                 <div class="form-group col-md-3">

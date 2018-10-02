@@ -13,7 +13,8 @@ class CreateProgramasTable extends Migration
      */
     public function up()
     {
-        Schema::create('programas', function (Blueprint $table) {
+        Schema::create('programas', function (Blueprint $table)
+        {
             $table->uuid('id');
             $table->primary('id');
             $table->string('nomb_prog', 100)->unique();
@@ -21,8 +22,7 @@ class CreateProgramasTable extends Migration
             $table->char('administrativo_id', 36)->index();
             $table->timestamps();
 
-            $table->foreign('administrativo_id')->references('id')->on('administrativos')
-                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('administrativo_id')->references('id')->on('administrativos')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

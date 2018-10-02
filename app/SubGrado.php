@@ -2,25 +2,14 @@
 
 namespace App;
 
-use App\Scopes\SubGradoScope;
 use App\Traits\Uuids;
+use Illuminate\Support\Str;
 use Facades\App\Facades\Jornada;
 use Illuminate\Database\Eloquent\Model;
 
 class SubGrado extends Model
 {
     use Uuids;
-
-    /**
-     * Global scope
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new SubGradoScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -46,6 +35,24 @@ class SubGrado extends Model
     protected $casts = [
         'jorn_grad' => 'string',
     ];
+
+    /*
+    |----------------------------------------------------------------------
+    | Mutadores
+    |----------------------------------------------------------------------
+    |
+    */
+
+    /**
+     * Convierte la abreviación a mayuscula al momento de guardar.
+     *
+     * @var value
+     * @return void
+     */
+    public function setAbreSubgAttribute($value)
+    {
+        $this->attributes['abre_subg'] = Str::upper($value);
+    }
 
     /*
     |----------------------------------------------------------------------
@@ -81,7 +88,7 @@ class SubGrado extends Model
      */
     public function implementos()
     {
-        return $this->hasMany(Implemento::class);
+        return $this->hasMany(Implemento::class)->withTimestamps();
     }
 
     /**
@@ -101,7 +108,7 @@ class SubGrado extends Model
      */
     public function docentes()
     {
-        return $this->belongsToMany(Docente::class);
+        return $this->belongsToMany(Docente::class)->withTimestamps();
     }
 
     /**
@@ -111,7 +118,7 @@ class SubGrado extends Model
      */
     public function practicantes()
     {
-        return $this->belongsToMany(Practicante::class);
+        return $this->belongsToMany(Practicante::class)->withTimestamps();
     }
 
     /*
@@ -120,7 +127,7 @@ class SubGrado extends Model
     |----------------------------------------------------------------------
     |
     */
-   
+
     /**
      * Devuelve el nombre de la jornada
      *
@@ -130,48 +137,18 @@ class SubGrado extends Model
     {
         return optional(Jornada::find($this->jorn_grad))['texto'];
     }
-   
+
     /**
      * Devuelve el nombre del grado
      *
      * @return string
      */
     public function getGrado()
-    {  
-        if (!is_null($this->grado))
-        {
-            return optional($this->grado)->abre_grad . '&middot; Jornada ' . optional($this->grado)->getJornada();
-        }
-    }
-
-    /**
-     * Devuelve el nombre del subGrado
-     *
-     * @return string
-     */
-    public function getGradoNombre()
     {
         if (!is_null($this->grado))
         {
-            $subGrado = $this->grado->first();
-            $grado = $subGrado->grado;
-
-            return optional($grado)->abre_grad . ' &middot; ' . $subGrado->abre_subg . ' &middot; Jornada '. optional($grado)->getJornada();
+            return "{$this->grado->abre_grad} &middot; Jornada {$this->grado->getJornada()}";
         }
-    }
-
-    /**
-     * Devuelve el id del subGrado
-     *
-     * @return string
-     */
-    public function getSubGradoId()
-    {
-        if (!is_null($this->subGrados))
-        {
-            return $this->subGrados->first()->id;
-        }
-
     }
 
     /**
@@ -181,13 +158,10 @@ class SubGrado extends Model
      */
     public function getDirectorId()
     {
-        if (is_null($this->docentes))
+        if ($this->docentes->isNotEmpty())
         {
             return $this->docentes->first()->id;
-        }else{
-            return 'Sin director de Grupo';
         }
-
     }
 
     /**
@@ -196,16 +170,15 @@ class SubGrado extends Model
      * @return string
      */
     public function getDirectorNombre()
-    {   
-        if (!is_null($this->docentes))           
+    {
+        if ($this->docentes->isNotEmpty())
         {
             $docente = $this->docentes->first();
 
-            return optional($docente)->nomb_doce .' '. optional($docente)->pape_doce .' '. optional($docente)->sape_doce;
-        }else{
-            return '··· Sin director ···';        
+            return "{$docente->nomb_doce} {$docente->pape_doce} {$docente->sape_doce}";
         }
 
+        return '··· Sin director ···';
     }
 
     /*

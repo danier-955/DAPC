@@ -2,7 +2,7 @@
 	<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-hidden="true" id="showCalendario">
 		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header bg-light-2">
 					<h5 class="modal-title">
 						<i class="material-icons mr-1">event</i>
 						<span v-if="showing">Ver calendario</span>
@@ -15,49 +15,39 @@
 						<div class="form-row">
 							<div class="form-group col-md-12">
 								<label>Titulo</label>
-								<input type="text" v-model="seleccionado.titu_cale" class="form-control" required autofocus :class="{'is-invalid': messagesTitulo}">
-			                    <div class="invalid-feedback" v-if="messagesTitulo"
-			                    	v-text="errors.titu_cale[0]"></div>
+								<input type="text" v-model="seleccionado.titu_cale" class="form-control" required
+									autofocus :class="{'is-invalid': errors.exists('titu_cale')}">
+			                    <div class="invalid-feedback" v-text="errors.get('titu_cale')"></div>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-3">
 								<label>Fecha inicial</label>
-								<input type="text" id="fech_comi" v-model="seleccionado.fech_inic" class="form-control" required autofocus :class="{'is-invalid': messagesFechaInicial}">
-			                    <div class="invalid-feedback" v-if="messagesFechaInicial"
-			                    	v-text="errors.fech_inic[0]"></div>
+								<input type="text" id="fech_comi" v-model="seleccionado.fech_inic" class="form-control" required autofocus :class="{'is-invalid': errors.exists('fech_inic')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_inic')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Hora inicial</label>
-								<input type="text" id="hora_comi" v-model="seleccionado.hora_inic" class="form-control" required autofocus :class="{'is-invalid': messagesFechaInicial}">
-			                    <div class="invalid-feedback" v-if="messagesFechaInicial"
-			                    	v-text="errors.fech_inic[0]"></div>
+								<input type="text" id="hora_comi" v-model="seleccionado.hora_inic" class="form-control" required autofocus :class="{'is-invalid': errors.exists('fech_inic')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_inic')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Fecha final</label>
-								<input type="text" id="fech_term" v-model="seleccionado.fech_fina" class="form-control" required autofocus :class="{'is-invalid': messagesFechaFinal}">
-			                    <div class="invalid-feedback" v-if="messagesFechaFinal"
-			                    	v-text="errors.fech_fina[0]"></div>
+								<input type="text" id="fech_term" v-model="seleccionado.fech_fina" class="form-control" required autofocus :class="{'is-invalid': errors.exists('fech_fina')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_fina')"></div>
 							</div>
 							<div class="form-group col-md-3">
 								<label>Hora final</label>
-								<input type="text" id="hora_term" v-model="seleccionado.hora_fina" class="form-control" required autofocus :class="{'is-invalid': messagesFechaFinal}">
-			                    <div class="invalid-feedback" v-if="messagesFechaFinal"
-			                    	v-text="errors.fech_fina[0]"></div>
+								<input type="text" id="hora_term" v-model="seleccionado.hora_fina" class="form-control" required autofocus :class="{'is-invalid': errors.exists('fech_fina')}">
+			                    <div class="invalid-feedback" v-text="errors.get('fech_fina')"></div>
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<label>Descripción</label>
-								<textarea v-model="seleccionado.desc_cale" class="form-control" rows="6" required autofocus :class="{'is-invalid': messagesDescripcion}"></textarea>
-			                    <div class="invalid-feedback" v-if="messagesDescripcion"
-			                    	v-text="errors.desc_cale[0]"></div>
-							</div>
-							<div class="form-group col-md-6">
-								<label>Finalidad</label>
-								<textarea v-model="seleccionado.fina_cale" class="form-control" rows="6" required autofocus :class="{'is-invalid': messagesFinalidad}"></textarea>
-			                    <div class="invalid-feedback" v-if="messagesFinalidad"
-			                    	v-text="errors.fina_cale[0]"></div>
+								<textarea v-model="seleccionado.desc_cale" class="form-control" rows="4" required
+									autofocus :class="{'is-invalid': errors.exists('desc_cale')}"></textarea>
+			                    <div class="invalid-feedback" v-text="errors.get('desc_cale')"></div>
 							</div>
 						</div>
 						<hr class="w-100 mt-2 mb-0">
@@ -115,19 +105,12 @@
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="form-group col-md-6">
+							<div class="form-group col-md-12">
 								<p class="typography-subheading font-weight-bold my-1">
 									Descripción
 								</p>
 								<p class="typography-subheading text-justify my-1"
 									v-html="descripcion"></p>
-							</div>
-							<div class="form-group col-md-6">
-								<p class="typography-subheading font-weight-bold my-1">
-									Finalidad
-								</p>
-								<p class="typography-subheading text-justify my-1"
-									v-html="finalidad"></p>
 							</div>
 						</div>
 					</div>
@@ -137,7 +120,7 @@
 							@click.prevent="editarCalendario">
 							Editar
 						</button>
-						<button type="button" class="btn btn-secondary" @click.prevent="closeModal">
+						<button type="button" class="btn btn-dark" @click.prevent="closeModal">
 							Ok
 						</button>
 					</div>
@@ -151,7 +134,7 @@
   	import {Mixins} from './mixins/mixins';
 
 	export default {
-		name: 'Create',
+		name: 'Edit',
 	    props: {
 	      	administrativoId: {
 		        type: String,
@@ -189,29 +172,29 @@
     	mixins: [Mixins],
 		methods: {
 			addListeners () {
-				let self = this;
+				let vm = this;
 				$(document).ready(function()
 		        {
 		          	$('#fech_comi').change(function (e) {
 		            	e.preventDefault();
-		            	self.$emit('changeDates', 'fech_inic', $('#fech_comi').val());
+		            	vm.$emit('changeDates', 'fech_inic', $('#fech_comi').val());
 		          	});
 		          	$('#hora_comi').change(function (e) {
 		            	e.preventDefault();
-		            	self.$emit('changeDates', 'hora_inic', $('#hora_comi').val());
+		            	vm.$emit('changeDates', 'hora_inic', $('#hora_comi').val());
 		          	});
 		          	$('#fech_term').change(function (e) {
 		            	e.preventDefault();
-		            	self.$emit('changeDates', 'fech_fina', $('#fech_term').val());
+		            	vm.$emit('changeDates', 'fech_fina', $('#fech_term').val());
 		          	});
 		          	$('#hora_term').change(function (e) {
 		            	e.preventDefault();
-		            	self.$emit('changeDates', 'hora_fina', $('#hora_term').val());
+		            	vm.$emit('changeDates', 'hora_fina', $('#hora_term').val());
 		          	});
 		        });
 			},
 			setDatetimepicker () {
-				let self = this;
+				let vm = this;
 				$(document).ready(function()
 				{
 					/**
@@ -248,7 +231,7 @@
         				...bootstrapMaterialDatePickerOptions,
 				    });
 
-					$('#fech_term').bootstrapMaterialDatePicker('setMinDate', self.seleccionado.fech_inic);
+					$('#fech_term').bootstrapMaterialDatePicker('setMinDate', vm.seleccionado.fech_inic);
 
 				    /**
 					 * Timepicker
@@ -278,7 +261,6 @@
 					fech_fina: `${this.seleccionado.fech_fina} ${this.seleccionado.hora_fina}`,
 					jorn_cale: this.seleccionado.jorn_cale,
 					desc_cale: this.seleccionado.desc_cale,
-					fina_cale: this.seleccionado.fina_cale,
 				});
 		    },
 			destroyCalendario () {
@@ -312,9 +294,6 @@
 		    descripcion ()  {
 				return this.seleccionado.desc_cale.replace(new RegExp('\\n', 'g'), '<br>');
 		    },
-		    finalidad ()  {
-				return this.seleccionado.fina_cale.replace(new RegExp('\\n', 'g'), '<br>');
-		    }
 		},
 	}
 </script>

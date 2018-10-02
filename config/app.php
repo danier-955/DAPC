@@ -25,6 +25,7 @@ return [
     'landing' => [
         'galeria' => env('TAKE_GALERIA', 5),
         'evento' => env('TAKE_EVENTO', 6),
+        'programa' => env('TAKE_PROGRAMA', 6),
     ],
 
     /*

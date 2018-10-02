@@ -9,12 +9,12 @@
 	<li class="breadcrumb-item"><a href="{{ route('asignaturas.show', $asignatura->id) }}">Ver asignatura</a></li>
     <li class="breadcrumb-item"><a href="{{ route('asignaturas.fechas.index', $asignatura->id) }}">Fechas extracurriculares</a></li>
     <li class="breadcrumb-item"><a href="{{ route('asignaturas.fechas.show', [$asignatura->id, $fecha->id]) }}">Ver</a></li>
-	<li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+	<li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header d-flex align-items-center justify-content-between">
+	<div class="card-header d-flex align-items-center justify-content-between bg-light-2">
 		<h1 class="typography-headline">
 			<i class="material-icons mr-1">date_range</i> Ver fecha extracurricular
 		</h1>

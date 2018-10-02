@@ -20,8 +20,7 @@ $factory->define(App\Calendario::class, function (Faker $faker)
         'fech_inic' => $fech_inic,
         'fech_fina' => $fech_inic->addDays(7),
         'jorn_cale' => $administrativo->jorn_admi,
-        'desc_cale' => $faker->paragraphs(4, true),
-        'fina_cale' => $faker->paragraphs(4, true),
+        'desc_cale' => $faker->paragraphs(2, true),
         'administrativo_id' => $administrativo->id,
     ];
 });

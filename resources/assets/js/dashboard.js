@@ -165,27 +165,27 @@ $(document).ready(function()
 	 */
 	let datatablesOptions = {
 		language: {
-		    "sProcessing":     "Procesando...",
-		    "sLengthMenu":     "Mostrar _MENU_ registros",
-		    "sZeroRecords":    "No se encontraron resultados",
-		    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-		    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-		    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-		    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-		    "sInfoPostFix":    "",
-		    "sSearch":         "Buscar:",
-		    "sUrl":            "",
-		    "sInfoThousands":  ",",
-		    "sLoadingRecords": "Cargando...",
-		    "oPaginate": {
-		        "sFirst":    "Primero",
-		        "sLast":     "Último",
-		        "sNext":     "Siguiente",
-		        "sPrevious": "Anterior"
+		    'sProcessing':     'Procesando...',
+		    'sLengthMenu':     'Mostrar _MENU_ registros',
+		    'sZeroRecords':    'No se encontraron resultados',
+		    'sEmptyTable':     'Ningún dato disponible en esta tabla',
+		    'sInfo':           'Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros',
+		    'sInfoEmpty':      'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    'sInfoFiltered':   '(filtrado de un total de _MAX_ registros)',
+		    'sInfoPostFix':    '',
+		    'sSearch':         'Buscar:',
+		    'sUrl':            '',
+		    'sInfoThousands':  ',',
+		    'sLoadingRecords': 'Cargando...',
+		    'oPaginate': {
+		        'sFirst':    'Primero',
+		        'sLast':     'Último',
+		        'sNext':     'Siguiente',
+		        'sPrevious': 'Anterior'
 		    },
-		    "oAria": {
-		        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-		        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+		    'oAria': {
+		        'sSortAscending':  ': Activar para ordenar la columna de manera ascendente',
+		        'sSortDescending': ': Activar para ordenar la columna de manera descendente'
 		    }
 		}
 	};
@@ -200,7 +200,7 @@ $(document).ready(function()
     /**
 	 * Deshabilitar los permisos si el rol tiene acceso total permitido
 	 */
-	$("input:radio[name=special]").change(function(e)
+	$('input:radio[name="special"]').change(function(e)
     {
         e.preventDefault();
 
@@ -232,7 +232,7 @@ $(document).ready(function()
 
         swal({
         	title: '¿Está seguro de eliminar?',
-          	text: "¡No podrás revertir esto!",
+          	text: '¡No podrás revertir esto!',
           	type: 'warning',
           	showCancelButton: true,
           	// confirmButtonColor: '#f44336',
@@ -293,16 +293,16 @@ $(document).ready(function()
      * Select2 global
      */
     $('.select2').select2({
-        language: "es",
-        theme: "bootstrap4",
+        language: 'es',
+        theme: 'bootstrap4',
     });
 
     /**
      * Select2 para acudiente (en registrar estudiante)
      */
-    $("#acudiente_id").select2({
-        language: "es",
-        theme: "bootstrap4",
+    $('#acudiente_id').select2({
+        language: 'es',
+        theme: 'bootstrap4',
         ajax: {
             url: `${document.head.querySelector('meta[name="url"]').content}/acudientes/buscar`,
             dataType: 'json',
@@ -316,7 +316,7 @@ $(document).ready(function()
             },
             processResults: function (data, params)
             {
-                data.items.push({id: '', text: '---  acudiente ---'});
+                data.items.push({id: '', text: '--- Seleccione ---'});
                 params.page = params.page || 1;
                 return {
                     results: data.items,
@@ -330,52 +330,54 @@ $(document).ready(function()
         escapeMarkup: function (markup) { return markup; },
         minimumInputLength: 3,
     });
-    readonlyAcudiente();
-    $("#acudiente_id").change(function(e)
+
+    $('#acudiente_id').change(function(e)
     {
         e.preventDefault();
-        readonlyAcudiente();
-    });
 
-    function readonlyAcudiente()
-    {
-        var acudiente_id = $.trim($("#acudiente_id").val());
-        if (acudiente_id == null || acudiente_id == "")
+        let id = $.trim($('#acudiente_id').val());
+
+        if (typeof(id) === 'undefined' || id === null || id === '')
         {
-            $("#tipo_docu").prop("disabled", false);
-            $("#docu_acud").prop("readonly", false);
-            $("#nomb_acud").prop("readonly", false);
-            $("#pape_acud").prop("readonly", false);
-            $("#dire_acud").prop("readonly", false);
-            $("#tele_acud").prop("readonly", false);
-            $("#emai_acud").prop("readonly", false);
-            $("#pare_acud").prop("disabled", false);
+            $('#tipo_docu').prop('disabled', false);
+            $('#docu_acud').prop('readonly', false);
+            $('#nomb_acud').prop('readonly', false);
+            $('#pape_acud').prop('readonly', false);
+            $('#sape_acud').prop('readonly', false);
+            $('#dire_acud').prop('readonly', false);
+            $('#tele_acud').prop('readonly', false);
+            $('#corr_acud').prop('readonly', false);
+            $('#prof_acud').prop('readonly', false);
+            $('#sexo_acud').prop('disabled', false);
+            $('#barr_acud').prop('readonly', false);
+            $('.selectpicker').selectpicker('refresh');
         }
         else
         {
-            $("#tipo_docu").prop("disabled", true);
-            $("#docu_acud").prop("readonly", true);
-            $("#nomb_acud").prop("readonly", true);
-            $("#pape_acud").prop("readonly", true);
-            $("#sape_acud").prop("readonly", true);
-            $("#dire_acud").prop("readonly", true);
-            $("#tele_acud").prop("readonly", true);
-            $("#corr_acud").prop("readonly", true);
-            $("#pare_acud").prop("disabled", true);
-            $("#prof_acud").prop("disabled", true);
-            $("#sexo_acud").prop("disabled", true);
-            $("#barr_acud").prop("disabled", true);
-            $("select#tipo_docu").prop('selectedIndex', 0);
-            $("select#pare_acud").prop('selectedIndex', 0);
-            $("select#sexo_acud").prop('selectedIndex', 0);
-            $("#docu_acud").val("");
-            $("#nomb_acud").val("");
-            $("#pape_acud").val("");
-            $("#dire_acud").val("");
-            $("#tele_acud").val("");
-            $("#corr_acud").val("");
+            $('#tipo_docu').prop('disabled', true);
+            $('#docu_acud').prop('readonly', true);
+            $('#nomb_acud').prop('readonly', true);
+            $('#pape_acud').prop('readonly', true);
+            $('#sape_acud').prop('readonly', true);
+            $('#dire_acud').prop('readonly', true);
+            $('#tele_acud').prop('readonly', true);
+            $('#corr_acud').prop('readonly', true);
+            $('#prof_acud').prop('readonly', true);
+            $('#sexo_acud').prop('disabled', true);
+            $('#barr_acud').prop('readonly', true);
+            $('select#tipo_docu').prop('selectedIndex', 0);
+            $('select#sexo_acud').prop('selectedIndex', 0);
+            $('.selectpicker').selectpicker('refresh');
+            $('#docu_acud').val('');
+            $('#nomb_acud').val('');
+            $('#pape_acud').val('');
+            $('#sape_acud').val('');
+            $('#dire_acud').val('');
+            $('#tele_acud').val('');
+            $('#corr_acud').val('');
+            $('#prof_acud').val('');
+            $('#barr_acud').val('');
         }
-        return false;
-    }
+    });
 
 });

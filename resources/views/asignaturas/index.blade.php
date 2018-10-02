@@ -1,20 +1,20 @@
 @extends('layouts.app')
-@section('title', 'Registrar asignatura')
+@section('title', 'Asignaturas')
 
 @section('content')
 	<nav aria-label="breadcrumb">
 	  <ol class="breadcrumb bg-white shadow-1">
 	    <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
 	    <li class="breadcrumb-item"><a href="{{ route('asignaturas.index') }}">Asignaturas</a></li>
-	    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+	    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
 	  </ol>
 	</nav>
 	<div class="card">
-		<div class="card-header d-flex align-items-center justify-content-between">
+		<div class="card-header d-flex align-items-center justify-content-between bg-light-2">
 			<h1 class="typography-headline">
 				<i class="material-icons mr-1">book</i> Asignaturas
 			</h1>
-			@can('estudiantes.create')
+			@can('asignaturas.create')
 				@include('partials.button_create', ['route' => route('asignaturas.create')])
 			@endcan
 		</div>
@@ -24,7 +24,7 @@
 				<div class="row clearfix">
 					<div class="col-sm-12 col-md-4 col-lg-4">
 						<div class="form-group">
-							<label>Nombre asignatura</label>
+							<label>Nombre</label>
 							<input type="text" name="nomb_asig"
 								class="form-control {{ $errors->has('nomb_asig') ? 'is-invalid' : '' }}"
 								value="{{ old('nomb_asig') ? old('nomb_asig') : Request::get('nomb_asig') }}">
@@ -110,7 +110,9 @@
 										@can('asignaturas.show')
 											@include('partials.button_show', ['route' => route('asignaturas.show', $asignatura->id)])
 										@endcan
-										@include('partials.button_edit', ['btnSm' => 'btn-sm', 'route' => route('asignaturas.edit', $asignatura->id)])
+										@can('asignaturas.edit')
+											@include('partials.button_edit', ['btnSm' => 'btn-sm', 'route' => route('asignaturas.edit', $asignatura->id)])
+										@endcan
 									</td>
 								</tr>
 							@endforeach

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Area;
 use App\Http\Requests\BusquedaRequest;
-use App\Http\Requests\AreasRequest;
+use App\Http\Requests\AreaRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AreaController extends Controller
 {
@@ -21,7 +20,6 @@ class AreaController extends Controller
         $this->middleware('has.permission:areas.index')->only(['index']);
         $this->middleware('has.permission:areas.create')->only(['create', 'store']);
         $this->middleware('has.permission:areas.edit')->only(['edit', 'update']);
-        $this->middleware('has.permission:areas.destroy')->only(['destroy']);
     }
 
     /**
@@ -31,10 +29,13 @@ class AreaController extends Controller
      */
     public function index(BusquedaRequest $request)
     {
+        $request->validate();
+
         $areas = Area::query()
-                            ->area($request->nomb_area)
-                            ->orderBy('nomb_area')
-                            ->paginate();
+                    ->nombre($request->nomb_area)
+                    ->orderBy('nomb_area')
+                    ->paginate();
+
         return view('areas.index' , compact('areas'));
     }
 
@@ -54,16 +55,17 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AreasRequest $request)
+    public function store(AreaRequest $request)
     {
         $request->validate();
+
         try
         {
             $area = Area::create($request->all());
 
-            toast('¡La Area ha sido registrado correctamente!', 'success', 'top-right');
+            toast('La area ha sido registrada correctamente!', 'success', 'top-right');
 
-            return redirect()->route('areas.index', $area->id);
+            return redirect()->route('areas.index');
         }
         catch (\Exception $e)
         {
@@ -80,8 +82,8 @@ class AreaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Area $area)
-    { 
-         return view('areas.edit' , compact('area'));
+    {
+         return view('areas.edit', compact('area'));
     }
 
     /**
@@ -91,23 +93,20 @@ class AreaController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function update(AreasRequest $request, Area $area)
+    public function update(AreaRequest $request, Area $area)
     {
         $request->validate();
-        
-        try {
-        
+
+        try
+        {
             $area->update($request->all());
 
-            toast('¡La area ha sido actualizado correctamente!', 'success', 'top-right');
+            toast('¡La area ha sido actualizada correctamente!', 'success', 'top-right');
 
-            return redirect()->route('areas.index', $area->id);
-
-        } 
+            return redirect()->route('areas.index');
+        }
         catch (\Exception $e)
         {
-            DB::rollback();
-
             toast('¡Se ha producido un error al actualizar la area!', 'error', 'top-right');
 
             return redirect()->back()->withInput();
@@ -122,19 +121,6 @@ class AreaController extends Controller
      */
     public function destroy(Area $area)
     {
-        try
-        {
-            $area->delete();
 
-            toast('¡el area ha sido eliminada correctamente!', 'success', 'top-right');
-
-            return redirect()->route('areas.index');
-        }
-        catch (\Exception $e)
-        {  
-            toast('¡Se ha producido un error al eliminar el area!', 'error', 'top-right');
-
-            return redirect()->back()->withInput();
-        }
     }
 }

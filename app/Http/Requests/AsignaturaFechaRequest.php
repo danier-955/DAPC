@@ -26,8 +26,8 @@ class AsignaturaFechaRequest extends FormRequest
     public function rules()
     {
         return [
-            'fech_inic' => 'required|date_format:Y-m-d h:i a',
-            'fech_fina' => 'required|date_format:Y-m-d h:i a|after_or_equal:fech_inic',
+            'fech_inic' => 'required|date_format:"Y-m-d h:i a"',
+            'fech_fina' => 'required|date_format:"Y-m-d h:i a"|after_or_equal:fech_inic',
             'peri_nota' => 'required|in:'. implode(',', Periodo::indexados()),
             'tipo_nota' => 'required|in:'. implode(',', TipoNota::indexados()),
             'moti_nota' => 'required|min:3|max:250|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',

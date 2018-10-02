@@ -43,6 +43,7 @@ class RoleRequest extends FormRequest
         }
 
         return [
+
             /**
              * Role
              */
@@ -52,7 +53,7 @@ class RoleRequest extends FormRequest
             'description'   => 'nullable|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 
             /**
-             * Permissions
+             * Permission
              */
             'permissions.*' => 'nullable|string|exists:permissions,id',
         ];

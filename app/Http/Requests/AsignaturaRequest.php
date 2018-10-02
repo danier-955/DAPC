@@ -24,19 +24,15 @@ class AsignaturaRequest extends FormRequest
     public function rules()
     {
         return [
-            'nomb_asig'     => 'required|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
-            'peso_asig'     => 'required|min:1|max:2|regex:/^[0-9]+$/i',
-            'log1_asig'     => 'nullable|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-            'log2_asig'     => 'nullable|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-            'log3_asig'     => 'nullable|min:3|max:300|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-            'log4_asig'     => 'nullable|min:3|max:300|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-
-            /**
-             *Relaciones
-             */
-            'area_id' => 'required|string|exists:areas,id',
+            'nomb_asig'  => 'required|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'peso_asig'  => 'required|numeric|between:1,100|regex:/^[0-9]+$/i',
+            'log1_asig'  => 'nullable|min:3|max:2000|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
+            'log2_asig'  => 'nullable|min:3|max:2000|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
+            'log3_asig'  => 'nullable|min:3|max:2000|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
+            'log4_asig'  => 'nullable|min:3|max:2000|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
+            'grado_id'   =>'required|string|exists:grados,id',
+            'area_id'    => 'required|string|exists:areas,id',
             'docente_id' => 'nullable|string|exists:docentes,id',
-            'grado_id'  =>'required|string|exists:grados,id',
         ];
     }
 }

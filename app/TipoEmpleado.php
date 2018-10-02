@@ -49,7 +49,7 @@ class TipoEmpleado extends Model
      */
     public function pagos()
     {
-        return $this->belongsToMany(Pago::class);
+        return $this->belongsToMany(Pago::class)->withTimestamps();
     }
 
     /*

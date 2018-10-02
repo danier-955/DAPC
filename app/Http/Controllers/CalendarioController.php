@@ -65,9 +65,8 @@ class CalendarioController extends Controller
             if ($request->ajax())
             {
                 $calendarios = Calendario::query()
-                                        ->withoutGlobalScopes()
                                         ->with('administrativo:id,nomb_admi,pape_admi,sape_admi')
-                                        ->select('calendarios.id as idCalendario', 'titu_cale as title', 'fech_inic as start', 'fech_fina as end', 'jorn_cale', 'desc_cale', 'fina_cale', 'administrativo_id')
+                                        ->select('calendarios.id as idCalendario', 'titu_cale as title', 'fech_inic as start', 'fech_fina as end', 'jorn_cale', 'desc_cale', 'administrativo_id')
                                         ->fecha($request->start, $request->end)
                                         ->jornada()
                                         ->get()

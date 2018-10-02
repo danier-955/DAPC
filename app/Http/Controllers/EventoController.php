@@ -35,13 +35,13 @@ class EventoController extends Controller
         $request->validate();
 
         $eventos = Evento::query()
-                        ->withoutGlobalScopes()
                         ->titulo($request->titu_even)
                         ->mostrada($request->filled('most_even'))
                         ->fecha($request->fech_inic, $request->fech_fina)
                         ->autenticado()
                         ->jornada()
-                        ->orderByDesc('updated_at')
+                        ->orderByDesc('inic_even')
+                        ->orderByDesc('fina_even')
                         ->orderBy('titu_even')
                         ->paginate();
 
@@ -104,6 +104,8 @@ class EventoController extends Controller
      */
     public function show(Evento $evento)
     {
+        $evento->loadMissing('administrativo');
+
         return view('eventos.show', compact('evento'));
     }
 

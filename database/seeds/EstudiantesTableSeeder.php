@@ -10,8 +10,8 @@ class EstudiantesTableSeeder extends Seeder
      *
      * @return void
      */
-      public function run()
+     public function run()
     {
-    	factory(Estudiante::class, 20)->create();
+    	factory(Estudiante::class, 100)->create();
     }
 }

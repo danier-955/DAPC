@@ -61,7 +61,7 @@ class Area extends Model
      * @param string $nomb_area
      * @return collection
      */
-    public function scopeArea($query, $nomb_area)
+    public function scopeNombre($query, $nomb_area)
     {
         if (isset($nomb_area))
         {

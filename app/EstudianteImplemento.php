@@ -2,32 +2,13 @@
 
 namespace App;
 
+use App\Traits\DatesTranslator;
 use App\Traits\Uuids;
-use Illuminate\Database\Eloquent\Model;
-use App\Scopes\EstudianteImplementoScope;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class EstudianteImplemento extends Model
+class EstudianteImplemento extends Pivot
 {
-    use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new EstudianteImplementoScope);
-    }
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'estudiante_implemento';
+    use Uuids, DatesTranslator;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -42,7 +23,7 @@ class EstudianteImplemento extends Model
      * @var array
      */
     protected $fillable = [
-        'cant_util', 'estudiante_id', 'implemento_id',
+        'cant_util', 'ano_util', 'estudiante_id', 'implemento_id',
     ];
 
     /*
@@ -78,6 +59,20 @@ class EstudianteImplemento extends Model
     |----------------------------------------------------------------------
     |
     */
+
+    /**
+     * Get the name of the "updated at" column.
+     *
+     * @return string
+     */
+    public function getUpdatedAtColumn()
+    {
+        if ($this->pivotParent) {
+            return $this->pivotParent->getUpdatedAtColumn();
+        }
+
+        return static::UPDATED_AT;
+    }
 
     /**
      * Devuelve el nombre del implemento

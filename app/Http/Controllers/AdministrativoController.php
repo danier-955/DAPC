@@ -152,7 +152,7 @@ class AdministrativoController extends Controller
      */
     public function show(Administrativo $administrativo)
     {
-        $administrativo->loadMissing('empleado.tipoEmpleado');
+        $administrativo->loadMissing('user', 'empleado.tipoEmpleado');
 
         return view('administrativos.show', compact('administrativo'));
     }

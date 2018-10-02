@@ -7,12 +7,12 @@
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Roles y permisos</a></li>
     <li class="breadcrumb-item"><a href="{{ route('roles.show', $role->id) }}">Ver</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-    <div class="card-header d-flex align-items-center justify-content-between">
+    <div class="card-header d-flex align-items-center justify-content-between bg-light-2">
         <h1 class="typography-headline">
             <i class="material-icons mr-1">group</i> Ver roles y permisos
         </h1>
@@ -93,19 +93,11 @@
                         @foreach($role->permissions->chunk(15) as $chunk)
                             @foreach($chunk as $permission)
                                 <tr>
-                                    <td>{{ $iteration }}</td>
+                                    <td>{{ $iteration++ }}</td>
                                     <td>{{ $permission->name }}</td>
                                     {{-- <td>{{ $permission->slug }}</td> --}}
                                     <td>{{ $permission->description }}</td>
                                 </tr>
-                                @if ($loop->iteration === $loop->count)
-                                    @php
-                                        $iteration = $loop->count
-                                    @endphp
-                                @endif
-                                @php
-                                    $iteration++
-                                @endphp
                             @endforeach
                         @endforeach
                     </tbody>

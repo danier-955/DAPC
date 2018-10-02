@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\AsistenciaScope;
 use App\Traits\Uuids;
 use Carbon\Carbon;
 use Facades\App\Facades\Periodo;
@@ -11,18 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class Asistencia extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new AsistenciaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.

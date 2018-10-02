@@ -1,20 +1,20 @@
 @extends('layouts.app')
-@section('title', 'Registrar areas')
+@section('title', 'Registrar alumno')
 
 @section('content')
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb bg-white shadow-1">
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('alumnos.index') }}">Matricula  de alumnos </a></li>
+    <li class="breadcrumb-item"><a href="{{ route('alumnos.index') }}">Alumnos</a></li>
     <li class="breadcrumb-item"><a href="{{ route('alumnos.create') }}">Registrar</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header">
+	<div class="card-header bg-light-2">
 		<h1 class="typography-headline">
-			<i class="material-icons mr-1">assignment_ind</i> Registrar alumno
+			<i class="material-icons mr-1">people</i> Registrar alumno
 		</h1>
 	</div>
 	<div class="card-body">
@@ -22,17 +22,20 @@
 		<form method="post" action="{{ route('alumnos.store') }}" autocomplete="off">
 			{{ csrf_field() }}
 
-	
-			<div class="form-row">
+			<blockquote class="blockquote my-3">
+			  <p class="mb-0 typography-subheading">Información del alumno</p>
+			  <hr class="w-100">
+			</blockquote>
 
+			<div class="form-row">
 				<div class="form-group col-md-3">
-		    		<label >Tipo  de Documento</label>			    		
-	    			<select  name="tipo_docu" class="selectpicker dropdown-dense show-tick selectbox form-control {{ $errors->has('tipo_docu') ? 'is-invalid' : '' }}" >
+		    		<label >Tipo de documento</label>
+	    			<select name="tipo_docu" class="selectpicker dropdown-dense show-tick selectbox form-control {{ $errors->has('tipo_docu') ? 'is-invalid' : '' }}" required autofocus>
 	    				@empty(old('tipo_docu'))
 		                    <option value="">··· Seleccione ···</option>
 		                @endempty
-	      				@foreach(Documento::alumno() as $tipo)
-	      					<option value="{{ $tipo }}" 
+	      				@foreach(Documento::tipos() as $tipo)
+	      					<option value="{{ $tipo }}"
 		      					@if (old('tipo_docu') === $tipo){{ 'selected' }}@endif>
 		      					{{ $tipo }}
 		      				</option>
@@ -44,18 +47,17 @@
 	                    </div>
 	               	@endif
 				</div>
-
 				<div class="form-group col-md-3">
-				    	<label>No. Identificación</label>
-				   		 <input type="number" name="docu_alum" class="form-control {{ $errors->has('docu_alum') ? 'is-invalid' : '' }}" value="{{ old('docu_alum') }}" required autofocus>
-		                @if ($errors->has('docu_alum'))
-		                    <div class="invalid-feedback">
-		                    	{{ $errors->first('docu_alum') }}
-		                    </div>
-		               	@endif
-				  	</div>
+			    	<label>No. Identificación</label>
+			   		<input type="number" name="docu_alum" class="form-control {{ $errors->has('docu_alum') ? 'is-invalid' : '' }}" value="{{ old('docu_alum') }}" required autofocus>
+	                @if ($errors->has('docu_alum'))
+	                    <div class="invalid-feedback">
+	                    	{{ $errors->first('docu_alum') }}
+	                    </div>
+	               	@endif
+			  	</div>
 				<div class="form-group col-md-3">
-			    	<label>Nombres Alumno</label>
+			    	<label>Nombres</label>
 			   		<input type="text" name="nomb_alum" class="form-control {{ $errors->has('nomb_alum') ? 'is-invalid' : '' }}" value="{{ old('nomb_alum') }}" required autofocus>
 	                @if ($errors->has('nomb_alum'))
 	                    <div class="invalid-feedback">
@@ -63,7 +65,6 @@
 	                    </div>
 	               	@endif
 			  	</div>
-
 			  	<div class="form-group col-md-3">
 			    	<label>Primer apellido</label>
 			   		<input type="text" name="pape_alum" class="form-control {{ $errors->has('pape_alum') ? 'is-invalid' : '' }}" value="{{ old('pape_alum') }}" required autofocus>
@@ -74,8 +75,8 @@
 	               	@endif
 			  	</div>
 			</div>
-			<div class="form-row">
 
+			<div class="form-row">
 				<div class="form-group col-md-3">
 			    	<label>Segundo apellido</label>
 			   		<input type="text" name="sape_alum" class="form-control {{ $errors->has('sape_alum') ? 'is-invalid' : '' }}" value="{{ old('sape_alum') }}" autofocus>
@@ -85,7 +86,6 @@
 	                    </div>
 	               	@endif
 			  	</div>
-
 				<div class="form-group col-md-3">
 				    <label>Sexo</label>
 				    <select name="sexo_alum" class="selectpicker dropdown-dense show-tick selectbox form-control {{ $errors->has('sexo_alum') ? 'is-invalid' : '' }}" required autofocus>
@@ -105,7 +105,6 @@
 	                    </div>
 	               	@endif
 		 		</div>
-
 		 		<div class="form-group col-md-3">
 		            <label>Fecha de nacimiento</label>
 		            <input type="text" name="fech_naci" class="datepicker form-control {{ $errors->has('fech_naci') ? 'is-invalid' : '' }}" value="{{ old('fech_naci') }}" required autofocus>
@@ -113,9 +112,8 @@
 		                <div class="invalid-feedback">
 		                  {{ $errors->first('fech_naci') }}
 		                </div>
-		              @endif
+		            @endif
 		        </div>
-
 		        <div class="form-group col-md-3">
 			    	<label>Dirección de residencia</label>
 			   		<input type="text" name="dire_alum" class="form-control {{ $errors->has('dire_alum') ? 'is-invalid' : '' }}" value="{{ old('dire_alum') }}" required autofocus>
@@ -126,6 +124,7 @@
 	               	@endif
 			  	</div>
 			</div>
+
 		    <div class="form-row">
 		    	<div class="form-group col-md-3">
 			    	<label>Barrio de residencia</label>
@@ -136,17 +135,6 @@
 	                    </div>
 	               	@endif
 			  	</div>
-
-			  	<div class="form-group col-md-3">
-			    	<label>Nombre del acudiente</label>
-			   		<input type="text" name="nomb_acud" class="form-control {{ $errors->has('nomb_acud') ? 'is-invalid' : '' }}" value="{{ old('nomb_acud') }}" autofocus>
-	                @if ($errors->has('nomb_acud'))
-	                    <div class="invalid-feedback">
-	                    	{{ $errors->first('nomb_acud') }}
-	                    </div>
-	               	@endif
-			  	</div>
-
 			  	<div class="form-group col-md-3">
 			    	<label>Correo electrónico</label>
 			   		<input type="email" name="corr_alum" class="form-control {{ $errors->has('corr_alum') ? 'is-invalid' : '' }}" value="{{ old('corr_alum') }}" required autofocus>
@@ -156,27 +144,33 @@
 	                    </div>
 	               	@endif
 			 	</div>
-
 			 	<div class="form-group col-md-3">
 			    	<label>Teléfono</label>
-			   		<input type="number" name="tele_alum" class="form-control {{ $errors->has('tele_alum') ? 'is-invalid' : '' }}" value="{{ old('tele_alum') }}" autofocus>
+			   		<input type="number" name="tele_alum" class="form-control {{ $errors->has('tele_alum') ? 'is-invalid' : '' }}" value="{{ old('tele_alum') }}" required autofocus>
 	                @if ($errors->has('tele_alum'))
 	                    <div class="invalid-feedback">
 	                    	{{ $errors->first('tele_alum') }}
 	                    </div>
 	               	@endif
 			  	</div>
-
+			  	<div class="form-group col-md-3">
+			    	<label>Nombre del acudiente</label>
+			   		<input type="text" name="nomb_acud" class="form-control {{ $errors->has('nomb_acud') ? 'is-invalid' : '' }}" value="{{ old('nomb_acud') }}" required autofocus>
+	                @if ($errors->has('nomb_acud'))
+	                    <div class="invalid-feedback">
+	                    	{{ $errors->first('nomb_acud') }}
+	                    </div>
+	               	@endif
+			  	</div>
 			</div>
 
 			<div class="form-row">
 		 		<div class="form-group col-md-3">
-		    		<label >Parentesco</label>			    		
-	    			<select  name="pare_acud" class="selectpicker dropdown-dense show-tick selectbox form-control {{ $errors->has('pare_acud') ? 'is-invalid' : '' }}" >
+		    		<label>Parentesco del acudiente</label>
+	    			<select  name="pare_acud" class="selectpicker dropdown-dense show-tick selectbox form-control {{ $errors->has('pare_acud') ? 'is-invalid' : '' }}" required autofocus>
 	    				@empty(old('pare_acud'))
 		                    <option value="">··· Seleccione ···</option>
 		                @endempty
-	      			
 	      				@foreach(Parentesco::asociativos() as $parentesco)
 				      		<option value="{{ $parentesco['id'] }}"
 				      		@if (old('pare_acud') === $parentesco['id']){{ 'selected' }}@endif>
@@ -190,19 +184,54 @@
 	                    </div>
 	               	@endif
 				</div>
+			</div>
 
+			<div class="form-row">
 				<div class="form-group col-md-12">
-		            <label>Observacion</label>
-		            <textarea name="obse_alum" rows="3" class="form-control {{ $errors->has('obse_alum') ? 'is-invalid' : '' }}" autofocus>
-		              {{ old('obse_alum') }}
-		            </textarea>
-	              @if ($errors->has('obse_alum'))
+		            <label>Observaciones</label>
+		            <textarea name="obse_alum" rows="3" class="form-control {{ $errors->has('obse_alum') ? 'is-invalid' : '' }}" autofocus>{{ old('obse_alum') }}</textarea>
+	              	@if ($errors->has('obse_alum'))
 	                  <div class="invalid-feedback">
 	                    {{ $errors->first('obse_alum') }}
 	                  </div>
-	              @endif
+	              	@endif
 	           </div>
 			</div>
+
+			<blockquote class="blockquote my-4">
+	          <p class="mb-0 typography-subheading">Programas de formación asociados</p>
+	          <hr class="w-100">
+	        </blockquote>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+
+                    <ul class="list-group list-group-flush">
+                        @foreach($programas->chunk(15) as $chunk)
+                            @foreach($chunk as $programa)
+                                <li class="list-group-item list-group-item-action">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox"
+                                            id="customCheck{{ $programa->id }}" name="programas[{{ $programa->id }}]"
+                                            class="custom-control-input {{ $errors->has('programas.' . $programa->id) ? 'is-invalid' : '' }}"
+                                             value="{{ $programa->id }}"
+                                            {{ old('programas.' . $programa->id) === $programa->id ? 'checked' : '' }}>
+                                        <label class="custom-control-label" for="customCheck{{ $programa->id }}">
+                                            {{ $programa->nomb_prog }}
+                                        </label>
+                                        <div class="text-muted">{{ $programa->desc_prog }}</div>
+                                        @if ($errors->has('programas.' . $programa->id))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('programas.' . $programa->id) }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </li>
+                            @endforeach
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
 
 			<div class="form-row">
 				<div class="form-group col-md-12 text-center">
@@ -211,7 +240,9 @@
 			  		<button type="submit" class="btn btn-primary">Registrar</button>
 			  	</div>
 			</div>
+
 		</form>
+
 	</div>
 </div>
-@endsection()
+@endsection

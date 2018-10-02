@@ -2,23 +2,13 @@
 
 namespace App;
 
+use App\Traits\DatesTranslator;
 use App\Traits\Uuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Programa extends Model
 {
-    use Uuids;
-
-    /**
-     * Global scope
-     * @return void
-     */
-    /*protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new ImplementoScope);
-    }*/
+    use Uuids, DatesTranslator;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -33,18 +23,18 @@ class Programa extends Model
      * @var array
      */
     protected $fillable = [
-        'nomb_prog', 'desc_prog',
+        'nomb_prog', 'desc_prog', 'administrativo_id',
     ];
 
-        /*
+    /*
     |----------------------------------------------------------------------
     | Relaciones
     |----------------------------------------------------------------------
     |
     */
 
-      /**
-     * Evento tiene un administrativo.
+    /**
+     * Programa tiene un administrativo.
      *
      * @return Model
      */
@@ -53,41 +43,43 @@ class Programa extends Model
         return $this->belongsTo(Administrativo::class);
     }
 
+    /**
+     * Programa tienen muchos alumnos.
+     *
+     * @return Model
+     */
+    public function alumnos()
+    {
+        return $this->belongsToMany(Alumno::class)->withTimestamps();
+    }
 
-       /*
+    /*
     |----------------------------------------------------------------------
     | Métodos
     |----------------------------------------------------------------------
     |
     */
 
-   
 
-
-
-
-
-
-      /*
+    /*
     |----------------------------------------------------------------------
     | Scopes
     |----------------------------------------------------------------------
     |
     */
 
-       /**
-     * Scope nombre util
+    /**
+     * Scope nombre
      * @param collection $query
      * @param string $nomb_prog
      * @return collection
      */
-    public function scopePrograma($query, $nomb_prog)
+    public function scopeNombre($query, $nomb_prog)
     {
         if (isset($nomb_prog))
         {
             return $query->where('nomb_prog', 'LIKE', "%{$nomb_prog}%");
         }
     }
-
 
 }

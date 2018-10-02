@@ -39,13 +39,11 @@ class UsuarioController extends Controller
         $request->validate();
 
         $roles = Role::query()
-                    ->withoutGlobalScopes()
                     ->orderBy('name')
                     ->get();
 
         $usuarios = User::query()
                     ->with('roles')
-                    // ->with('acudiente:id,user_id', 'administrativo:id,user_id', 'docente:id,user_id', 'estudiante:id,user_id')
                     ->nombre($request->nombre)
                     ->estado($request->estado)
                     ->rol($request->rol)
@@ -66,16 +64,16 @@ class UsuarioController extends Controller
     public function show(User $usuario)
     {
         /*if ($usuario->esAcudiente()) {
-            $usuario->load('acudiente');
+            $usuario->loadMissing('acudiente');
         }
         if ($usuario->esAdministrativo()) {
-            $usuario->load('administrativo');
+            $usuario->loadMissing('administrativo');
         }
         if ($usuario->esDocente()) {
-            $usuario->load('docente');
+            $usuario->loadMissing('docente');
         }
         if ($usuario->esEstudiante()) {
-            $usuario->load('estudiante');
+            $usuario->loadMissing('estudiante');
         }*/
 
         $usuario->loadMissing('roles.permissions');
@@ -156,7 +154,7 @@ class UsuarioController extends Controller
                 /**
                  * Actualizar el cargo del usuario de acuerdo al rol si el cargo resultantes es diferente de null.
                  */
-                $usuario->load('administrativo');
+                $usuario->loadMissing('administrativo');
 
                 $cargo = $this->getCargoValue(Role::findOrFail($request->role)->id);
 

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\EventoScope;
 use App\Traits\DatesTranslator;
 use App\Traits\Uuids;
 use Caffeinated\Shinobi\Facades\Shinobi;
@@ -15,18 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class Evento extends Model
 {
     use Uuids, DatesTranslator;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new EventoScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -117,7 +104,7 @@ class Evento extends Model
      */
     public function alumnos()
     {
-        return $this->belongsToMany(Alumno::class);
+        return $this->belongsToMany(Alumno::class)->withTimestamps();
     }
 
     /**
@@ -127,7 +114,7 @@ class Evento extends Model
      */
     public function pagos()
     {
-        return $this->belongsToMany(Pago::class);
+        return $this->belongsToMany(Pago::class)->withTimestamps();
     }
 
     /*

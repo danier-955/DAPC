@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\CalendarioScope;
 use App\Traits\Uuids;
 use Caffeinated\Shinobi\Facades\Shinobi;
 use Carbon\Carbon;
@@ -13,18 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 class Calendario extends Model
 {
     use Uuids;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new CalendarioScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -39,8 +26,7 @@ class Calendario extends Model
      * @var array
      */
     protected $fillable = [
-        'titu_cale', 'fech_inic', 'fech_fina', 'desc_cale', 'fina_cale', 'jorn_cale',
-        'administrativo_id',
+        'titu_cale', 'fech_inic', 'fech_fina', 'desc_cale', 'jorn_cale', 'administrativo_id',
     ];
 
     /**

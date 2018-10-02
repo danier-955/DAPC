@@ -118,7 +118,7 @@ class PracticanteController extends Controller
      */
     public function show(Practicante $practicante)
     {
-        $practicante->load('subGrados.grado');
+        $practicante->loadMissing('subGrados.grado');
 
         $seguimientos = Seguimiento::query()
                                     ->where('practicante_id', $practicante->id)
@@ -127,7 +127,6 @@ class PracticanteController extends Controller
                                     ->paginate();
 
         // $seguimientos = $practicante->docentes()
-        //                             ->withoutGlobalScopes()
         //                             ->paginate();
 
         return view('practicantes.show', compact('practicante', 'seguimientos'));
@@ -147,7 +146,7 @@ class PracticanteController extends Controller
                         ->orderBy('jorn_grad')
                         ->get();
 
-        $practicante->load('subGrados.grado');
+        $practicante->loadMissing('subGrados.grado');
 
         return view('practicantes.edit', compact('practicante','grados'));
     }

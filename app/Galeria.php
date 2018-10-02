@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Scopes\GaleriaScope;
 use App\Traits\DatesTranslator;
 use App\Traits\Uuids;
 use Caffeinated\Shinobi\Facades\Shinobi;
@@ -14,18 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 class Galeria extends Model
 {
     use Uuids, DatesTranslator;
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new GaleriaScope);
-    }
 
     /**
      * Indicates if the IDs are auto-incrementing.

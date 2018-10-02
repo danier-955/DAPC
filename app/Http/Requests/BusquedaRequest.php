@@ -28,6 +28,11 @@ class BusquedaRequest extends FormRequest
      */
     public function rules()
     {
+        if (request()->filled('jorn_grad'))
+        {
+            $jorn_grad = 'nullable|in:'. implode(',', jornada('indexados'));
+        }
+
         return [
 
             /**
@@ -72,8 +77,8 @@ class BusquedaRequest extends FormRequest
             'titu_gale'     => 'nullable|min:5|max:100|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 
             /**
-            *Administrativos
-            */
+             * Administrativos
+             */
             'docu_admi'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_admi'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_admi'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
@@ -82,7 +87,7 @@ class BusquedaRequest extends FormRequest
             /**
              * Fechas
              */
-            'ano_fech'      => 'nullable|date_format:Y',
+            'ano_fech'      => 'nullable|date_format:"Y"',
             'peri_nota'     => 'nullable|in:'. implode(',', Periodo::indexados()),
             'tipo_nota'     => 'nullable|in:'. implode(',', TipoNota::indexados()),
 
@@ -91,43 +96,48 @@ class BusquedaRequest extends FormRequest
              */
             'titu_even'     => 'nullable|min:5|max:100|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 
-             /**
-            *Estudiante
-            */
-            'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',     
+            /**
+             * Estudiante
+             */
+            'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_estu'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_estu'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'sub_grado_id'  => 'nullable|string|exists:sub_grados,id',
 
-             /**
-            *Acudiente
-            */
-            'docu_acud'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',     
+            /**
+             * Acudiente
+             */
+            'docu_acud'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_acud'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_acud'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'sape_acud'  => 'nullable|string|exists:sub_grados,id',
+
             /**
-            *Utiles
-            */
-            'nomb_util'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',    
+             * Grados
+             */
+            'nomb_grad'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'jorn_grad'     => $jorn_grad ?? 'nullable',
+
+            /**
+             * Utiles
+             */
+            'nomb_util'     => 'nullable|min:3|max:50|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'sub_grado_id'  => 'nullable|string|exists:sub_grados,id',
 
             /**
-            *Estudiante Utiles
-            */
+             * Estudiante Utiles
+             */
             'estudiante_id'  => 'nullable|string|exists:estudiante_id,id',
 
-              /**
-            *Programa de formacion
-            */
-            'nomb_prog'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',   
+            /**
+             * Programa de formacion
+             */
+            'nomb_prog'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
 
             /**
-            *Areas
-            */
-            'nomb_area'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',   
-
-             /**
+             * Areas
+             */
+            'nomb_area'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
 
             /**
              * Asignaturas
@@ -136,10 +146,10 @@ class BusquedaRequest extends FormRequest
             'area_id'       => 'nullable|string|exists:areas,id',
             'grado_id'      => 'nullable|string|exists:grados,id',
 
-                    /**
-            *Alumno
-            */
-            'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',     
+            /**
+             * Alumno
+             */
+            'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_alum'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_alum'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
         ];

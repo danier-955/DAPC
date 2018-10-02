@@ -6,12 +6,12 @@
   <ol class="breadcrumb bg-white shadow-1">
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('bitacoras.index') }}">Bitácoras</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header">
+	<div class="card-header bg-light-2">
 		<h1 class="typography-headline">
 			<i class="material-icons mr-1">library_books</i> Bitácoras
 		</h1>

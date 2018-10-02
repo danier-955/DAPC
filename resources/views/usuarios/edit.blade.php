@@ -7,12 +7,12 @@
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{ route('usuarios.index') }}">Usuarios</a></li>
     <li class="breadcrumb-item"><a href="{{ route('usuarios.edit', $usuario->id) }}">Editar</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Estas Aquí</li>
+    <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>
 </nav>
 
 <div class="card">
-	<div class="card-header">
+	<div class="card-header bg-light-2">
 		<h1 class="typography-headline">
 			<i class="material-icons mr-1">supervised_user_circle</i> Editar usuario
 		</h1>
