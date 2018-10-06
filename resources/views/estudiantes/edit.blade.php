@@ -5,7 +5,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb bg-white shadow-1">
     <li class="breadcrumb-item"><a href="{{ route('inicio') }}">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('estudiantes.index') }}">Estudiante</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('estudiantes.index') }}">Estudiantes</a></li>
     <li class="breadcrumb-item"><a href="{{ route('estudiantes.edit', $estudiante->id) }}">Editar</a></li>
     <li class="breadcrumb-item active" aria-current="page">Estas aquí</li>
   </ol>

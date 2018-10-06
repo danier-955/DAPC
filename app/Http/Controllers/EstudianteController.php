@@ -53,6 +53,7 @@ class EstudianteController extends Controller
                             ->nombre($request->nomb_estu)
                             ->primerApellido($request->pape_estu)
                             ->subGrado($request->sub_grado_id)
+                            ->autenticado()
                             ->orderBy('nomb_estu')
                             ->orderBy('pape_estu')
                             ->orderBy('sub_grado_id')

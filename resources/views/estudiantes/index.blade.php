@@ -110,7 +110,7 @@
 						@foreach($estudiantes as $estudiante)
 							<tr>
 								<td>{{ $loop->iteration }}</td>
-								<td>{{ $estudiante->docu_estu }}</td>
+								<td>{{ "{$estudiante->tipo_docu} {$estudiante->docu_estu}" }}</td>
 								<td>{{ "{$estudiante->nomb_estu} {$estudiante->pape_estu} {$estudiante->sape_estu}" }}</td>
 								<td>{{ $estudiante->getAcudiente() }}</td>
 								<td>{{ $estudiante->getSubGradoNombre() }}</td>

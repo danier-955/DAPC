@@ -15,7 +15,7 @@ class ImplementosTableSeeder extends Seeder
     {
     	factory(Implemento::class, 100)->create()->each(function ($implemento)
     	{
-    		$implemento->subGrados()->sync(SubGrado::all()->random(5)->pluck('id'));
+    		$implemento->subGrados()->sync(SubGrado::all()->random(15)->pluck('id'));
         });
     }
 }

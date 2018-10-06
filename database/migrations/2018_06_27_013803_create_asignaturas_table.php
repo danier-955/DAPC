@@ -18,6 +18,7 @@ class CreateAsignaturasTable extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->string('nomb_asig', 50);
+            $table->string('inte_hora', 1)->nullable();
             $table->tinyInteger('peso_asig')->unsigned()->default(100);
             $table->text('log1_asig')->nullable();
             $table->text('log2_asig')->nullable();

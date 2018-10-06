@@ -108,7 +108,7 @@
 			<div class="form-row">
 		 		<div class="form-group col-md-12">
 			    	<label>Logros primer perido</label>
-			    	<textarea name="log1_asig" rows="3" class="form-control {{ $errors->has('log1_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log1_asig', $asignatura->log1_asig) }}</textarea>
+			    	<textarea name="log1_asig" rows="5" class="form-control {{ $errors->has('log1_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log1_asig', $asignatura->log1_asig) }}</textarea>
 	                @if ($errors->has('log1_asig'))
 	                    <div class="invalid-feedback">
 	                    	{{ $errors->first('log1_asig') }}
@@ -120,7 +120,7 @@
 			<div class="form-row">
 		 		<div class="form-group col-md-12">
 			    	<label>Logros segundo perido</label>
-			    	<textarea name="log2_asig" rows="3" class="form-control {{ $errors->has('log2_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log2_asig', $asignatura->log2_asig) }}</textarea>
+			    	<textarea name="log2_asig" rows="5" class="form-control {{ $errors->has('log2_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log2_asig', $asignatura->log2_asig) }}</textarea>
 	                @if ($errors->has('log2_asig'))
 	                    <div class="invalid-feedback">
 	                    	{{ $errors->first('log2_asig') }}
@@ -132,7 +132,7 @@
 			<div class="form-row">
 		 		<div class="form-group col-md-12">
 			    	<label>Logros tercer perido</label>
-			    	<textarea name="log3_asig" rows="3" class="form-control {{ $errors->has('log3_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log3_asig', $asignatura->log3_asig) }}</textarea>
+			    	<textarea name="log3_asig" rows="5" class="form-control {{ $errors->has('log3_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log3_asig', $asignatura->log3_asig) }}</textarea>
 	                @if ($errors->has('log3_asig'))
 	                    <div class="invalid-feedback">
 	                    	{{ $errors->first('log3_asig') }}
@@ -144,7 +144,7 @@
 			<div class="form-row">
 		 		<div class="form-group col-md-12">
 			    	<label>Logros cuarto perido</label>
-			    	<textarea name="log4_asig" rows="3" class="form-control {{ $errors->has('log4_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log4_asig', $asignatura->log4_asig) }}</textarea>
+			    	<textarea name="log4_asig" rows="5" class="form-control {{ $errors->has('log4_asig') ? 'is-invalid' : '' }}" autofocus>{{ old('log4_asig', $asignatura->log4_asig) }}</textarea>
 	                @if ($errors->has('log4_asig'))
 	                    <div class="invalid-feedback">
 	                    	{{ $errors->first('log4_asig') }}

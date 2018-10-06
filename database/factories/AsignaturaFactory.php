@@ -8,7 +8,8 @@ use Faker\Generator as Faker;
 $factory->define(App\Asignatura::class, function (Faker $faker)
 {
     return [
-        'nomb_asig'  => $faker->text(20),
+        'nomb_asig'  => $faker->text(11),
+        'inte_hora'  => $faker->randomNumber(1),
         'peso_asig'  => $faker->randomNumber(2),
         'log1_asig'  => $faker->text,
         'log2_asig'  => $faker->text,

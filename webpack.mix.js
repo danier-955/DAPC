@@ -36,9 +36,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
 	.babel([
 		'resources/assets/js/dashboard.js',
 	], 'public/js/dashboard.js');
-	/*.babel([
-		'resources/assets/js/calendario.js',
-	], 'public/js/calendario.js');*/
 
 /*
  * Copy Files
@@ -48,6 +45,7 @@ mix.copy('resources/assets/img/landing.jpg', 'public/img/landing.jpg')
 	.copy('resources/assets/img/dashboard.jpg', 'public/img/dashboard.jpg')
 	.copy('resources/assets/img/sin-galeria.jpg', 'public/img/sin-galeria.jpg')
 	.copy('resources/assets/img/loader-page.gif', 'public/img/loader-page.gif')
+	/*.copyDirectory('node_modules/@mdi/font/fonts', 'public/fonts')*/
    	.sourceMaps();
 
 if (mix.inProduction()) {

@@ -43,7 +43,7 @@ class AlumnoRequest extends FormRequest
             'barr_alum' => 'nullable|min:3|max:50|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'corr_alum' => 'required|email|max:50|unique:alumnos,corr_alum,' . optional($this->route('alumno'))->id,
             'tele_alum' => 'required|min:7|max:10|regex:/^[0-9]+$/i',
-            'nomb_acud' => 'required|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'nomb_acud' => 'required|min:3|max:100|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pare_acud' => 'required|in:'. implode(',', Parentesco::indexados()),
             'obse_alum' => 'nullable|min:3|max:500|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 

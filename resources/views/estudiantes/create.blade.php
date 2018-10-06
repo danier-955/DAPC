@@ -234,8 +234,7 @@
 		                    </div>
 		               	@endif
 			 		</div>
-
-			        {{-- <div class="form-group col-md-4">
+			        <div class="form-group col-md-4">
 			            <label>Certificado de grados (archivo)</label>
 			            <input type="file" name="copi_grad" class="form-control {{ $errors->has('copi_grad') ? 'is-invalid' : '' }}" value="{{ old('copi_grad') }}" required autofocus>
 			            @if ($errors->has('copi_grad'))
@@ -252,10 +251,10 @@
 			                {{ $errors->first('carn_vacu') }}
 			              </div>
 			             @endif
-			        </div> --}}
+			        </div>
 			    </div>
 
-				{{-- <div class="form-row">
+				<div class="form-row">
 			        <div class="form-group col-md-6">
 			            <label>Fotografía (archivo)</label>
 			            <input type="file" name="foto_estu" class="form-control {{ $errors->has('foto_estu') ? 'is-invalid' : '' }}" value="{{ old('foto_estu') }}" required autofocus>
@@ -274,7 +273,7 @@
 			              </div>
 			             @endif
 			        </div>
-			    </div> --}}
+			    </div>
 
 				<div class="form-row">
 			        <div class="form-group col-md-12">

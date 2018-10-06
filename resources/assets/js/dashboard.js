@@ -331,6 +331,9 @@ $(document).ready(function()
         minimumInputLength: 3,
     });
 
+    /**
+     * Deshabilitar los inputs y selects si se selecciona un acudiente ren registrar estudiante
+     */
     $('#acudiente_id').change(function(e)
     {
         e.preventDefault();
@@ -377,6 +380,66 @@ $(document).ready(function()
             $('#corr_acud').val('');
             $('#prof_acud').val('');
             $('#barr_acud').val('');
+        }
+    });
+
+    /**
+     * Cargar las asignaturas al elegir un subgrado
+     */
+    $('.cargar-asignaturas').change(function(e)
+    {
+        e.preventDefault();
+        let subgrado_id = $(this).val();
+        let asignatura_id = $('#asignatura_id');
+
+        if (typeof(asignatura_id) !== 'undefined')
+        {
+            asignatura_id.empty()
+                        .append($('<option value="">··· Seleccione ···</option>'))
+                        .prop('disabled', true)
+                        .selectpicker('refresh');
+
+            if (subgrado_id !== null && subgrado_id !== '')
+            {
+                axios.get(`/subgrados/${subgrado_id}/asignaturas`).then(response =>
+                {
+                    let asignaturas = response.data.asignaturas;
+
+                    if (asignaturas.length > 0)
+                    {
+                        asignatura_id.empty();
+                    }
+
+                    for (let asignatura of asignaturas)
+                    {
+                        asignatura_id.append(
+                            $(`<option value="${asignatura.id}">${asignatura.nomb_asig}</option>`)
+                        );
+                    }
+
+                    asignatura_id.prop('disabled', false)
+                                .selectpicker('refresh');
+                })
+                .catch(error =>
+                {
+                    swal({
+                        title: error.response.data.message,
+                        type: 'error',
+                        toast: true,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        position: 'top-right'
+                    });
+
+                    asignatura_id.prop('disabled', false)
+                                .selectpicker('refresh');
+                });
+            }
+            else
+            {
+                asignatura_id.prop('disabled', false)
+                                .selectpicker('refresh');
+            }
         }
     });
 

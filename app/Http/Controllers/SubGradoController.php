@@ -201,4 +201,37 @@ class subgradoController extends Controller
     {
         //
     }
+
+    /**
+     * Devuelve el listado de asignaturas pertenecientes al subgrado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\SubGrado  $subgrado
+     * @return \Illuminate\Http\Response
+     */
+    public function asignatura(Request $request, SubGrado $subgrado)
+    {
+        if ($request->ajax())
+        {
+            try
+            {
+                $subgrado->loadMissing('grado');
+
+                $asignaturas = $subgrado->grado
+                                        ->asignaturas()
+                                        ->select('id', 'nomb_asig')
+                                        ->orderBy('nomb_asig')
+                                        ->get()
+                                        ->toArray();
+
+                return response()->json(['asignaturas' => $asignaturas], 200);
+            }
+            catch (\Exception $e)
+            {
+                return response()->json([
+                    'message' => '¡Se ha producido un error al cargar las asignaturas del grado!'
+                ], 400);
+            }
+        }
+    }
 }

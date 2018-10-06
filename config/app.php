@@ -30,6 +30,40 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Escalas Nota Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'escala' => [
+        'bajo' => [
+            'min' => env('ESCALA_BAJO_MIN', 0.0),
+            'max' => env('ESCALA_BAJO_MAX', 2.99),
+            'corta' => env('ESCALA_BAJO_FULL', 'BJ'),
+            'larga' => env('ESCALA_BAJO_SHORT', 'Bajo'),
+        ],
+        'basico' => [
+            'min' => env('ESCALA_BASICO_MIN', 3.0),
+            'max' => env('ESCALA_BASICO_MAX', 3.99),
+            'corta' => env('ESCALA_BASICO_SHORT', 'BA'),
+            'larga' => env('ESCALA_BASICO_FULL', 'Básico'),
+        ],
+        'alto' => [
+            'min' => env('ESCALA_ALTO_MIN', 4.0),
+            'max' => env('ESCALA_ALTO_MAX', 4.59),
+            'corta' => env('ESCALA_ALTO_SHORT', 'AL'),
+            'larga' => env('ESCALA_ALTO_FULL', 'Alto'),
+        ],
+        'superior' => [
+            'min' => env('ESCALA_SUPERIOR_MIN', 4.6),
+            'max' => env('ESCALA_SUPERIOR_MAX', 5.0),
+            'corta' => env('ESCALA_SUPERIOR_SHORT', 'SP'),
+            'larga' => env('ESCALA_SUPERIOR_FULL', 'Superior'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -255,10 +289,11 @@ return [
          */
         'Cargo' => Facades\App\Facades\Cargo::class,
         'Documento' => Facades\App\Facades\Documento::class,
+        'Escala' => Facades\App\Facades\Escala::class,
         'Estado' => Facades\App\Facades\Estado::class,
         'Jornada' => Facades\App\Facades\Jornada::class,
-        'Parentesco' => Facades\App\Facades\Parentesco::class,
         'Operacion' => Facades\App\Facades\Operacion::class,
+        'Parentesco' => Facades\App\Facades\Parentesco::class,
         'Periodo' => Facades\App\Facades\Periodo::class,
         'Peticion' => Facades\App\Facades\Peticion::class,
         'Saldo' => Facades\App\Facades\Saldo::class,
@@ -269,7 +304,6 @@ return [
         'TipoNota' => Facades\App\Facades\TipoNota::class,
         'TipoPago' => Facades\App\Facades\TipoPago::class,
         'Visible' => Facades\App\Facades\Visible::class,
-
     ],
 
 ];

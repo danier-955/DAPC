@@ -40,7 +40,6 @@ class AsignaturaController extends Controller
                     ->get();
 
         $grados = Grado::query()
-                        ->orderBy('nomb_grad')
                         ->orderBy('abre_grad')
                         ->get();
 

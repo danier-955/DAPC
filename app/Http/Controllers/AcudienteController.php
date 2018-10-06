@@ -43,6 +43,7 @@ class AcudienteController extends Controller
                                 ->nombre($request->nomb_acud)
                                 ->primerApellido($request->pape_acud)
                                 ->segundoApellido($request->sape_acud)
+                                ->autenticado()
                                 ->orderBy('docu_acud')
                                 ->orderBy('nomb_acud')
                                 ->orderBy('pape_acud')

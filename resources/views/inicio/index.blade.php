@@ -10,6 +10,7 @@
 </nav>
 
 <div class="alert alert-danger typography-subheading">
+  * Donde se carguen grados, validar que solo cargue el grado de acuerdo a su usuario (especialmente si es estudiante, docente o acudiente).<br>
   * Validar al registrar y editar que el nombre de la materia no se repita en el mismo grado, y que la suma del peso de las materias con la misma area no supere el 100%.<br>
   * Validar al registrar y editar que la abreviación del grado no se repita de acuerdo a la jornada.<br>
   * Validar al registrar y editar que la abreviación del subgrado no se repita de acuerdo al grado.<br>

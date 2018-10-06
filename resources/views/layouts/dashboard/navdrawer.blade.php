@@ -45,7 +45,12 @@
 
         @include('layouts.dashboard.navdrawer.acudientes')
 
-        <div class="navdrawer-divider"></div>
+        @canatleast([
+          'grados.index', 'grados.create', 'areas.index', 'areas.create', 'asignaturas.index',
+          'asignaturas.create', 'notas.index', 'notas.create'
+        ])
+          <div class="navdrawer-divider"></div>
+        @endcanatleast
 
         @include('layouts.dashboard.navdrawer.grados')
 
@@ -53,7 +58,15 @@
 
         @include('layouts.dashboard.navdrawer.asignaturas')
 
-        <div class="navdrawer-divider"></div>
+        @include('layouts.dashboard.navdrawer.notas')
+
+        @canatleast([
+          'galerias.index', 'galerias.create', 'calendarios.index', 'eventos.index', 'eventos.create',
+          'programas.index', 'programas.create', 'alumnos.index', 'alumnos.create', 'pasantias.index',
+          'pasantias.create'
+        ])
+          <div class="navdrawer-divider"></div>
+        @endcanatleast
 
         @include('layouts.dashboard.navdrawer.galerias')
 
@@ -67,7 +80,11 @@
 
         @include('layouts.dashboard.navdrawer.pasantias')
 
-        <div class="navdrawer-divider"></div>
+        @canatleast([
+          'implementos.index', 'implementos.create', 'inventarios.index', 'inventarios.create'
+        ])
+          <div class="navdrawer-divider"></div>
+        @endcanatleast
 
         @include('layouts.dashboard.navdrawer.implementos')
 

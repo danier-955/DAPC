@@ -5,7 +5,9 @@ namespace App;
 use App\Acudiente;
 use App\Events\UsuarioRegistrado;
 use App\Traits\Uuids;
+use Caffeinated\Shinobi\Facades\Shinobi;
 use Facades\App\Facades\Sexo;
+use Facades\App\Facades\SpecialRole;
 use Illuminate\Database\Eloquent\Model;
 
 class Acudiente extends Model
@@ -176,6 +178,19 @@ class Acudiente extends Model
                     ->orWhere('nomb_acud', 'LIKE', "%{$sear_acud}%")
                     ->orWhere('pape_acud', 'LIKE', "%{$sear_acud}%")
                     ->orWhere('sape_acud', 'LIKE', "%{$sear_acud}%");
+    }
+
+    /**
+     * Scope usuario autenticado
+     * @param collection $query
+     * @return collection
+     */
+    public function scopeAutenticado($query)
+    {
+        if (Shinobi::isRole(SpecialRole::acudiente()))
+        {
+            return $query->where('id', acudiente('id'));
+        }
     }
 
 }

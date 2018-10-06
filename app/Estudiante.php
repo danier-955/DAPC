@@ -259,12 +259,7 @@ class Estudiante extends Model
 
         if (Shinobi::isRole(SpecialRole::estudiante()))
         {
-            $usuario = auth()->user()->load('estudiante');
-
-            if (optional($usuario->estudiante)->exists())
-            {
-                $estudiantes->where('id', $usuario->estudiante->id);
-            }
+            $estudiantes->where('id', estudiante('id'));
         }
 
         return $estudiantes->get();
@@ -326,11 +321,29 @@ class Estudiante extends Model
      * @param string $sub_grado_id
      * @return collection
      */
-    public function scopeSubgrado($query, $sub_grado_id)
+    public function scopeSubGrado($query, $sub_grado_id)
     {
         if (isset($sub_grado_id))
         {
             return $query->where('sub_grado_id', $sub_grado_id);
         }
     }
+
+    /**
+     * Scope usuario autenticado
+     * @param collection $query
+     * @return collection
+     */
+    public function scopeAutenticado($query)
+    {
+        if (Shinobi::isRole(SpecialRole::estudiante()))
+        {
+            return $query->where('id', estudiante('id'));
+        }
+        elseif (Shinobi::isRole(SpecialRole::acudiente()))
+        {
+            return $query->where('acudiente_id', acudiente('id'));
+        }
+    }
+
 }

@@ -31,6 +31,32 @@ function docente($campo = null)
 }
 
 /**
+ * Devuelve el modelo estudiante asociado al usuario autenticado.
+ *
+ * @param string  $campo
+ * @return \App\Estudiante  $estudiante
+ */
+function estudiante($campo = null)
+{
+    $usuario = auth()->user()->loadMissing('estudiante');
+
+    return is_null($campo) ? optional($usuario->estudiante) : optional($usuario->estudiante)->{$campo};
+}
+
+/**
+ * Devuelve el modelo acudiente asociado al usuario autenticado.
+ *
+ * @param string  $campo
+ * @return \App\Acudiente  $acudiente
+ */
+function acudiente($campo = null)
+{
+    $usuario = auth()->user()->loadMissing('acudiente');
+
+    return is_null($campo) ? optional($usuario->acudiente) : optional($usuario->acudiente)->{$campo};
+}
+
+/**
  * Devuelve el nombre del acudiente.
  *
  * @param string  $id

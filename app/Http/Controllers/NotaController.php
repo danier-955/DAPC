@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Asignatura;
+use App\Grado;
+use App\Http\Requests\BusquedaRequest;
 use App\Nota;
+use App\SubGrado;
 use Illuminate\Http\Request;
 
 class NotaController extends Controller
@@ -15,6 +19,10 @@ class NotaController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        // $this->middleware('has.permission:notas.index')->only(['index']);
+        // $this->middleware('has.permission:notas.show')->only(['show']);
+        // $this->middleware('has.permission:notas.create')->only(['create', 'store']);
+        // $this->middleware('has.permission:notas.edit')->only(['edit', 'update']);
     }
 
     /**
@@ -22,9 +30,36 @@ class NotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(BusquedaRequest $request)
     {
-        //
+        $grados = Grado::query()
+                        ->with('subGrados')
+                        ->orderBy('abre_grad')
+                        ->get();
+
+        if ($request->filled('sub_grado_id') && $request->filled('asignatura_id'))
+        {
+            $asignaturas = Asignatura::query()
+                                    ->select('id', 'nomb_asig')
+                                    ->whereHas('grado', function ($queryG) use ($request)
+                                    {
+                                        $queryG->whereHas('subGrados', function ($queryS) use ($request)
+                                        {
+                                            $queryS->where('id', $request->sub_grado_id);
+                                        });
+                                    })
+                                    ->orderBy('nomb_asig')
+                                    ->get();
+
+            $notas = Nota::query()
+                        ->with('estudiante')
+                        ->autenticado()
+                        ->where('asignatura_id', $request->asignatura_id)
+                        ->where('ano_nota', now()->year)
+                        ->paginate();
+        }
+
+        return view('notas.index', compact('grados', 'asignaturas', 'notas'));
     }
 
     /**

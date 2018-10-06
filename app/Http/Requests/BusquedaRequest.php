@@ -33,6 +33,11 @@ class BusquedaRequest extends FormRequest
             $jorn_grad = 'nullable|in:'. implode(',', jornada('indexados'));
         }
 
+        if (request()->routeIs('notas.index'))
+        {
+            $asignatura_id = 'nullable|required_with:sub_grado_id|string|exists:asignaturas,id';
+        }
+
         return [
 
             /**
@@ -47,8 +52,8 @@ class BusquedaRequest extends FormRequest
              * Usuarios
              */
             'nombre'        => 'nullable|min:3|max:100|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
-            'estado'        => 'nullable|in:'. implode(',', Estado::busquedaIndexados()),
             'rol'           => 'nullable|string|exists:roles,id',
+            'estado'        => 'nullable|in:'. implode(',', Estado::busquedaIndexados()),
 
             /**
              * Docentes
@@ -97,7 +102,7 @@ class BusquedaRequest extends FormRequest
             'titu_even'     => 'nullable|min:5|max:100|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 
             /**
-             * Estudiante
+             * Estudiantes
              */
             'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_estu'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
@@ -105,39 +110,33 @@ class BusquedaRequest extends FormRequest
             'sub_grado_id'  => 'nullable|string|exists:sub_grados,id',
 
             /**
-             * Acudiente
+             * Acudientes
              */
             'docu_acud'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_acud'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_acud'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
-            'sape_acud'  => 'nullable|string|exists:sub_grados,id',
+            'sape_acud'     => 'nullable|string|exists:sub_grados,id',
 
             /**
              * Grados
              */
-            'nomb_grad'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'nomb_grad'     => 'nullable|min:3|max:50|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
             'jorn_grad'     => $jorn_grad ?? 'nullable',
 
             /**
-             * Utiles
+             * Implementos
              */
             'nomb_util'     => 'nullable|min:3|max:50|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
-            'sub_grado_id'  => 'nullable|string|exists:sub_grados,id',
 
             /**
-             * Estudiante Utiles
+             * Programas
              */
-            'estudiante_id'  => 'nullable|string|exists:estudiante_id,id',
-
-            /**
-             * Programa de formacion
-             */
-            'nomb_prog'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'nomb_prog'     => 'nullable|min:3|max:50|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i',
 
             /**
              * Areas
              */
-            'nomb_area'  => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'nomb_area'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
 
             /**
              * Asignaturas
@@ -147,11 +146,17 @@ class BusquedaRequest extends FormRequest
             'grado_id'      => 'nullable|string|exists:grados,id',
 
             /**
-             * Alumno
+             * Alumnos
              */
             'docu_alum'     => 'nullable|min:7|max:10|regex:/^[0-9]+$/i',
             'nomb_alum'     => 'nullable|min:3|max:50|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
             'pape_alum'     => 'nullable|min:3|max:25|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+            'nomb_acud'     => 'nullable|min:3|max:100|regex:/^[a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ\'\s]+$/i',
+
+            /**
+             * Notas
+             */
+            'asignatura_id' => $asignatura_id ?? 'nullable',
         ];
     }
 }

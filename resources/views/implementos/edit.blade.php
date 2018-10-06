@@ -31,7 +31,7 @@
 			<div class="form-row">
 
 				<div class="form-group col-md-12">
-			    	<label>Util</label>
+			    	<label>Nombre</label>
 			   		<input type="text" name="nomb_util" class="form-control {{ $errors->has('nomb_util') ? 'is-invalid' : '' }}" value="{{ old('nomb_util', $implemento->nomb_util) }}"  autofocus>
 	                @if ($errors->has('nomb_util'))
 	                    <div class="invalid-feedback">
@@ -43,7 +43,7 @@
 			</div>
 			<div class="form-row">
 		 		<div class="form-group col-md-12">
-			    	<label>Observaciòn</label>
+			    	<label>Descripción</label>
 			    	<textarea name="desc_util" rows="3" class="form-control {{ $errors->has('desc_util') ? 'is-invalid' : '' }}" autofocus>{{ old('desc_util', $implemento->desc_util) }}
 		    		</textarea>
 	                @if ($errors->has('desc_util'))

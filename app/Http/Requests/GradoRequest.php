@@ -26,7 +26,7 @@ class GradoRequest extends FormRequest
     {
         return [
             'nomb_grad' => 'required|min:3|max:50|regex:/^[0-9a-zA-ZáéíóúàèìòùäëïöüñÁÉÍÓÚÄËÏÖÜÑ_#\-\'".,;\s]+$/i|unique:grados,nomb_grad,' . optional($this->route('grado'))->id,
-            'abre_grad' => 'required|max:2|regex:/^[a-zA-Z0-9]+$/i',
+            'abre_grad' => 'required|max:2|regex:/^[a-zA-ZñÑ0-9]+$/i',
             'jorn_grad' => 'required|in:'. implode(',', Jornada::indexados()),
         ];
     }

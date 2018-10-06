@@ -22,7 +22,7 @@ class Asignatura extends Model
      * @var array
      */
     protected $fillable = [
-        'nomb_asig', 'peso_asig', 'log1_asig', 'log2_asig', 'log3_asig', 'log4_asig',
+        'nomb_asig','inte_hora', 'peso_asig', 'log1_asig', 'log2_asig', 'log3_asig', 'log4_asig',
         'area_id', 'docente_id', 'grado_id',
     ];
 

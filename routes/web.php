@@ -143,6 +143,11 @@ Route::resource('grados', 'GradoController')->except(['destroy']);
 Route::resource('grados.subgrados', 'SubGradoController')->except(['index', 'show', 'destroy']);
 
 /*
+ * SubGrados Asignaturas Routes Ajax...
+ */
+Route::get('subgrados/{subgrado}/asignaturas', 'SubGradoController@asignatura')->name('subgrados.asignaturas');
+
+/*
  * Implementos Routes...
  */
 Route::resource('implementos', 'ImplementoController');
